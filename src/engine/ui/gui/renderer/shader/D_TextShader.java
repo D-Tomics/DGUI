@@ -1,0 +1,64 @@
+package engine.ui.gui.renderer.shader;
+
+import engine.ui.IO.Window;
+import engine.ui.gui.text.D_TextBox;
+import engine.ui.utils.Maths;
+import org.joml.Vector2f;
+
+public final class D_TextShader extends ShaderProgram {
+
+    public D_TextShader() {
+        super("dTextShader.glsl");
+        loadLocations(
+                "texAtlas",
+                "model",
+                "boxScale",
+                "centered",
+                "textColor",
+                "width",
+                "edge",
+                "borderColor",
+                "borderEdge",
+                "borderWidth",
+                "alpha"
+        );
+    }
+
+    public void load(D_TextBox text) {
+
+        super.loadInt("texAtlas",0);
+        super.loadVec3f("textColor", text.getTextColor().r, text.getTextColor().g, text.getTextColor().b);
+        super.loadFloat("alpha", text.getAlpha());
+
+        super.loadFloat("edge",text.getCharEdge());
+        super.loadFloat("width",text.getCharWidth());
+
+        super.loadVec3f("borderColor", text.getBorderColor().r, text.getBorderColor().g, text.getBorderColor().b);
+        super.loadFloat("borderWidth", text.getCharBorderWidth());
+        super.loadFloat("borderEdge", text.getCharBorderEdge());
+
+        super.loadVec2f(
+                "offset",
+                2 * text.getOffset().x / Window.INSTANCE.getWidth(),
+                2 * text.getOffset().y / Window.INSTANCE.getHeight()
+        );
+
+        super.loadVec2f(
+                "boxScale",
+                text.getBoxWidth() / Window.INSTANCE.getWidth(),
+                text.getBoxHeight() / Window.INSTANCE.getHeight()
+        );
+
+        super.loadMat4(
+                "model",
+                Maths.createModelMatrix(
+                        2 * (text.getPosition().x + text.getOffset().x) / Window.INSTANCE.getWidth(),
+                        2 * (text.getPosition().y + text.getOffset().y) / Window.INSTANCE.getHeight(),
+                        text.getFontSize() / Window.INSTANCE.getWidth(),
+                        text.getFontSize() / Window.INSTANCE.getHeight()
+                )
+        );
+
+    }
+
+}

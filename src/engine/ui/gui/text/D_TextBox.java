@@ -1,0 +1,191 @@
+package engine.ui.gui.text;
+
+import engine.ui.gui.renderer.Loader;
+import engine.ui.gui.text.font.Font;
+import engine.ui.gui.text.font.Fonts;
+import engine.ui.gui.text.meshCreator.Line;
+import engine.ui.gui.text.meshCreator.TextLoader;
+import engine.ui.gui.text.meshCreator.TextMesh;
+import engine.ui.utils.colors.Color;
+import org.joml.Vector2f;
+
+import java.util.List;
+
+public class D_TextBox {
+
+    private static final Fonts DEFAULT = Fonts.Agency_FB;
+
+    private boolean wrapText;
+
+    private float boxWidth;
+    private float boxHeight;
+    private float alpha = 1;
+
+    private Font font;
+    private String text;
+    private TextMesh mesh;
+    private Vector2f position;
+    private Vector2f offset;
+
+    private Color textColor = new Color(Color.WHITE);
+    private Color borderColor = new Color(Color.BLACK);
+
+    private boolean centered;
+    private boolean visible = true;
+
+    private float fontSize;
+    private float charWidth;
+    private float charEdge;
+    private float charBorderWidth;
+    private float charBorderEdge;
+
+    public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight) {
+        this(text,fontSize,boxWidth,boxHeight,DEFAULT.getFont(), false);
+    }
+
+    public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight, boolean centered) {
+        this(text,fontSize,boxWidth,boxHeight,DEFAULT.getFont(), centered);
+    }
+
+
+    public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight, Font font, boolean centered) {
+        this.text = text;
+        this.position = new Vector2f(0);
+        this.offset = new Vector2f(0);
+        this.fontSize = fontSize;
+        this.charWidth = 0.45f;
+        this.charEdge = 0.19f;
+        this.wrapText = false;
+
+        this.font = font;
+        this.centered = centered;
+
+        this.boxWidth = boxWidth;
+        this.boxHeight = boxHeight;
+
+        this.mesh = TextLoader.loadText(this, Loader.STREAM);
+        D_TextMaster.load(this);
+    }
+
+    public boolean isCentered() { return centered; }
+    public boolean isVisible() { return  visible; }
+    public boolean isWrapped() { return wrapText; }
+
+    public String getText() { return text; }
+    public Font getFont() { return font; }
+    public TextMesh getMesh() { return mesh; }
+
+    public float getMaxTextWidth() { return mesh.getData().getMaxTextWidth(); }
+    public float getMaxTextHeight() { return mesh.getData().getMaxTextHeight(); }
+    public float getBoxWidth() { return boxWidth; }
+    public float getBoxHeight() { return boxHeight; }
+    public float getFontSize() { return fontSize; }
+
+    public float getCharWidth() { return charWidth; }
+    public float getCharEdge() { return charEdge; }
+    public float getCharBorderWidth() { return charBorderWidth; }
+    public float getCharBorderEdge() { return charBorderEdge; }
+
+    public float getAlpha() { return alpha; }
+
+    public Color getBorderColor() { return borderColor; }
+    public Color getTextColor() { return textColor; }
+    public Vector2f getPosition() { return position; }
+    public Vector2f getOffset() { return offset; }
+
+    public int getNumOfLines() { return getLines().size(); }
+    public float getLineHeight() { return this.mesh != null ? this.mesh.getData().getLineHeight() : 0; }
+    public Line getLine(int lineNum) { return this.mesh != null ? this.mesh.getData().getLine(lineNum) : null; }
+    public List<Line> getLines() { return this.mesh != null ? this.mesh.getData().getLines() : null; }
+
+    public void setWrapText(boolean wrapText) {
+        if(this.wrapText == wrapText) return;
+        this.wrapText = wrapText;
+        update();
+    }
+
+    public void setText(String text) {
+        if(this.text.equals(text)) return;
+        this.text = text;
+        update();
+    }
+
+    public void setBoxWidth(float boxWidth ) {
+        if(this.boxWidth == boxWidth) return;
+        this.boxWidth = boxWidth;
+        update();
+    }
+
+    public void setBoxHeight(float boxHeight) {
+        if(this.boxHeight == boxHeight) return;
+        this.boxHeight = boxHeight;
+        update();
+    }
+
+    public void setBoxSize(float boxWidth, float boxHeight) {
+        if(this.boxWidth == boxWidth && this.boxHeight == boxHeight) return;
+        this.boxWidth = boxWidth;
+        this.boxHeight = boxHeight;
+        update();
+    }
+
+    public void setFontSize(float fontSize) {
+        this.fontSize = fontSize;
+        update();
+    }
+
+    public void setCharWidth(float charWidth) { this.charWidth = charWidth; }
+    public void setCharEdge(float charEdge) { this.charEdge = charEdge; }
+    public void setCharBorderWidth(float width) { this.charBorderWidth = width; }
+    public void setCharBorderEdge(float edge) { this.charBorderEdge = edge; }
+
+    public void setAlpha(float alpha) { this.alpha = alpha; }
+
+    public void setTextColor(Color textColor) { this.textColor.set(textColor); }
+    public void setTextColor(float r, float g, float b) { this.textColor.set(r,g,b); }
+
+    public void setBorderColor(Color borderColor) { this.borderColor.set(borderColor); }
+    public void setBorderColor(float r, float g, float b) { this.borderColor.set(r,g,b); }
+
+    public void setOffset(Vector2f offset) { this.offset.set(offset); }
+    public void setOffset(float x, float y) { this.offset.set(x,y); }
+
+    public void setPosition(Vector2f position) { this.position.set(position); }
+    public void setPosition(float x, float y) { position.set(x, y); }
+
+    public void setVisible(boolean visible) { this.visible = visible; }
+    public void setCentered(boolean centered) {
+        if(this.centered == centered) return;
+        this.centered = centered;
+        update();
+    }
+
+    public void setFont(Font font) {
+        if(this.font == font ) return;
+
+        D_TextMaster.remove(this);
+        this.font = font;
+        D_TextMaster.load(this);
+
+        update();
+    }
+
+    private void update() {
+        this.mesh.updateData(this);
+    }
+
+    @Override
+    public String toString() {
+        String str = "";
+        for(var c : text.toCharArray())
+        {
+            if(c == '\n')
+            {
+                str += "\\n";
+                continue;
+            }
+            str += c;
+        }
+        return str;
+    }
+}
