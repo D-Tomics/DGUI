@@ -74,7 +74,6 @@ public class D_TextArea extends D_Component {
     @Override
     protected void onUpdate() {
 
-        System.out.println("l : "+textBox.getText().length() + " col : "+col + " length : "+getLengthUptoRow(row - 1) + " : "+(getLengthUptoRow(row - 1) + col));
         if(this.isFocused()) {
             float cursorX = textBox.getPosition().x + (textBox.getLine(row) != null ? textBox.getLine(row).getWidth(col - 1) : 0 );
             float cursorY = textBox.getPosition().y - Math.min(row, maxNumOfLines) * textBox.getMesh().getData().getLineHeight();
@@ -89,16 +88,16 @@ public class D_TextArea extends D_Component {
     @Override
     public void onStateChange(Observable o) { }
 
-    private static final int UP = 1, DOWN = 2, LEFT = 3, RIGHT = 4;
+    private static final int  UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3, CHAR_ADD = 4;
     private void moveCursor(int dir) {
         if(dir == LEFT) {
             int rTemp = row;
             row = col - 1 < 0 ? Math.max(0,row - 1) : row;
             col = rTemp != row ? textBox.getLine(row).length() : Math.max(col - 1, 0);
-        } else if(dir == RIGHT) {
+        } else if(dir == RIGHT || dir == CHAR_ADD) {
             int rTemp = row;
-            row = textBox.getLine(row + 1) != null && col + 1 > textBox.getLine(row).length() ? row + 1 : row;
-            col = rTemp != row ?  textBox.getLine(row).length() : Math.min(col + 1, textBox.getLine(row).length());
+            row = col + 1 > textBox.getLine(row).length() ? Math.min(row + 1, textBox.getLines().size() - 1) : row;
+            col = rTemp != row ?  dir - RIGHT : Math.min(col + 1, textBox.getLine(row).length());
         } else if(dir == UP) {
             row = Math.max(0, row - 1 );
             col = Math.min(textBox.getLine(row).getCharacters().size(), col);
@@ -122,11 +121,16 @@ public class D_TextArea extends D_Component {
         if (textBox.getText().length() > 0) {
             int length = getLengthUptoRow(row - 1);
             if (leftorRight == LEFT ) {
+                int rowLength = textBox.getLine(row - 1) != null ? textBox.getLine(row - 1).length() : 0;
                 int index = Math.min(textBox.getText().length(), length + col);
-                textBox.setText(
-                        textBox.getText().substring(0, Math.max(index - 1, 0)) +
-                        textBox.getText().substring(index)
-                );
+                if(col - 1 >= 0 || index - 1 >= 0 && textBox.getText().charAt(index - 1) == '\n')
+                    textBox.setText(
+                            textBox.getText().substring(0, Math.max(index - 1, 0)) +
+                            textBox.getText().substring(index)
+                    );
+                int rTemp = row;
+                row = col - 1 < 0 ? Math.max(0,row - 1) : row;
+                col = rTemp != row ? rowLength : Math.max(col - 1, 0);
             } else if (leftorRight == RIGHT && length + col <= textBox.getText().length()) {
                 textBox.setText(
                         textBox.getText().substring(0, length + col) +
@@ -139,7 +143,8 @@ public class D_TextArea extends D_Component {
     private int getLengthUptoRow(int row) {
         if(row < 0 || row >= textBox.getLines().size()) return 0;
         int length = 0;
-        for(int i = 0 ; i <= row; i++) length += textBox.getLine(i).length() + 1; // 1 is for \n
+        for(int i = 0 ; i <= row; i++)
+            length += textBox.getLine(i).length() + (textBox.getLine(i).contains("\n") ? 1 : 0);
         return length;
     }
 
@@ -149,10 +154,10 @@ public class D_TextArea extends D_Component {
             case GLFW.GLFW_KEY_KP_ENTER:
                 insertCharAtCursor('\n');
                 moveCursor(DOWN);
+                col = 0; // when enter is pressed cursor always comes to col 0 of the new line
                 break;
             case GLFW.GLFW_KEY_BACKSPACE:
                 removeCharAtCursor(LEFT);
-                moveCursor(LEFT);
                 break;
             case GLFW.GLFW_KEY_DELETE:
                 removeCharAtCursor(RIGHT);
@@ -180,7 +185,7 @@ public class D_TextArea extends D_Component {
 
     private void onCharEvent(D_Event e) {
         insertCharAtCursor((char)((D_GuiCharEvent)e).getCodePoint());
-        moveCursor(RIGHT);
+        moveCursor(CHAR_ADD);
 
         style.notifyObservers();
     }
