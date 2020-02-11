@@ -1,10 +1,10 @@
 package engine.ui.gui.components;
 
 import engine.ui.IO.Mouse;
+import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextAlign;
 import engine.ui.gui.manager.events.*;
 import engine.ui.gui.text.D_TextBox;
 import engine.ui.gui.text.font.Fonts;
-import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextAlign;
 import engine.ui.utils.D_Event;
 import engine.ui.utils.Delay;
 import engine.ui.utils.colors.Color;

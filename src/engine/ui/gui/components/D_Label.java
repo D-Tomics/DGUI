@@ -1,12 +1,13 @@
 package engine.ui.gui.components;
 
-import engine.ui.gui.text.D_Text;
+import engine.ui.IO.Window;
 import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextAlignTop;
+import engine.ui.gui.text.D_TextBox;
 import engine.ui.utils.observers.Observable;
 
 public class D_Label extends D_Component{
 
-    private D_Text text;
+    private D_TextBox text;
 
     public D_Label() {
         this("");
@@ -17,7 +18,8 @@ public class D_Label extends D_Component{
     }
 
     public D_Label(float x, float y, String text) {
-        this.text = new D_Text(x,y,50,text);
+        this.text = new D_TextBox(text,50, Window.INSTANCE.getWidth(), Window.INSTANCE.getHeight());
+        this.text.setPosition(x,y);
 
         style.setX(x).setY(y);
         style.setWidth(this.text.getMaxTextWidth());
@@ -28,7 +30,7 @@ public class D_Label extends D_Component{
     }
 
     public String getText() { return text.getText(); }
-    public D_Text getTextObject() { return text; }
+    public D_TextBox getTextObject() { return text; }
 
     public void setFontSize(float fontSize) {
         text.setFontSize(fontSize);
