@@ -81,8 +81,10 @@ public final class D_GuiEventManager {
     }
 
     public void setFocusedGui(D_Gui gui) {
-        if(focusedGui == gui) return;
+        if(gui instanceof D_Geometry)
+            gui = gui.getParent();
 
+        if(focusedGui == gui) return;
         if(focusedGui != null) {
             focusedGui.focus(false);
             focusedGui.stackEvent(new D_GuiFocusLooseEvent(focusedGui));

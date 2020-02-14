@@ -13,6 +13,7 @@ import engine.ui.utils.observers.Observer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Set;
 
 public abstract class D_Gui implements Observer {
@@ -22,7 +23,6 @@ public abstract class D_Gui implements Observer {
         public void invokeEvent(D_GuiEvent event) {
             D_GuiMousePressEvent e = (D_GuiMousePressEvent)event;
             if(e.isButton(Mouse.MOUSE_BUTTON_LEFT)) {
-                if(!(e.getGui() instanceof D_Geometry))
                     e.getGui().requestFocus(true);
             }
         }
@@ -235,8 +235,13 @@ public abstract class D_Gui implements Observer {
     }
     protected  void addGeometry(D_Geometry geometry) {
         if(geometries == null) geometries = new ArrayList<>();
+        Objects.requireNonNull(geometry, "trying to add null Geometry");
         geometries.add(geometry);
+        geometry.setParent(this);
     }
-    protected void removeGeometry(D_Geometry geometry) { geometries.remove(geometry); }
+    protected void removeGeometry(D_Geometry geometry) {
+        geometries.remove(geometry);
+        geometry.setParent(null);
+    }
 
 }
