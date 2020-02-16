@@ -43,6 +43,8 @@ uniform vec2 boxScale;
 
 void main() {
 
+    if(vertex.x + offset.x <= 0) discard;
+    if(vertex.x + offset.x >= 2 * boxScale.x) discard;
     if(vertex.y + offset.y >= 0) discard;
     if(vertex.y + offset.y <= -2 * boxScale.y)  discard;
 
