@@ -7,6 +7,7 @@ import engine.ui.gui.manager.constraints.D_Constraint;
 import engine.ui.gui.manager.events.D_GuiEvent;
 import engine.ui.gui.manager.events.D_GuiEventListener;
 import engine.ui.gui.manager.events.D_GuiMousePressEvent;
+import engine.ui.gui.text.D_TextBox;
 import engine.ui.utils.abstractions.Listener;
 import engine.ui.utils.observers.Observable;
 import engine.ui.utils.observers.Observer;
@@ -108,6 +109,7 @@ public abstract class D_Gui implements Observer {
     }
 
     public void stackEvent(D_GuiEvent event) {
+        if(!enabled) return;
         if(eventListeners == null)
             return;
         ArrayList<D_GuiEventListener> listeners = eventListeners.get(event.getClass());
@@ -131,6 +133,7 @@ public abstract class D_Gui implements Observer {
     }
 
     public void addAnimation(D_GuiAnimation animation) {
+        if(!enabled) return;
         if(animation == null) return;
         else if(animations == null) animations = new ArrayList<>();
         if(animations.contains(animation)) return;
@@ -146,6 +149,7 @@ public abstract class D_Gui implements Observer {
     }
 
     private void updateAnimations() {
+        if(!enabled) return;
         if(animations == null) return;
         for(D_GuiAnimation animation : animations) {
             animation.update(this);
@@ -192,6 +196,7 @@ public abstract class D_Gui implements Observer {
         this.style.notifyObservers();
     }
     public void setVisible(boolean visible) {
+        if(!enabled) return;
         this.visible = visible;
         if(this.geometries != null)
             for(D_Geometry geometry : geometries) geometry.setVisible(visible);
@@ -202,6 +207,7 @@ public abstract class D_Gui implements Observer {
     public void setSelectable(boolean selectable) { this.selectable = selectable; }
 
     public void setPressed(boolean pressed) {
+        if(!enabled) return;
         this.pressed = pressed;
         this.style.notifyObservers();
     }
@@ -210,6 +216,7 @@ public abstract class D_Gui implements Observer {
         this.style.notifyObservers();
     }
     public void setSelected(boolean selected) {
+        if(!enabled) return;
         if(this.isSelectable())
             this.selected = selected;
         this.style.notifyObservers();
