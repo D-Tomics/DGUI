@@ -14,6 +14,7 @@ public class D_Geometry extends D_Component {
             textBox = new D_TextBox(text,60,style.getWidth(),style.getHeight(), true);
         else
             textBox.setText(text);
+        this.addText(textBox);
     }
 
     public D_TextBox getText() {
@@ -27,12 +28,6 @@ public class D_Geometry extends D_Component {
     public void onStateChange(Observable o) {
         if(textBox != null)
             textBox.setPosition(this.style.getX(),this.style.getY());
-    }
-
-    public void setVisible(boolean visible) {
-        super.setVisible(visible);
-        if(this.textBox != null)
-            this.textBox.setVisible(visible);
     }
 
 }

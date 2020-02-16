@@ -44,6 +44,7 @@ public class D_Slider extends D_Component{
 
         this.valueText = new D_TextBox(minValue+"",70,SLIDER_WIDTH,SLIDER_HEIGHT);
         this.valueText.setTextColor(0f,0f,0f);
+        this.addText(valueText);
 
         this.addConstraints(new D_TextAlignTop(valueText,0));
         this.addConstraints(new D_TextAlignRight(valueText,0));
@@ -94,7 +95,6 @@ public class D_Slider extends D_Component{
         bar.style.setX(style.getX(),false);
         bar.style.setY(style.getY(),false);
         bar.style.setWidth(xRelativeToValue);
-        this.valueText.setVisible(this.isVisible());
     }
 
     public float getValue() {

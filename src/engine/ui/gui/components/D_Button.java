@@ -14,6 +14,7 @@ public class D_Button extends D_Component{
 
         this.name = new D_TextBox(name,75,WIDTH,HEIGHT, true);
         this.name.setTextColor(Color.BLACK);
+        this.addText(this.name);
 
         style.setBounds(0,0,WIDTH,HEIGHT);
     }
@@ -40,6 +41,5 @@ public class D_Button extends D_Component{
                 style.getX(),
                 style.getY()
         );
-        name.setVisible(super.isVisible());
     }
 }

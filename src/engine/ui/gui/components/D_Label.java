@@ -20,6 +20,7 @@ public class D_Label extends D_Component{
     public D_Label(float x, float y, String text) {
         this.text = new D_TextBox(text,50, Window.INSTANCE.getWidth(), Window.INSTANCE.getHeight());
         this.text.setPosition(x,y);
+        this.addText(this.text);
 
         style.setX(x).setY(y);
         style.setWidth(this.text.getMaxTextWidth());
@@ -55,6 +56,5 @@ public class D_Label extends D_Component{
     @Override
     public void onStateChange(Observable o) {
         text.setPosition(style.getX(),style.getY());
-        text.setVisible(this.isVisible());
     }
 }

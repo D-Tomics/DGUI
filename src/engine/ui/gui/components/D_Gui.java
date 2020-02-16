@@ -46,6 +46,7 @@ public abstract class D_Gui implements Observer {
     private boolean hoverable;
 
     private D_Gui parent;
+    private ArrayList<D_TextBox> texts;
     private ArrayList<D_Geometry> geometries;
     private ArrayList<D_Constraint> constraints;
     private ArrayList<D_GuiAnimation> animations;
@@ -200,6 +201,8 @@ public abstract class D_Gui implements Observer {
         this.visible = visible;
         if(this.geometries != null)
             for(D_Geometry geometry : geometries) geometry.setVisible(visible);
+        if(this.texts != null)
+            this.texts.forEach(txt -> txt.setVisible(false) );
         this.style.notifyObservers();
     }
     public void setScrollable(boolean scrollable) { this.scrollable = scrollable; }
@@ -249,6 +252,20 @@ public abstract class D_Gui implements Observer {
     protected void removeGeometry(D_Geometry geometry) {
         geometries.remove(geometry);
         geometry.setParent(null);
+    }
+
+    protected void addText(D_TextBox textBox) {
+        if(textBox == null) return;
+        if(texts == null) texts = new ArrayList<>();
+        if(texts.contains(textBox)) return;
+        texts.add(textBox);
+        style.notifyObservers();
+    }
+
+    protected void removeText(D_TextBox textBox) {
+        if(textBox == null) return;
+        if(texts == null) return;
+        texts.remove(textBox);
     }
 
 }

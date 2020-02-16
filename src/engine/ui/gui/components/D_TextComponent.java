@@ -25,6 +25,7 @@ public abstract class D_TextComponent extends D_Component{
         this.textBox.setTextColor(Color.BLACK);
         this.textBox.setCharWidth(0.4f);
         this.textBox.setCharEdge(0.25f);
+        this.addText(this.textBox);
 
         this.cursor = new Cursor(textBox);
         this.addGeometry(cursor);
