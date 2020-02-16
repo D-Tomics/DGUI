@@ -94,6 +94,7 @@ public class D_TextBox {
     public Vector2f getOffset() { return offset; }
 
     public int getNumOfLines() { return getLines().size(); }
+    public int getLineLength(int lineNum) { return getLine(lineNum) != null ? getLine(lineNum).length() : 0; }
     public float getLineHeight() { return this.mesh != null ? this.mesh.getData().getLineHeight() : 0; }
     public Line getLine(int lineNum) { return this.mesh != null ? this.mesh.getData().getLine(lineNum) : null; }
     public List<Line> getLines() { return this.mesh != null ? this.mesh.getData().getLines() : null; }
