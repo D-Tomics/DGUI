@@ -332,6 +332,7 @@ public final class Window {
         glfwSetKeyCallback(window_ptr, new GLFWKeyCallback() {
             @Override
             public void invoke(long w, int key, int scancode, int action, int mods) {
+                if(key == -1 ) return;
                 invokeEventListeners(new GLFWKeyEvent(getThis(),key,scancode,action,mods));
                 if(action == GLFW_PRESS) invokeEventListeners(new GLFWKeyPressEvent(getThis(),key,scancode,mods));
                 if(action == GLFW_RELEASE) invokeEventListeners(new GLFWKeyReleaseEvent(getThis(),key,scancode,mods));
