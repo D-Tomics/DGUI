@@ -202,7 +202,7 @@ public abstract class D_Gui implements Observer {
         if(this.geometries != null)
             for(D_Geometry geometry : geometries) geometry.setVisible(visible);
         if(this.texts != null)
-            this.texts.forEach(txt -> txt.setVisible(false) );
+            this.texts.forEach(txt -> txt.setVisible(visible));
         this.style.notifyObservers();
     }
     public void setScrollable(boolean scrollable) { this.scrollable = scrollable; }
