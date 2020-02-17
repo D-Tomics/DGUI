@@ -20,8 +20,8 @@ public class Maths {
         return createModelMatrix(
                 2 * properties.getCenterX() / Window.INSTANCE.getWidth(),
                 2 * properties.getCenterY() / Window.INSTANCE.getHeight(),
-                properties.getWidth() / Window.INSTANCE.getWidth(),
-                properties.getHeight()  / Window.INSTANCE.getHeight()
+                (properties.getWidth() + 2 * properties.getBorderWidth()) / Window.INSTANCE.getWidth(),
+                (properties.getHeight() + 2 * properties.getBorderWidth()) / Window.INSTANCE.getHeight()
         );
     }
 
