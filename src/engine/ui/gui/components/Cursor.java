@@ -16,8 +16,9 @@ final class Cursor extends D_Geometry{
         this.blinkDelay = new Delay(500);
 
         this.style.setWidth(1);
-        this.style.setHeight(this.textBox.getMesh().getData().getLineHeight() - 10);
+        this.style.setHeight(this.textBox.getMesh().getData().getLineHeight());
         this.style.setColor(Color.BLACK);
+        this.style.setBorderSize(0);
         this.setVisible(false);
     }
 

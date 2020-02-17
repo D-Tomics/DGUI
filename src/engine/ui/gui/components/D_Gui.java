@@ -161,6 +161,8 @@ public abstract class D_Gui implements Observer {
         if(constraint == null) return;
         else if(constraints == null) constraints = new ArrayList<>();
         constraints.add(constraint);
+        constraint.run(this);
+        runConstraints();
     }
 
     public void addConstraints(D_Constraint...constraints) {

@@ -21,7 +21,7 @@ public class D_TextArea extends D_TextComponent {
 
         this.maxNumOfLines = (int) (style.getHeight() / textBox.getMesh().getData().getLineHeight());
 
-        this.addConstraint(new D_TextAlign(textBox, 5, 5, 5, 5));
+        this.addConstraint(new D_TextAlign(textBox, 5, 0, 5, 0));
 
         this.addEventListener(D_GuiScrollEvent.class, this::onScrollEvent);
         this.addEventListener(D_GuiResizeEvent.class, this::onResize);

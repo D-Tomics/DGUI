@@ -7,7 +7,7 @@ public class D_TextField extends D_TextComponent{
 
     public D_TextField(String text, int cols) {
         super(text, 1, cols);
-        this.addConstraint(new D_TextAlign(this.textBox,5,5,5,0));
+        this.addConstraint(new D_TextAlign(this.textBox,5,0,5,0));
     }
 
     @Override
