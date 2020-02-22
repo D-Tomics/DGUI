@@ -46,6 +46,7 @@ public class Style extends Observable {
     private Color color;
     private Color borderColor;
 
+    private float cornerRadius;
     private float borderWidth;
 
     private String name;
@@ -71,6 +72,7 @@ public class Style extends Observable {
 
     public String getName() { return name; }
 
+    public float getCornerRadius() { return cornerRadius; }
     public float getBorderWidth() { return borderWidth; }
 
     public float getAlpha() { return alpha; }
@@ -149,6 +151,12 @@ public class Style extends Observable {
 
     public Style setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public Style setCornerRadius(float radius) {
+        if(radius <= Math.min(dimension.x, dimension.y) / 2.0f)
+            this.cornerRadius = radius;
         return this;
     }
 
