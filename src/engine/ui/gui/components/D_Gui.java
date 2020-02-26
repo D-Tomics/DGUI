@@ -91,8 +91,8 @@ public abstract class D_Gui implements Observer {
         if(listener == null) return;
         if(eventListeners == null)
             eventListeners = new HashMap<>();
-        var eventClass = listener.getEventClass();
-        var listeners = eventListeners.get(eventClass);
+        Class<? extends D_GuiEvent> eventClass = listener.getEventClass();
+        ArrayList<D_GuiEventListener> listeners = eventListeners.get(eventClass);
         if(listeners == null) {
             listeners = new ArrayList<>();
             eventListeners.put(eventClass,listeners);
@@ -103,8 +103,8 @@ public abstract class D_Gui implements Observer {
     public void removeListener(D_GuiEventListener listener) {
         if (listener == null) return;
         if (eventListeners == null) return;
-        var eventClass = listener.getEventClass();
-        var listeners = eventListeners.get(eventClass);
+        Class<? extends D_GuiEvent> eventClass = listener.getEventClass();
+        ArrayList<D_GuiEventListener> listeners = eventListeners.get(eventClass);
         if (listeners == null) return;
         listeners.remove(listener);
     }
@@ -166,7 +166,7 @@ public abstract class D_Gui implements Observer {
     }
 
     public void addConstraints(D_Constraint...constraints) {
-        for(var constraint : constraints)
+        for(D_Constraint constraint : constraints)
             addConstraint(constraint);
     }
 

@@ -224,7 +224,7 @@ public final class Window {
     }
 
     private void initialiseMonitorParams() {
-        var primaryMonitor = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        GLFWVidMode primaryMonitor = glfwGetVideoMode(glfwGetPrimaryMonitor());
         if(primaryMonitor == null) return;
         Window.monitorWidth = primaryMonitor.width();
         Window.monitorHeight = primaryMonitor.height();

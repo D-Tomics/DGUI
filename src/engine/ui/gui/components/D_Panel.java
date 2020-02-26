@@ -100,7 +100,7 @@ public class D_Panel extends D_Container {
         minimize.style.setColor(100,100,100);
 
         if(getChildList() != null) {
-            for(var child : getChildList())
+            for(D_Gui child : getChildList())
                 child.setVisible(false);
         }
 
@@ -117,7 +117,7 @@ public class D_Panel extends D_Container {
         minimize.style.setColor(200,200,200);
 
         if(childList != null) {
-            for(var child : childList) {
+            for(D_Gui child : childList) {
                 child.setVisible(true);
                 if(child instanceof D_Container) {
                     ((D_Container) child).hideChildren(((D_Container) child).isMinimized());

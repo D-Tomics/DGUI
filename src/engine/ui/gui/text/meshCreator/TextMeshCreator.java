@@ -12,7 +12,7 @@ public final class TextMeshCreator {
     public static final float LINE_HEIGHT = 1;
 
     static TextMeshData createTextMesh(D_TextBox text) {
-        var vertexData = new ArrayList<Float>();
+        List<Float> vertexData = new ArrayList<Float>();
 
         float vps = LINE_HEIGHT / text.getFont().getFontFile().getLineHeight();
         float hps = vps / Window.INSTANCE.getAspectRatio();
@@ -21,7 +21,7 @@ public final class TextMeshCreator {
         float maxWidth = 0;
 
 
-        var lines = createStructure(text,hps);
+        List<Line> lines = createStructure(text,hps);
 
 
         float cursorX;

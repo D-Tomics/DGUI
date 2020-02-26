@@ -1,8 +1,11 @@
 package engine.ui.gui.manager.layouts;
 
 import engine.ui.gui.components.D_Container;
+import engine.ui.gui.components.D_Gui;
 import engine.ui.gui.manager.LayoutManager;
 import engine.ui.gui.manager.Style;
+
+import java.util.List;
 
 public class Flow extends LayoutManager {
 
@@ -10,13 +13,13 @@ public class Flow extends LayoutManager {
     public void update(D_Container parent) {
         if(!parent.isVisible()) return;
         Style style = parent.getStyle();
-        var childList = parent.getChildList();
+        List<D_Gui> childList = parent.getChildList();
         if(childList == null) return;
 
         float curX = style.getX() + getPaddingLeft() + getMarginLeft();
         float curY = style.getY() - (getPaddingTop() + getMarginTop());
 
-        for(var gui : childList) {
+        for(D_Gui gui : childList) {
             if(gui.isVisible()) continue;
             gui.getStyle().setPosition(curX, curY);
 

@@ -7,10 +7,7 @@ import engine.ui.IO.events.GLFWWindowSizeEvent;
 import engine.ui.gui.renderer.TextRenderer;
 import engine.ui.gui.text.font.Font;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class D_TextMaster {
 
@@ -21,9 +18,9 @@ public final class D_TextMaster {
         @Override
         public void invoke(GLFWEvent event) {
             if(textMap == null) return;
-            var fonts = textMap.keySet();
+            Set<Font> fonts = textMap.keySet();
             for(Font font : fonts) {
-                var texts = textMap.get(font);
+                List<D_TextBox> texts = textMap.get(font);
                 for(D_TextBox text : texts)
                     text.getMesh().updateData(text);
             }

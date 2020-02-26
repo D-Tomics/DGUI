@@ -81,7 +81,7 @@ public class D_List<T> extends D_Component{
             boolean hover = false;
 
             float y = this.style.getY() - CELL_HEIGHT;
-            for(var cell : getGeometries()) {
+            for(D_Geometry cell : getGeometries()) {
                 cell.getStyle().setPosition(this.style.getX(), y);
                 cell.setVisible(this.isSelected());
                 if(cell.isPressed() && cell.isVisible()) {

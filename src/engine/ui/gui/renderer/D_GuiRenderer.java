@@ -8,6 +8,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import java.util.List;
+
 public class D_GuiRenderer {
 
     private static D_GuiShader shader = new D_GuiShader();
@@ -28,9 +30,9 @@ public class D_GuiRenderer {
 
         bindVAO();
         shader.start();
-        var components = Window.INSTANCE.getGuiList();
+        List<D_Gui> components = Window.INSTANCE.getGuiList();
         if(components == null) return;
-        for(var component : components)
+        for(D_Gui component : components)
             draw(component);
         shader.stop();
         unbind();

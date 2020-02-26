@@ -136,7 +136,7 @@ public class Style extends Observable {
 
     public Style setSize(float w, float h, boolean changed) {
         if(dimension.x != w && dimension.y != h) {
-            for(var observer : observers)
+            for(Observer observer : observers)
                 ((D_Gui) observer).stackEvent(new D_GuiResizeEvent((D_Gui) observer, dimension.x, dimension.y, w, h));
         }
 

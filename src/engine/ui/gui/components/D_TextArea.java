@@ -65,7 +65,7 @@ public class D_TextArea extends D_TextComponent {
     }
 
     private void onScrollEvent(D_Event event) {
-        var e = (D_GuiScrollEvent)event;
+        D_GuiScrollEvent e = (D_GuiScrollEvent)event;
         if(textBox.getMaxTextHeight() > getStyle().getHeight()) {
             float offset = textBox.getMesh().getData().getLineHeight() * (float) e.getYoffset();
 

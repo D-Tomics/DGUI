@@ -15,7 +15,7 @@ public class D_TextAlignTop extends D_TextConstraint {
 
     @Override
     public void update(D_Gui gui) {
-        var text = getSource();
+        D_TextBox text = getSource();
         text.getPosition().y = gui.getStyle().getY() - padding;
     }
 }

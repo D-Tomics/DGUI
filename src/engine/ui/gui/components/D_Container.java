@@ -24,14 +24,14 @@ public abstract class D_Container extends D_Gui{
     protected void setLevel(int level) {
         super.setLevel(level);
         if(childList == null) return;
-        for(var child : childList)
+        for(D_Gui child : childList)
             child.setLevel(level + 1);
     }
 
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         if(childList == null) return;
-        for(var child : childList)
+        for(D_Gui child : childList)
             child.setVisible(visible);
     }
 
@@ -106,7 +106,7 @@ public abstract class D_Container extends D_Gui{
 
     protected void hideChildren(boolean val) {
         if(childList == null) return;
-        for(var child : childList) {
+        for(D_Gui child : childList) {
             child.setVisible(!val);
             if(child instanceof D_Container)
                 ((D_Container) child).hideChildren(!val);

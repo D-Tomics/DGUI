@@ -178,7 +178,7 @@ public class D_TextBox {
     @Override
     public String toString() {
         String str = "";
-        for(var c : text.toCharArray())
+        for(char c : text.toCharArray())
         {
             if(c == '\n')
             {
