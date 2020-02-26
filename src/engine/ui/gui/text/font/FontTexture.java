@@ -66,18 +66,6 @@ public class FontTexture {
     }
 
 
-    private ByteBuffer algio1(String path, int[] w, int[] h, int[] c) throws IOException {
-        byte[] imageData = this.getClass().getResourceAsStream(path).readAllBytes();
-        ByteBuffer imageBuffer = Buffers.createByteBuffer(imageData);
-        ByteBuffer data = stbi_load_from_memory(imageBuffer, w, h, c, 4);
-        if(data == null) {
-            System.err.println("::ERR::could'nt read texture from "+path);
-            //return -1;
-        }
-        return data;
-    }
-
-
     private int generateTexture(int width, int height, ByteBuffer data) {
         int id = GL11.glGenTextures();
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
