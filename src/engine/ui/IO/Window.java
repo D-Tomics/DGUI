@@ -44,6 +44,7 @@ public final class Window {
     private ArrayList<Updatable> updatables;
     private D_GuiEventManager guiEventManager;
     private HashMap<Class<?>, List<GLFWListener>> listenerMap;
+    private HashMap<Integer, Integer> windowHints;
 
     public Window(int width, int height, String title, boolean fullScreen) {
         this.width = width;
@@ -106,6 +107,11 @@ public final class Window {
         if(updatable == null) return;
         if(updatables == null) return;
         synchronized (this) { updatables.remove(updatable); }
+    }
+
+    public void addHint(int hint, int value) {
+        if(windowHints == null) windowHints = new HashMap<>();
+        windowHints.put(hint, value);
     }
 
     public void create() {
@@ -210,6 +216,7 @@ public final class Window {
     private void initGLfw() {
         if(initialized) return;
         if(!glfwInit()) throw  new IllegalStateException("could'nt initialize glfw");
+        if(windowHints != null) windowHints.keySet().forEach(hint -> glfwWindowHint(hint, windowHints.get(hint)));
     }
 
     private void initializeComponents() {
