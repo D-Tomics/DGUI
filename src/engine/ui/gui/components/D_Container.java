@@ -13,7 +13,7 @@ public abstract class D_Container extends D_Gui{
     private boolean resizing;
     private boolean minimized;
 
-    protected ArrayList<D_Gui> childList;
+    private ArrayList<D_Gui> childList;
     private Layout layout;
     D_Container() {
         layout = new Flow();
