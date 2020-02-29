@@ -3,7 +3,7 @@ package engine.ui.gui.components;
 import engine.ui.IO.Mouse;
 import engine.ui.gui.manager.constraints.D_LayoutConstraint;
 import engine.ui.gui.manager.layouts.Flow;
-import engine.ui.gui.manager.LayoutManager;
+import engine.ui.gui.manager.layouts.Layout;
 
 import java.util.ArrayList;
 
@@ -15,9 +15,9 @@ public abstract class D_Container extends D_Gui{
     private boolean minimized;
 
     protected ArrayList<D_Gui> childList;
-    private LayoutManager layoutManager;
+    private Layout layout;
     D_Container() {
-        layoutManager = new Flow();
+        layout = new Flow();
     }
 
     @Override
@@ -95,12 +95,12 @@ public abstract class D_Container extends D_Gui{
 
     public ArrayList<D_Gui> getChildList() { return childList;}
 
-    public LayoutManager getLayout() {
-        return layoutManager;
+    public Layout getLayout() {
+        return layout;
     }
 
-    public void setLayout(LayoutManager layout) {
-        this.layoutManager = layout;
+    public void setLayout(Layout layout) {
+        this.layout = layout;
         this.style.notifyObservers();
     }
 

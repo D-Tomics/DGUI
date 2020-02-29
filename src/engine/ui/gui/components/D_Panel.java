@@ -1,10 +1,10 @@
 package engine.ui.gui.components;
 
 import engine.ui.IO.Mouse;
-import engine.ui.gui.manager.LayoutManager;
-import engine.ui.gui.text.D_TextBox;
 import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextAlignLeft;
 import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextAlignTop;
+import engine.ui.gui.manager.layouts.Layout;
+import engine.ui.gui.text.D_TextBox;
 import engine.ui.utils.observers.Observable;
 
 public class D_Panel extends D_Container {
@@ -46,7 +46,7 @@ public class D_Panel extends D_Container {
         this.style.setAlpha(0.8f);
     }
 
-    public D_Panel(String title, LayoutManager layout) {
+    public D_Panel(String title, Layout layout) {
         this(title);
         this.setLayout(layout);
     }

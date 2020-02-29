@@ -2,12 +2,11 @@ package engine.ui.gui.manager.layouts;
 
 import engine.ui.gui.components.D_Container;
 import engine.ui.gui.components.D_Gui;
-import engine.ui.gui.manager.LayoutManager;
 import engine.ui.gui.manager.Style;
 
 import java.util.List;
 
-public class Flow extends LayoutManager {
+public class Flow extends Layout {
 
     @Override
     public void update(D_Container parent) {
