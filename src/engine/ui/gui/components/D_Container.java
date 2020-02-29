@@ -1,6 +1,5 @@
 package engine.ui.gui.components;
 
-import engine.ui.IO.Mouse;
 import engine.ui.gui.layouts.Flow;
 import engine.ui.gui.layouts.Layout;
 import engine.ui.gui.manager.constraints.D_LayoutConstraint;
@@ -26,6 +25,11 @@ public abstract class D_Container extends D_Gui{
         if(childList == null) return;
         for(D_Gui child : childList)
             child.setLevel(level + 1);
+    }
+
+    public void pack() {
+        this.layout.update(this);
+        this.style.setSize(layout.getMaxWidth(), layout.getMaxHeight());
     }
 
     public void setVisible(boolean visible) {
@@ -70,29 +74,6 @@ public abstract class D_Container extends D_Gui{
     protected void onResize() {
     }
 
-    private void resizeContainer(int x, int y, float dx) {
-        style.setWidth(style.getWidth() + dx);
-
-
-
-        /*if(!Mouse.pressed(Mouse.MOUSE_BUTTON_LEFT)) return;
-        if(x == 1)
-            style.setWidth(style.getWidth() + (Mouse.getX() - (style.getX() + style.getWidth())));
-        else {
-            float dx = Mouse.getX() - style.getX();
-            style.setWidth(style.getWidth() + dx);
-            style.getPosition().sub(dx,0);
-        }*/
-    }
-
-    private boolean isMouseYInside() {
-        return Math.abs(Mouse.getY() - style.getCenterY()) < style.getHeight()/2.0f;
-    }
-
-    private boolean isMouseXinBounds() {
-        return Math.abs(Mouse.getX() - style.getCenterX()) < style.getWidth()/2.0f;
-    }
-
     public ArrayList<D_Gui> getChildList() { return childList;}
 
     public Layout getLayout() {
@@ -102,15 +83,6 @@ public abstract class D_Container extends D_Gui{
     public void setLayout(Layout layout) {
         this.layout = layout;
         this.style.notifyObservers();
-    }
-
-    protected void hideChildren(boolean val) {
-        if(childList == null) return;
-        for(D_Gui child : childList) {
-            child.setVisible(!val);
-            if(child instanceof D_Container)
-                ((D_Container) child).hideChildren(!val);
-        }
     }
 
 }
