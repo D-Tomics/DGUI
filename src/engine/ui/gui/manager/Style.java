@@ -50,6 +50,10 @@ public class Style extends Observable {
 
     private String name;
 
+    private static final int TOP = 0,BOTTOM = 1,LEFT = 2, RIGHT = 3;
+    private float[] padding = new float[4];
+    private float[] margin = new float[] { 10,10,10,10};
+
     public Style() {
         this.color = new Color();
         this.borderColor = new Color();
@@ -76,6 +80,16 @@ public class Style extends Observable {
     public float getAlpha() { return alpha; }
     public Color getColor() { return color; }
     public Color getBorderColor() { return borderColor; }
+
+    public float getMarginTop() { return margin[TOP]; }
+    public float getMarginBottom() { return margin[BOTTOM]; }
+    public float getMarginLeft() { return margin[LEFT]; }
+    public float getMarginRight() { return margin[RIGHT]; }
+
+    public float getPaddingTop() { return padding[TOP]; }
+    public float getPaddingBottom() { return padding[BOTTOM]; }
+    public float getPaddingRight() { return padding[RIGHT]; }
+    public float getPaddingLeft() { return padding[LEFT]; }
 
     // setters
     public Style setBounds(float x, float y, float width, float height) { return setBounds(x,y,width,height,true); }
@@ -173,6 +187,30 @@ public class Style extends Observable {
     public void setColor(int color) { this.color = ColorFactory.createColor(color,this.color); }
     public void setColor(Color color) { this.color.set(color); }
 
+    public void setMarginTop(float margin) { this.margin[TOP] = margin; }
+    public void setMarginBottom(float margin) { this.margin[BOTTOM] = margin; }
+    public void setMarginLEFT(float margin) { this.margin[LEFT] = margin; }
+    public void setMarginRight(float margin) { this.margin[RIGHT] = margin; }
+    public void setMargin(float margin) { setMargin(margin, margin, margin, margin);}
+    public void setMargin(float top, float bottom, float left, float right) {
+        margin[TOP] = top;
+        margin[BOTTOM] = bottom;
+        margin[LEFT] = left;
+        margin[RIGHT] = right;
+    }
+
+    public void setPaddingTop(float padding) { this.padding[TOP] = padding;}
+    public void setPaddingBottom(float padding) { this.padding[BOTTOM] = padding;}
+    public void setPaddingLeft(float padding) { this.padding[LEFT] = padding;}
+    public void setPaddingRight(float padding) { this.padding[RIGHT] = padding;}
+    public void setPadding(float padding) { this.setPadding(padding, padding, padding, padding);}
+    public void setPadding(float top, float bottom, float left, float right) {
+        padding[TOP] = top;
+        padding[BOTTOM] = bottom;
+        padding[RIGHT] = right;
+        padding[LEFT] = left;
+    }
+
     public void set(Style style) {
         this.position.set(style.getPosition());
         this.dimension.set(style.getSize());
@@ -182,6 +220,8 @@ public class Style extends Observable {
 
         this.borderWidth = style.getBorderWidth();
         this.alpha = style.getAlpha();
+        this.setMargin(style.getMarginTop(), style.getMarginBottom(), style.getMarginLeft(), style.getMarginRight());
+        this.setPadding(style.getPaddingTop(), style.getPaddingBottom(), style.getPaddingLeft(), style.getPaddingRight());
     }
 
     @Override

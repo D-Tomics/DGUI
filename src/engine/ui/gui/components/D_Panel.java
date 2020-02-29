@@ -1,9 +1,9 @@
 package engine.ui.gui.components;
 
 import engine.ui.IO.Mouse;
+import engine.ui.gui.layouts.Layout;
 import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextAlignLeft;
 import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextAlignTop;
-import engine.ui.gui.manager.layouts.Layout;
 import engine.ui.gui.text.D_TextBox;
 import engine.ui.utils.observers.Observable;
 

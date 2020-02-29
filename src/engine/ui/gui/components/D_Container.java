@@ -1,9 +1,9 @@
 package engine.ui.gui.components;
 
 import engine.ui.IO.Mouse;
+import engine.ui.gui.layouts.Flow;
+import engine.ui.gui.layouts.Layout;
 import engine.ui.gui.manager.constraints.D_LayoutConstraint;
-import engine.ui.gui.manager.layouts.Flow;
-import engine.ui.gui.manager.layouts.Layout;
 
 import java.util.ArrayList;
 
