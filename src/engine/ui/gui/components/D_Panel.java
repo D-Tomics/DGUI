@@ -12,16 +12,15 @@ public class D_Panel extends D_Container {
     private float offsetX;
     private float offsetY;
 
-    public D_Panel(String title) {
+    public D_Panel() {
         this.style.setBounds(0,0,DEFAULT_WIDTH,DEFAULT_HEIGHT);
         this.style.setBorderSize(1f);
-        this.style.setName(title);
         this.style.setColor(0.1f,0.1f,0.1f);
         this.style.setAlpha(0.8f);
     }
 
-    public D_Panel(String title, Layout layout) {
-        this(title);
+    public D_Panel(Layout layout) {
+        this();
         this.setLayout(layout);
     }
 
@@ -48,8 +47,5 @@ public class D_Panel extends D_Container {
     public void onStateChange(Observable o) {
         this.getLayout().update(this);
     }
-
-    @Override
-    public String toString() { return style.getName(); }
 
 }

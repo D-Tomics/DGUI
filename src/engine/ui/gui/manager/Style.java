@@ -48,8 +48,6 @@ public class Style extends Observable {
 
     private float borderWidth;
 
-    private String name;
-
     private static final int TOP = 0,BOTTOM = 1,LEFT = 2, RIGHT = 3;
     private float[] padding = new float[4];
     private float[] margin = new float[] { 10,10,10,10};
@@ -72,8 +70,6 @@ public class Style extends Observable {
     public Vector2f getPosition() { return this.position; }
     public Vector2f getCenter() { return this.center; }
     public Vector2f getSize() { return this.dimension; }
-
-    public String getName() { return name; }
 
     public float getBorderWidth() { return borderWidth; }
 
@@ -160,11 +156,6 @@ public class Style extends Observable {
         return this;
     }
     public Style setSize(Vector2f size, boolean changed) { return setSize(size.x,size.y,changed);}
-
-    public Style setName(String name) {
-        this.name = name;
-        return this;
-    }
 
     public Style setBorderSize(float size) {
         this.borderWidth = size;
