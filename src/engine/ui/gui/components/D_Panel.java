@@ -45,7 +45,6 @@ public class D_Panel extends D_Container {
 
     @Override
     public void onStateChange(Observable o) {
-        this.getLayout().update(this);
     }
 
 }

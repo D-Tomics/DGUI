@@ -20,6 +20,12 @@ public abstract class D_Container extends D_Gui{
     }
 
     @Override
+    public void update() {
+        super.update();
+        layout.update(this);
+    }
+
+    @Override
     protected void setLevel(int level) {
         super.setLevel(level);
         if(childList == null) return;
@@ -48,7 +54,6 @@ public abstract class D_Container extends D_Gui{
     public boolean isMinimized() { return minimized; }
     public void setMinimized(boolean minimized) { this.minimized = minimized; }
 
-
     public void add(D_Gui gui, D_LayoutConstraint constraint) {
         add(gui);
     }
@@ -75,10 +80,6 @@ public abstract class D_Container extends D_Gui{
     }
 
     public ArrayList<D_Gui> getChildList() { return childList;}
-
-    public Layout getLayout() {
-        return layout;
-    }
 
     public void setLayout(Layout layout) {
         this.layout = layout;

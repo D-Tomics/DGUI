@@ -64,7 +64,7 @@ public abstract class D_Gui implements Observer {
             this.addEventListener(ON_PRESS_FOCUS_LISTENER);
     }
 
-    public final void update() {
+    public void update() {
         updateAnimations();
         onUpdate();
     }
