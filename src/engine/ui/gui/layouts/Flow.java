@@ -3,6 +3,7 @@ package engine.ui.gui.layouts;
 import engine.ui.gui.components.D_Container;
 import engine.ui.gui.components.D_Gui;
 import engine.ui.gui.manager.Style;
+import engine.ui.gui.manager.constraints.D_LayoutConstraint;
 
 import java.util.List;
 
@@ -62,6 +63,11 @@ public class Flow extends Layout {
 
         style.setWidth(width);
         style.setHeight(height);*/
+    }
+
+    @Override
+    void setConstraint(D_Gui gui, D_LayoutConstraint constraint) {
+        
     }
 
 }
