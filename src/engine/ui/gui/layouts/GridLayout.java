@@ -163,7 +163,7 @@ public class GridLayout extends Layout {
     void setConstraint(D_Gui gui, D_LayoutConstraint constraint) {
         if(constraint == null) compTable = new Hashtable<>();
         if(constraint instanceof GridConstraint)
-            compTable.put(gui, (GridConstraint) constraint);
+            compTable.put(gui, (GridConstraint) constraint.clone());
         else
             throw new IllegalStateException("cannot add "+constraint+"to gridLayout");
     }
