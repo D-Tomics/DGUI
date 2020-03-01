@@ -161,7 +161,7 @@ public class GridLayout extends Layout {
 
     @Override
     void setConstraint(D_Gui gui, D_LayoutConstraint constraint) {
-        if(constraint == null) compTable = new Hashtable<>();
+        if(compTable == null) compTable = new Hashtable<>();
         if(constraint instanceof GridConstraint)
             compTable.put(gui, (GridConstraint) constraint.clone());
         else
