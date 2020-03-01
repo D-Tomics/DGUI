@@ -55,6 +55,7 @@ public abstract class D_Container extends D_Gui{
     public void setMinimized(boolean minimized) { this.minimized = minimized; }
 
     public void add(D_Gui gui, D_LayoutConstraint constraint) {
+        layout.addLayoutGui(gui,constraint);
         add(gui);
     }
 

@@ -16,6 +16,7 @@ public class GridLayout extends Layout {
     private int columns;
     private float[] cellWidths;
     private float[] cellHeights;
+    private Hashtable< D_Gui, D_LayoutConstraint> compTable;
 
     public GridLayout(int rows, int columns) {
         this.rows = rows;
@@ -41,7 +42,7 @@ public class GridLayout extends Layout {
             setMaxHeight(curHeight);
 
         for(D_Gui child : parent.getChildList()) {
-            GridConstraint constraint = null;//(GridConstraint)(compTable.get(child));
+            GridConstraint constraint = (GridConstraint)(compTable.get(child));
 
             int prevC = 0;
             int prevR = 0;
@@ -97,7 +98,7 @@ public class GridLayout extends Layout {
         int prevCIndex = 0;
 
         for(D_Gui child : children) {
-            GridConstraint constraint = null;//(GridConstraint)compTable.get(child);
+            GridConstraint constraint = (GridConstraint)compTable.get(child);
             if(constraint != null) {
                 prevCIndex = cIndex;
                 prevRIndex = rIndex;
@@ -158,5 +159,12 @@ public class GridLayout extends Layout {
         return h;
     }
 
-
+    @Override
+    void setConstraint(D_Gui gui, D_LayoutConstraint constraint) {
+        if(constraint == null) compTable = new Hashtable<>();
+        if(constraint instanceof GridConstraint)
+            compTable.put(gui, (GridConstraint) constraint);
+        else
+            throw new IllegalStateException("cannot add "+constraint+"to gridLayout");
+    }
 }
