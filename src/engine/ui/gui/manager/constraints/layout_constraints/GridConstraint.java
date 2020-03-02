@@ -31,10 +31,11 @@ public class GridConstraint extends D_LayoutConstraint {
     public int h() { return h; }
     public boolean isCentered() { return centered; }
 
-    public void set( int gridX, int gridY, int gridWidth, int gridHeight) {
+    public GridConstraint set( int gridX, int gridY, int gridWidth, int gridHeight) {
         x = gridX;
         y = gridY;
         w = gridWidth;
         h = gridHeight;
+        return this;
     }
 }
