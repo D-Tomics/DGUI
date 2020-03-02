@@ -4,10 +4,15 @@ import engine.ui.gui.components.D_Container;
 import engine.ui.gui.components.D_Gui;
 import engine.ui.gui.manager.constraints.D_LayoutConstraint;
 import engine.ui.gui.manager.constraints.constraints.GridConstraint;
+import engine.ui.utils.colors.Color;
+import opengl.opengl.OpenGL;
+import org.joml.Vector2i;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
+
+import static opengl.opengl.OpenGL.rect.origin.TOPLEFT;
 
 public class GridLayout extends Layout {
 
@@ -31,15 +36,11 @@ public class GridLayout extends Layout {
         if(parent.getChildList() == null) return;
 
         initCellSizes(parent);
-        float[] maxHeights = setUpCellSizes(parent,parent.getChildList());
+        setUpCellSizes(parent,parent.getChildList());
+        drawGrid(parent);
 
         int rIndex = 0;
         int cIndex = 0;
-
-        float curWidth = 0;
-        float curHeight = getCellHeight(0);
-        if(curHeight > getMaxHeight())
-            setMaxHeight(curHeight);
 
         for(D_Gui child : parent.getChildList()) {
             GridConstraint constraint = (GridConstraint)(compTable.get(child));
@@ -53,28 +54,21 @@ public class GridLayout extends Layout {
                 rIndex = constraint.y();
             }
             child.getStyle().setPosition(
-                    parent.getStyle().getX() + parent.getStyle().getPaddingLeft() + getWidthUptoCol(cIndex)
-                            + (constraint != null && constraint.isCentered() ? getCellWidth(cIndex) / 2.0f - child.getStyle().getWidth() / 2.0f : 0),
-                    parent.getStyle().getY() - parent.getStyle().getPaddingTop() - getHeightUptoRow(rIndex)
-                            - (constraint != null && constraint.isCentered() ? getCellHeight(rIndex) / 2.0f - child.getStyle().getHeight() / 2.0f : 0)
+                    parent.getStyle().getX() + parent.getStyle().getPaddingLeft() + getWidthUptoCol(cIndex) + child.getStyle().getMarginLeft()
+                            + (constraint != null && constraint.isCentered() ? (getCellWidth(cIndex) - child.getStyle().getMarginWidth() - child.getStyle().getWidth()) / 2.0f : 0),
+                    parent.getStyle().getY() - parent.getStyle().getPaddingTop() - getHeightUptoRow(rIndex) - child.getStyle().getMarginTop()
+                            - (constraint != null && constraint.isCentered() ? (getCellHeight(rIndex) - child.getStyle().getMarginHeight() - child.getStyle().getHeight()) / 2.0f : 0)
             );
 
             if(constraint != null) {
-                cIndex = prevC - 1;
+                cIndex = cIndex != prevC ? prevC - 1 : prevC;
                 rIndex = prevR;
             }
 
-            curWidth += getCellWidth(cIndex);
             cIndex ++;
-            if(curWidth > getMaxWidth()) setMaxWidth(curWidth);
             if(cIndex >= columns) {
                 cIndex = 0;
                 rIndex++;
-
-                curWidth = 0;
-                curHeight += getCellHeight(rIndex);
-                if(curHeight > getMaxHeight()) setMaxHeight(curHeight);
-
                 if(rIndex >= rows)
                     break;
             }
@@ -89,9 +83,8 @@ public class GridLayout extends Layout {
         init = true;
     }
 
-    private float[] setUpCellSizes(D_Container parent, ArrayList<D_Gui> children) {
+    private void setUpCellSizes(D_Container parent, ArrayList<D_Gui> children) {
 
-        float[] maxHeight = new float[rows];
         int rIndex = 0;
         int cIndex = 0;
         int prevRIndex = 0;
@@ -106,9 +99,6 @@ public class GridLayout extends Layout {
                 rIndex = constraint.y();
             }
 
-            if(child.getStyle().getHeight() + child.getStyle().getMarginTop() + child.getStyle().getMarginBottom() > maxHeight[rIndex])
-                maxHeight[rIndex] = child.getStyle().getHeight() + child.getStyle().getMarginTop() + child.getStyle().getMarginBottom();
-
             if(child.getStyle().getWidth() + child.getStyle().getMarginLeft() + child.getStyle().getMarginRight() > getCellWidth(cIndex)) {
                 float prevW = cellWidths[cIndex];
                 cellWidths[cIndex] = child.getStyle().getWidth() + child.getStyle().getMarginLeft() + child.getStyle().getMarginRight();
@@ -122,7 +112,7 @@ public class GridLayout extends Layout {
             }
 
             if(constraint != null) {
-                cIndex = prevCIndex - 1;
+                cIndex = cIndex != prevCIndex ? prevCIndex - 1 : prevCIndex;
                 rIndex = prevRIndex;
             }
 
@@ -134,7 +124,6 @@ public class GridLayout extends Layout {
             }
 
         }
-        return maxHeight;
     }
 
     private float getCellWidth(int col) {
@@ -167,4 +156,52 @@ public class GridLayout extends Layout {
         else
             throw new IllegalStateException("cannot add "+constraint+"to gridLayout");
     }
+
+    private void drawGrid(D_Container parent) {
+        for(int i = 0; i < columns; i++)
+            OpenGL.line.draw(
+                    parent.getStyle().getX() + getWidthUptoCol(i), parent.getStyle().getY(),
+                    parent.getStyle().getX() + getWidthUptoCol(i), parent.getStyle().getY() - parent.getStyle().getHeight()
+            );
+
+        for(int i = 0; i < rows; i++)
+            OpenGL.line.draw(
+                    parent.getStyle().getX(), parent.getStyle().getY() - getHeightUptoRow(i),
+                    parent.getStyle().getX() + parent.getStyle().getWidth(), parent.getStyle().getY() - getHeightUptoRow(i)
+            );
+    }
+
+    public Vector2i getCellAtPos(D_Container parent, float x, float y) {
+        float dx = x - parent.getStyle().getX();
+        float dy = parent.getStyle().getY() - y;
+        if(dx <= 0 || dx >= parent.getStyle().getWidth() || dy <= 0 || dy >= parent.getStyle().getHeight()) return null;
+
+        int col = -1, row = -1;
+        float dw = 0, dh = 0;
+        for(int i = 0; i < columns; i++) {
+            dw += getCellWidth(i);
+            if(dx < dw) {
+                col = i;
+                break;
+            }
+        }
+        for(int j = 0; j < rows; j++) {
+            dh += getCellHeight(j);
+            if(dy < dh) {
+                row = j;
+                break;
+            }
+        }
+
+        OpenGL.rect.submit(new OpenGL.rect(
+                parent.getStyle().getX() + getWidthUptoCol(col),
+                parent.getStyle().getY() - getHeightUptoRow(row),
+                getCellWidth(col),
+                getCellHeight(row),
+                TOPLEFT,
+                Color.RED)
+        );
+        return new Vector2i(col,row);
+    }
+
 }
