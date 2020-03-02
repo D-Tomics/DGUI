@@ -4,15 +4,10 @@ import engine.ui.gui.components.D_Container;
 import engine.ui.gui.components.D_Gui;
 import engine.ui.gui.manager.constraints.D_LayoutConstraint;
 import engine.ui.gui.manager.constraints.constraints.GridConstraint;
-import engine.ui.utils.colors.Color;
-import opengl.opengl.OpenGL;
-import org.joml.Vector2i;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
-
-import static opengl.opengl.OpenGL.rect.origin.TOPLEFT;
 
 public class GridLayout extends Layout {
 
@@ -37,7 +32,6 @@ public class GridLayout extends Layout {
 
         initCellSizes(parent);
         setUpCellSizes(parent,parent.getChildList());
-        drawGrid(parent);
 
         int rIndex = 0;
         int cIndex = 0;
@@ -155,53 +149,6 @@ public class GridLayout extends Layout {
             compTable.put(gui, (GridConstraint) constraint.clone());
         else
             throw new IllegalStateException("cannot add "+constraint+"to gridLayout");
-    }
-
-    private void drawGrid(D_Container parent) {
-        for(int i = 0; i < columns; i++)
-            OpenGL.line.draw(
-                    parent.getStyle().getX() + getWidthUptoCol(i), parent.getStyle().getY(),
-                    parent.getStyle().getX() + getWidthUptoCol(i), parent.getStyle().getY() - parent.getStyle().getHeight()
-            );
-
-        for(int i = 0; i < rows; i++)
-            OpenGL.line.draw(
-                    parent.getStyle().getX(), parent.getStyle().getY() - getHeightUptoRow(i),
-                    parent.getStyle().getX() + parent.getStyle().getWidth(), parent.getStyle().getY() - getHeightUptoRow(i)
-            );
-    }
-
-    public Vector2i getCellAtPos(D_Container parent, float x, float y) {
-        float dx = x - parent.getStyle().getX();
-        float dy = parent.getStyle().getY() - y;
-        if(dx <= 0 || dx >= parent.getStyle().getWidth() || dy <= 0 || dy >= parent.getStyle().getHeight()) return null;
-
-        int col = -1, row = -1;
-        float dw = 0, dh = 0;
-        for(int i = 0; i < columns; i++) {
-            dw += getCellWidth(i);
-            if(dx < dw) {
-                col = i;
-                break;
-            }
-        }
-        for(int j = 0; j < rows; j++) {
-            dh += getCellHeight(j);
-            if(dy < dh) {
-                row = j;
-                break;
-            }
-        }
-
-        OpenGL.rect.submit(new OpenGL.rect(
-                parent.getStyle().getX() + getWidthUptoCol(col),
-                parent.getStyle().getY() - getHeightUptoRow(row),
-                getCellWidth(col),
-                getCellHeight(row),
-                TOPLEFT,
-                Color.RED)
-        );
-        return new Vector2i(col,row);
     }
 
 }
