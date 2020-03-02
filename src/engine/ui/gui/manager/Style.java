@@ -81,11 +81,15 @@ public class Style extends Observable {
     public float getMarginBottom() { return margin[BOTTOM]; }
     public float getMarginLeft() { return margin[LEFT]; }
     public float getMarginRight() { return margin[RIGHT]; }
+    public float getMarginWidth() { return margin[LEFT] + margin[RIGHT]; }
+    public float getMarginHeight() { return margin[TOP] + margin[BOTTOM]; }
 
     public float getPaddingTop() { return padding[TOP]; }
     public float getPaddingBottom() { return padding[BOTTOM]; }
     public float getPaddingRight() { return padding[RIGHT]; }
     public float getPaddingLeft() { return padding[LEFT]; }
+    public float getPaddingWidth() { return padding[LEFT] + padding[RIGHT]; }
+    public float getPaddingHeight() { return padding[TOP] + padding[BOTTOM]; }
 
     // setters
     public Style setBounds(float x, float y, float width, float height) { return setBounds(x,y,width,height,true); }
