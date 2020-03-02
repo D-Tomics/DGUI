@@ -3,7 +3,7 @@ package engine.ui.gui.layouts;
 import engine.ui.gui.components.D_Container;
 import engine.ui.gui.components.D_Gui;
 import engine.ui.gui.manager.constraints.D_LayoutConstraint;
-import engine.ui.gui.manager.constraints.constraints.GridConstraint;
+import engine.ui.gui.manager.constraints.layout_constraints.GridConstraint;
 
 import java.util.ArrayList;
 import java.util.Arrays;
