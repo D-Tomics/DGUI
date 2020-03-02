@@ -8,12 +8,14 @@ public class ColorFactory {
         return createColor(r / 255f, g / 255f, b / 255f, dest);
     }
 
-    public static Color createColor(float r, float g, float b, Color dest) {
+    public static Color createColor(float r, float g, float b, float a, Color dest) {
         if(dest == null)
-            return new Color(r,g,b);
-        dest.set(r,g,b);
+            return new Color(r,g,b,a);
+        dest.set(r,g,b,a);
         return dest;
     }
+
+    public static Color createColor(float r, float g, float b, Color dest) { return createColor(r,g,b,1,dest); }
 
     public static Color createColor(int color, Color dest) {
         return HexToRGB(color,dest);

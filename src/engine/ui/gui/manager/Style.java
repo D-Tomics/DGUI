@@ -1,7 +1,6 @@
 package engine.ui.gui.manager;
 
 import engine.ui.gui.components.D_Gui;
-import engine.ui.gui.manager.events.D_GuiEvent;
 import engine.ui.gui.manager.events.D_GuiResizeEvent;
 import engine.ui.gui.manager.events.D_GuiStateChangeEvent;
 import engine.ui.utils.colors.Color;
@@ -9,8 +8,6 @@ import engine.ui.utils.colors.ColorFactory;
 import engine.ui.utils.observers.Observable;
 import engine.ui.utils.observers.Observer;
 import org.joml.Vector2f;
-
-import java.util.HashMap;
 
 public class Style extends Observable {
 
@@ -42,7 +39,6 @@ public class Style extends Observable {
     private Vector2f center;
     private Vector2f dimension;
 
-    private float alpha = 1;
     private Color color;
     private Color borderColor;
 
@@ -73,7 +69,6 @@ public class Style extends Observable {
 
     public float getBorderWidth() { return borderWidth; }
 
-    public float getAlpha() { return alpha; }
     public Color getColor() { return color; }
     public Color getBorderColor() { return borderColor; }
 
@@ -166,11 +161,7 @@ public class Style extends Observable {
         return this;
     }
 
-    public void setAlpha(float alpha) {
-        if(alpha >= 1) this.alpha = 1;
-        else if(alpha <= 0) this.alpha = 0;
-        else this.alpha = alpha;
-    }
+    public void setAlpha(float alpha) { this.color.a(Math.max(0, Math.min(1, alpha))); }
 
     public void setBorderColor(Color color) { this.borderColor.set(color); }
     public void setBorderColor(int borderColor) { this.borderColor = ColorFactory.createColor(borderColor, this.borderColor); }
@@ -214,7 +205,6 @@ public class Style extends Observable {
         this.borderColor.set(style.getBorderColor());
 
         this.borderWidth = style.getBorderWidth();
-        this.alpha = style.getAlpha();
         this.setMargin(style.getMarginTop(), style.getMarginBottom(), style.getMarginLeft(), style.getMarginRight());
         this.setPadding(style.getPaddingTop(), style.getPaddingBottom(), style.getPaddingLeft(), style.getPaddingRight());
     }
@@ -225,7 +215,6 @@ public class Style extends Observable {
                 "scale : <"+ dimension.x+" , "+ dimension.y+">\n"+
                 "color : <"+color+">\n"+
                 "border_color : <"+borderColor+">\n"+
-                "alpha : "+alpha+"\n"+
                 "border_size : "+borderWidth+"\n";
     }
 
