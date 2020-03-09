@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-
 import static org.lwjgl.glfw.GLFW.*;
 
 public final class Window {
@@ -198,17 +197,17 @@ public final class Window {
     private Window getThis() { return this; }
 
     //setters
-    public void setTitle(String title) {
+    public void setTitle(Object title) {
         if(!initialized) return;
-        this.title = title;
-        glfwSetWindowTitle(window_ptr, title);
+        this.title = title.toString();
+        glfwSetWindowTitle(window_ptr, title.toString());
     }
 
 
     public boolean isExitRequested() { return initialized && glfwWindowShouldClose(window_ptr); }
     public boolean isResizable() { return glfwGetWindowAttrib(window_ptr,GLFW_RESIZABLE) == GLFW_TRUE; }
 
-    public void setResizable(boolean value) { glfwWindowHint(GLFW_RESIZABLE,value?GLFW_TRUE : GLFW_FALSE); }
+    public void setResizable(boolean value) { addHint(GLFW_RESIZABLE,value?GLFW_TRUE : GLFW_FALSE); }
     public void enableVSync() { glfwSwapInterval(1); }
     public void disableVSync() { glfwSwapInterval(0); }
     public void exit() { glfwSetWindowShouldClose(window_ptr,true); }
