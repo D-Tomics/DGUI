@@ -56,29 +56,30 @@ public abstract class D_Container extends D_Gui{
     public void setMinimized(boolean minimized) { this.minimized = minimized; }
 
     public void add(D_Gui gui, D_LayoutConstraint constraint) {
-        layout.addLayoutGui(gui,constraint);
-        add(gui);
-    }
-
-    public void add(D_Gui child) {
         if(childList == null) childList = new ArrayList<>();
-        if(child == null) return;
-        else if(child == this) return;
-        childList.add(child);
-        child.setParent(this);
-        child.setLevel(this.getLevel() + 1);
-        child.setVisible(true);
+        if(gui == null) return;
+        if(gui == this) return;
+
+        layout.addLayoutGui(gui,constraint);
+        childList.add(gui);
+
+        gui.setParent(this);
+        gui.setLevel(this.getLevel() + 1);
+        gui.setVisible(true);
+
         this.style.notifyObservers();
         if(getParent() != null)
             getParent().getStyle().notifyObservers();
+
+    }
+
+    public void add(D_Gui gui) {
+        add(gui,null);
     }
 
     public void add(D_Gui...childArray) {
         for(D_Gui child : childArray)
             add(child);
-    }
-
-    protected void onResize() {
     }
 
     public ArrayList<D_Gui> getChildList() { return childList;}
