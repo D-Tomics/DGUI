@@ -2,7 +2,6 @@ package engine.ui.gui.components;
 
 import engine.ui.IO.Mouse;
 import engine.ui.gui.layouts.Layout;
-import engine.ui.utils.observers.Observable;
 
 public class D_Panel extends D_Container {
 
@@ -41,10 +40,6 @@ public class D_Panel extends D_Container {
             offsetX = 0;
             offsetY = 0;
         }
-    }
-
-    @Override
-    public void onStateChange(Observable o) {
     }
 
 }

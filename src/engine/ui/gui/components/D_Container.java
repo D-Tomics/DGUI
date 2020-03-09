@@ -3,6 +3,7 @@ package engine.ui.gui.components;
 import engine.ui.gui.layouts.Flow;
 import engine.ui.gui.layouts.Layout;
 import engine.ui.gui.manager.constraints.D_LayoutConstraint;
+import engine.ui.utils.observers.Observable;
 
 import java.util.ArrayList;
 
@@ -20,9 +21,9 @@ public abstract class D_Container extends D_Gui{
     }
 
     @Override
-    public void update() {
-        super.update();
-        layout.update(this);
+    protected void onStateChange(Observable o) {
+        if(layout != null)
+            layout.update(this);
     }
 
     @Override
@@ -34,8 +35,8 @@ public abstract class D_Container extends D_Gui{
     }
 
     public void pack() {
-        this.layout.update(this);
         this.style.setSize(layout.getMaxWidth(), layout.getMaxHeight());
+        this.style.notifyObservers();
     }
 
     public void setVisible(boolean visible) {
