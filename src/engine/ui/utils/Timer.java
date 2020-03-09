@@ -5,15 +5,22 @@ public final class Timer {
     private double time;
     private boolean started;
 
+    public Timer() { }
+    public Timer(boolean start) { if(start) start(); }
+
     public void start() {
         if(started) return;
         started = true;
         time = 0;
     }
 
-    public void stop() {
-        started = false;
-        time = 0;
+    public double stop() {
+        try {
+            started = false;
+            return time;
+        } finally {
+            time = 0;
+        }
     }
 
     public void update() {
