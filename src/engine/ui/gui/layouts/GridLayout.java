@@ -4,8 +4,6 @@ import engine.ui.gui.components.D_Container;
 import engine.ui.gui.components.D_Gui;
 import engine.ui.gui.manager.constraints.D_LayoutConstraint;
 import engine.ui.gui.manager.constraints.layout_constraints.GridConstraint;
-import engine.ui.utils.colors.Color;
-import opengl.opengl.OpenGL;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +16,7 @@ public class GridLayout extends Layout {
     private int columns;
     private float[] cellWidths;
     private float[] cellHeights;
+    private GridConstraint defaultConstraint = new GridConstraint(0,0,0,0,true);
     private Hashtable< D_Gui, D_LayoutConstraint> compTable;
 
     public GridLayout(int rows, int columns) {
@@ -177,6 +176,8 @@ public class GridLayout extends Layout {
         if(compTable == null) compTable = new Hashtable<>();
         if(constraint instanceof GridConstraint)
             compTable.put(gui, (GridConstraint) constraint.clone());
+        else if(constraint == null)
+            compTable.put(gui,defaultConstraint);
         else
             throw new IllegalStateException("cannot add "+constraint+"to gridLayout");
     }
