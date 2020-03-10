@@ -37,24 +37,14 @@ public class GridLayout extends Layout {
         int rIndex = 0;
         int cIndex = 0;
 
-        float curWidth = 0;
-        float curHeight = cellHeights[0];
-
         boolean[][] occupied = new boolean[rows][columns];
         for(D_Gui child : parent.getChildList()) {
-
             GridConstraint constraint = compTable != null ? (GridConstraint)(compTable.get(child)) : null;
-            int prevC = 0;
-            int prevR = 0;
-            if(constraint != null) {
-                prevC = cIndex;
-                prevR = rIndex;
+            assert constraint != null;
+            if(constraint != defaultConstraint) {
                 cIndex = constraint.x();
                 rIndex = constraint.y();
-                curWidth += cIndex > prevC ? getWidthUptoCol(cIndex) - getWidthUptoCol(prevC) : 0;
-                curHeight += rIndex > prevR ? getHeightUptoRow(rIndex) - getHeightUptoRow(prevR) : 0;
             }
-
 
             while(occupied[rIndex][cIndex]) {
                 cIndex ++;
@@ -68,30 +58,22 @@ public class GridLayout extends Layout {
 
             child.getStyle().setPosition(
                     parent.getStyle().getX() + parent.getStyle().getPaddingLeft() + getWidthUptoCol(cIndex) + child.getStyle().getMarginLeft()
-                            + (constraint != null && constraint.isCentered() ? (getCellWidth(cIndex) - child.getStyle().getMarginWidth() - child.getStyle().getWidth()) / 2.0f : 0),
+                            + (constraint.isCentered() ? (getWidthFromTo(cIndex,cIndex + constraint.w())- child.getStyle().getMarginWidth() - child.getStyle().getWidth()) / 2.0f : 0),
                     parent.getStyle().getY() - parent.getStyle().getPaddingTop() - getHeightUptoRow(rIndex) - child.getStyle().getMarginTop()
-                            - (constraint != null && constraint.isCentered() ? (getCellHeight(rIndex) - child.getStyle().getMarginHeight() - child.getStyle().getHeight()) / 2.0f : 0)
+                            - (constraint.isCentered() ? (getHeightFromTo(rIndex, rIndex + constraint.h()) - child.getStyle().getMarginHeight() - child.getStyle().getHeight()) / 2.0f : 0)
             );
-            curWidth += getCellWidth(cIndex);
-            occupied[rIndex][cIndex] = true;
-            if(constraint != null) {
-                cIndex = cIndex != prevC ? prevC - 1 : prevC;
-                rIndex = prevR;
-            }
+            for(int j = rIndex; j < rows && j <= rIndex + constraint.h(); j++)
+                for(int i = cIndex; i < columns && i <= cIndex + constraint.w(); i++)
+                    occupied[j][i] = true;
 
-            cIndex ++;
-            if(curWidth > getMaxWidth()) setMaxWidth(curWidth);
+            cIndex += constraint.w() + 1;
             if(cIndex >= columns) {
-                curWidth = 0;
-                curHeight += getCellHeight(rIndex);
-
                 cIndex = 0;
                 rIndex++;
                 if(rIndex >= rows)
                     break;
             }
         }
-        if(curHeight > getMaxHeight()) setMaxHeight(curHeight);
     }
 
     private void initCellSizes(D_Container parent) {
@@ -105,15 +87,15 @@ public class GridLayout extends Layout {
 
         int rIndex = 0;
         int cIndex = 0;
-        int prevRIndex = 0;
-        int prevCIndex = 0;
+
+        int lastOccupiedRow = 0;
+        int lastOccupiedCol = 0;
 
         boolean[][] occupied = new boolean[rows][columns];
         for(D_Gui child : children) {
             GridConstraint constraint = compTable != null ? (GridConstraint)compTable.get(child) : null;
-            if(constraint != null) {
-                prevCIndex = cIndex;
-                prevRIndex = rIndex;
+            assert constraint != null;
+            if(constraint != defaultConstraint) {
                 cIndex = constraint.x();
                 rIndex = constraint.y();
             }
@@ -127,30 +109,39 @@ public class GridLayout extends Layout {
                 }
             }
 
-            if(child.getStyle().getWidth() + child.getStyle().getMarginLeft() + child.getStyle().getMarginRight() > getCellWidth(cIndex)) {
-                float prevW = cellWidths[cIndex];
-                cellWidths[cIndex] = child.getStyle().getWidth() + child.getStyle().getMarginLeft() + child.getStyle().getMarginRight();
-                parent.getStyle().setWidth(parent.getStyle().getWidth() - prevW + cellWidths[cIndex]);
+            if(child.getStyle().getWidth() / (constraint.w() + 1) + child.getStyle().getMarginWidth() > getCellWidth(cIndex)) {
+                for(int i = cIndex; i < columns && i <= cIndex + constraint.w(); i++) {
+                    float prevW = cellWidths[i];
+                    cellWidths[i] = child.getStyle().getWidth() / (constraint.w() + 1) + child.getStyle().getMarginWidth();
+                    parent.getStyle().setWidth(parent.getStyle().getWidth() - prevW + cellWidths[i], false);
+                }
             }
-            if(child.getStyle().getHeight() + child.getStyle().getMarginTop() + child.getStyle().getMarginBottom()> getCellHeight(rIndex)) {
-                float prewH = cellHeights[rIndex];
-                cellHeights[rIndex] = child.getStyle().getHeight() + child.getStyle().getMarginTop() + child.getStyle().getMarginBottom();
-                parent.getStyle().setHeight(parent.getStyle().getHeight() - prewH + cellHeights[rIndex]);
+            if(child.getStyle().getHeight() / (constraint.h() + 1) + child.getStyle().getMarginHeight()> getCellHeight(rIndex)) {
+                for(int i = rIndex; i < columns && i <= rIndex + constraint.h(); i++) {
+                    float prewH = cellHeights[i];
+                    cellHeights[i] = child.getStyle().getHeight() / (constraint.h() + 1) + child.getStyle().getMarginHeight();
+                    parent.getStyle().setHeight(parent.getStyle().getHeight() - prewH + cellHeights[i], false);
+                }
+
             }
-            occupied[rIndex][cIndex] = true;
-            if(constraint != null) {
-                cIndex = cIndex != prevCIndex ? prevCIndex - 1 : prevCIndex;
-                rIndex = prevRIndex;
-            }
+            for(int j = 0; j < rows && j <= rIndex + constraint.h(); j++)
+                for(int i = cIndex; i < columns && i <= cIndex + constraint.w(); i++)
+                    occupied[j][i] = true;
+
+            if(lastOccupiedCol < cIndex) lastOccupiedCol = cIndex;
+            if(lastOccupiedRow < rIndex) lastOccupiedRow = rIndex;
 
             cIndex ++;
             if(cIndex >= columns) {
                 cIndex = 0;
                 rIndex++;
-                if(rIndex >= rows) break;
+                if(rIndex >= rows) throw new IllegalStateException("trying to add elements to a row that does'nt exist");
             }
 
         }
+
+        setMaxWidth(getWidthUptoCol(lastOccupiedCol + 1));
+        setMaxHeight(getHeightUptoRow(lastOccupiedRow + 1));
     }
 
     private float getCellWidth(int col) {
@@ -175,6 +166,20 @@ public class GridLayout extends Layout {
         return h;
     }
 
+    private float getWidthFromTo(int from , int to ) {
+        if(from < 0 || from > to || to > cellWidths.length) return 0;
+        float w = 0;
+        for(int i = from; i <= to; i++) w+= getCellWidth(i);
+        return w;
+    }
+
+    private float getHeightFromTo(int from, int to) {
+        if(from < 0 || from > to || to >= cellHeights.length) return 0;
+        float h = 0;
+        for(int i = from; i <= to; i++) h += getCellHeight(i);
+        return h;
+    }
+
     @Override
     void setConstraint(D_Gui gui, D_LayoutConstraint constraint) {
         if(compTable == null) compTable = new Hashtable<>();
@@ -184,12 +189,6 @@ public class GridLayout extends Layout {
             compTable.put(gui,defaultConstraint);
         else
             throw new IllegalStateException("cannot add "+constraint+"to gridLayout");
-    }
-
-    @Override
-    void removeConstraint(D_Gui gui) {
-        if(compTable == null) return;
-        compTable.remove(gui);
     }
 
 }
