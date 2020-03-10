@@ -10,6 +10,10 @@ public class GridConstraint extends D_LayoutConstraint {
     private int h;
     private boolean centered;
 
+    public GridConstraint() {
+        this.set(0,0,0,0,true);
+    }
+
     public GridConstraint(int x, int y, int w, int h, boolean centered) {
         this.x = x;
         this.y = y;
@@ -31,37 +35,14 @@ public class GridConstraint extends D_LayoutConstraint {
     public int h() { return h; }
     public boolean isCentered() { return centered; }
 
-    public GridConstraint gridX(int gridX) {
-        x = gridX;
-        return this;
-    }
+    public GridConstraint gridX(int gridX) { return setPos(gridX,y); }
+    public GridConstraint gridY(int gridY) { return setPos(x,gridY); }
+    public GridConstraint gridWidth(int gridW) { return setSize(gridW,0); }
+    public GridConstraint gridHeight(int gridH) { return setSize(0,gridH); }
 
-    public GridConstraint gridY(int gridY) {
-        y = gridY;
-        return this;
-    }
+    public GridConstraint setPos(int gridX, int gridY) { return set(gridX, gridY, 0, 0); }
 
-    public GridConstraint gridWidth(int gridW) {
-        w = gridW;
-        return this;
-    }
-
-    public GridConstraint gridHeight(int gridH) {
-        h = gridH;
-        return this;
-    }
-
-    public GridConstraint setPos(int gridX, int gridY) {
-        x = gridX;
-        y = gridY;
-        return this;
-    }
-
-    public GridConstraint setSize(int gridW, int gridH) {
-        w = gridW;
-        h = gridH;
-        return this;
-    }
+    public GridConstraint setSize(int gridW, int gridH) { return set(x,y,gridW,gridH); }
 
     public GridConstraint set( int gridX, int gridY, int gridWidth, int gridHeight) {
         return set(gridX, gridY, gridWidth, gridHeight,centered);
