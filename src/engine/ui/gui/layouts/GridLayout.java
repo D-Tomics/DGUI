@@ -43,16 +43,6 @@ public class GridLayout extends Layout {
         boolean[][] occupied = new boolean[rows][columns];
         for(D_Gui child : parent.getChildList()) {
 
-            while(occupied[rIndex][cIndex]) {
-                cIndex ++;
-                if(cIndex >= columns) {
-                    cIndex = 0;
-                    rIndex++;
-                    if(rIndex >= rows)
-                        break;
-                }
-            }
-
             GridConstraint constraint = compTable != null ? (GridConstraint)(compTable.get(child)) : null;
             int prevC = 0;
             int prevR = 0;
@@ -64,6 +54,18 @@ public class GridLayout extends Layout {
                 curWidth += cIndex > prevC ? getWidthUptoCol(cIndex) - getWidthUptoCol(prevC) : 0;
                 curHeight += rIndex > prevR ? getHeightUptoRow(rIndex) - getHeightUptoRow(prevR) : 0;
             }
+
+
+            while(occupied[rIndex][cIndex]) {
+                cIndex ++;
+                if(cIndex >= columns) {
+                    cIndex = 0;
+                    rIndex++;
+                    if(rIndex >= rows)
+                        break;
+                }
+            }
+
             child.getStyle().setPosition(
                     parent.getStyle().getX() + parent.getStyle().getPaddingLeft() + getWidthUptoCol(cIndex) + child.getStyle().getMarginLeft()
                             + (constraint != null && constraint.isCentered() ? (getCellWidth(cIndex) - child.getStyle().getMarginWidth() - child.getStyle().getWidth()) / 2.0f : 0),
@@ -108,6 +110,14 @@ public class GridLayout extends Layout {
 
         boolean[][] occupied = new boolean[rows][columns];
         for(D_Gui child : children) {
+            GridConstraint constraint = compTable != null ? (GridConstraint)compTable.get(child) : null;
+            if(constraint != null) {
+                prevCIndex = cIndex;
+                prevRIndex = rIndex;
+                cIndex = constraint.x();
+                rIndex = constraint.y();
+            }
+
             while(occupied[rIndex][cIndex]) {
                 cIndex ++;
                 if(cIndex >= columns) {
@@ -116,13 +126,7 @@ public class GridLayout extends Layout {
                     if(rIndex >= rows) break;
                 }
             }
-            GridConstraint constraint = compTable != null ? (GridConstraint)compTable.get(child) : null;
-            if(constraint != null) {
-                prevCIndex = cIndex;
-                prevRIndex = rIndex;
-                cIndex = constraint.x();
-                rIndex = constraint.y();
-            }
+
             if(child.getStyle().getWidth() + child.getStyle().getMarginLeft() + child.getStyle().getMarginRight() > getCellWidth(cIndex)) {
                 float prevW = cellWidths[cIndex];
                 cellWidths[cIndex] = child.getStyle().getWidth() + child.getStyle().getMarginLeft() + child.getStyle().getMarginRight();
