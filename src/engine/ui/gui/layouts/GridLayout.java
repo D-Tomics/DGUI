@@ -186,4 +186,10 @@ public class GridLayout extends Layout {
             throw new IllegalStateException("cannot add "+constraint+"to gridLayout");
     }
 
+    @Override
+    void removeConstraint(D_Gui gui) {
+        if(compTable == null) return;
+        compTable.remove(gui);
+    }
+
 }

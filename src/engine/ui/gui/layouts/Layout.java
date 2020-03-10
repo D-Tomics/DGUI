@@ -7,6 +7,7 @@ import engine.ui.gui.manager.constraints.D_LayoutConstraint;
 public abstract class Layout {
     public abstract void update(D_Container parent);
     abstract void setConstraint(D_Gui gui, D_LayoutConstraint constraint);
+    void removeConstraint(D_Gui gui) { }
 
     private float maxWidth;
     private float maxHeight;
@@ -27,8 +28,12 @@ public abstract class Layout {
         this.maxHeight = maxHeight;
     }
 
-    public void addLayoutGui(D_Gui gui, D_LayoutConstraint constraint) {
+    public void addLayoutItem(D_Gui gui, D_LayoutConstraint constraint) {
         setConstraint(gui,constraint);
+    }
+
+    public void removeLayoutItem(D_Gui gui) {
+        removeConstraint(gui);
     }
 
 }

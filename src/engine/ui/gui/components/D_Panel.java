@@ -25,8 +25,6 @@ public class D_Panel extends D_Container {
 
     @Override
     public void onUpdate() {
-        if(isResizable())
-            onResize();
         if (getParent() == null  && this.isPressed())
         {
             if(offsetX == 0) offsetX =  style.getX() - Mouse.getX();
