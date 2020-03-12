@@ -93,6 +93,8 @@ public class GridLayout extends Layout {
 
         boolean[][] occupied = new boolean[rows][columns];
         for(D_Gui child : children) {
+            if(rIndex >= rows)
+                throw new IllegalStateException("trying to add elements to a row that does'nt exist");
             GridConstraint constraint = compTable != null ? (GridConstraint)compTable.get(child) : null;
             assert constraint != null;
             if(constraint != defaultConstraint) {
@@ -135,7 +137,6 @@ public class GridLayout extends Layout {
             if(cIndex >= columns) {
                 cIndex = 0;
                 rIndex++;
-                if(rIndex >= rows) throw new IllegalStateException("trying to add elements to a row that does'nt exist");
             }
 
         }
