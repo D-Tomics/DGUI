@@ -1,7 +1,6 @@
 package engine.ui.gui.manager;
 
 import engine.ui.gui.components.D_Gui;
-import engine.ui.gui.manager.events.D_GuiEvent;
 import engine.ui.gui.manager.events.D_GuiResizeEvent;
 import engine.ui.gui.manager.events.D_GuiStateChangeEvent;
 import engine.ui.utils.colors.Color;
@@ -9,8 +8,6 @@ import engine.ui.utils.colors.ColorFactory;
 import engine.ui.utils.observers.Observable;
 import engine.ui.utils.observers.Observer;
 import org.joml.Vector2f;
-
-import java.util.HashMap;
 
 public class Style extends Observable {
 
@@ -42,14 +39,15 @@ public class Style extends Observable {
     private Vector2f center;
     private Vector2f dimension;
 
-    private float alpha = 1;
     private Color color;
     private Color borderColor;
 
     private float cornerRadius;
     private float borderWidth;
 
-    private String name;
+    private static final int TOP = 0,BOTTOM = 1,LEFT = 2, RIGHT = 3;
+    private float[] padding = new float[4];
+    private float[] margin = new float[] { 10,10,10,10};
 
     public Style() {
         this.color = new Color();
@@ -70,14 +68,25 @@ public class Style extends Observable {
     public Vector2f getCenter() { return this.center; }
     public Vector2f getSize() { return this.dimension; }
 
-    public String getName() { return name; }
-
     public float getCornerRadius() { return cornerRadius; }
     public float getBorderWidth() { return borderWidth; }
 
-    public float getAlpha() { return alpha; }
     public Color getColor() { return color; }
     public Color getBorderColor() { return borderColor; }
+
+    public float getMarginTop() { return margin[TOP]; }
+    public float getMarginBottom() { return margin[BOTTOM]; }
+    public float getMarginLeft() { return margin[LEFT]; }
+    public float getMarginRight() { return margin[RIGHT]; }
+    public float getMarginWidth() { return margin[LEFT] + margin[RIGHT]; }
+    public float getMarginHeight() { return margin[TOP] + margin[BOTTOM]; }
+
+    public float getPaddingTop() { return padding[TOP]; }
+    public float getPaddingBottom() { return padding[BOTTOM]; }
+    public float getPaddingRight() { return padding[RIGHT]; }
+    public float getPaddingLeft() { return padding[LEFT]; }
+    public float getPaddingWidth() { return padding[LEFT] + padding[RIGHT]; }
+    public float getPaddingHeight() { return padding[TOP] + padding[BOTTOM]; }
 
     // setters
     public Style setBounds(float x, float y, float width, float height) { return setBounds(x,y,width,height,true); }
@@ -138,7 +147,7 @@ public class Style extends Observable {
 
     public Style setSize(float w, float h, boolean changed) {
         if(dimension.x != w && dimension.y != h) {
-            for(var observer : observers)
+            for(Observer observer : observers)
                 ((D_Gui) observer).stackEvent(new D_GuiResizeEvent((D_Gui) observer, dimension.x, dimension.y, w, h));
         }
 
@@ -149,10 +158,6 @@ public class Style extends Observable {
     }
     public Style setSize(Vector2f size, boolean changed) { return setSize(size.x,size.y,changed);}
 
-    public Style setName(String name) {
-        this.name = name;
-        return this;
-    }
 
     public Style setCornerRadius(float radius) {
         if(radius <= Math.min(dimension.x, dimension.y) / 2.0f)
@@ -165,11 +170,7 @@ public class Style extends Observable {
         return this;
     }
 
-    public void setAlpha(float alpha) {
-        if(alpha >= 1) this.alpha = 1;
-        else if(alpha <= 0) this.alpha = 0;
-        else this.alpha = alpha;
-    }
+    public void setAlpha(float alpha) { this.color.a(Math.max(0, Math.min(1, alpha))); }
 
     public void setBorderColor(Color color) { this.borderColor.set(color); }
     public void setBorderColor(int borderColor) { this.borderColor = ColorFactory.createColor(borderColor, this.borderColor); }
@@ -181,6 +182,30 @@ public class Style extends Observable {
     public void setColor(int color) { this.color = ColorFactory.createColor(color,this.color); }
     public void setColor(Color color) { this.color.set(color); }
 
+    public void setMarginTop(float margin) { this.margin[TOP] = margin; }
+    public void setMarginBottom(float margin) { this.margin[BOTTOM] = margin; }
+    public void setMarginLEFT(float margin) { this.margin[LEFT] = margin; }
+    public void setMarginRight(float margin) { this.margin[RIGHT] = margin; }
+    public void setMargin(float margin) { setMargin(margin, margin, margin, margin);}
+    public void setMargin(float top, float bottom, float left, float right) {
+        margin[TOP] = top;
+        margin[BOTTOM] = bottom;
+        margin[LEFT] = left;
+        margin[RIGHT] = right;
+    }
+
+    public void setPaddingTop(float padding) { this.padding[TOP] = padding;}
+    public void setPaddingBottom(float padding) { this.padding[BOTTOM] = padding;}
+    public void setPaddingLeft(float padding) { this.padding[LEFT] = padding;}
+    public void setPaddingRight(float padding) { this.padding[RIGHT] = padding;}
+    public void setPadding(float padding) { this.setPadding(padding, padding, padding, padding);}
+    public void setPadding(float top, float bottom, float left, float right) {
+        padding[TOP] = top;
+        padding[BOTTOM] = bottom;
+        padding[RIGHT] = right;
+        padding[LEFT] = left;
+    }
+
     public void set(Style style) {
         this.position.set(style.getPosition());
         this.dimension.set(style.getSize());
@@ -189,7 +214,8 @@ public class Style extends Observable {
         this.borderColor.set(style.getBorderColor());
 
         this.borderWidth = style.getBorderWidth();
-        this.alpha = style.getAlpha();
+        this.setMargin(style.getMarginTop(), style.getMarginBottom(), style.getMarginLeft(), style.getMarginRight());
+        this.setPadding(style.getPaddingTop(), style.getPaddingBottom(), style.getPaddingLeft(), style.getPaddingRight());
     }
 
     @Override
@@ -198,7 +224,6 @@ public class Style extends Observable {
                 "scale : <"+ dimension.x+" , "+ dimension.y+">\n"+
                 "color : <"+color+">\n"+
                 "border_color : <"+borderColor+">\n"+
-                "alpha : "+alpha+"\n"+
                 "border_size : "+borderWidth+"\n";
     }
 

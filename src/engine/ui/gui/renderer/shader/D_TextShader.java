@@ -3,7 +3,6 @@ package engine.ui.gui.renderer.shader;
 import engine.ui.IO.Window;
 import engine.ui.gui.text.D_TextBox;
 import engine.ui.utils.Maths;
-import org.joml.Vector2f;
 
 public final class D_TextShader extends ShaderProgram {
 
@@ -27,13 +26,13 @@ public final class D_TextShader extends ShaderProgram {
     public void load(D_TextBox text) {
 
         super.loadInt("texAtlas",0);
-        super.loadVec3f("textColor", text.getTextColor().r, text.getTextColor().g, text.getTextColor().b);
-        super.loadFloat("alpha", text.getAlpha());
+        super.loadVec3f("textColor", text.getTextColor().r(), text.getTextColor().g(), text.getTextColor().b());
+        super.loadFloat("alpha", text.getTextColor().a());
 
         super.loadFloat("edge",text.getCharEdge());
         super.loadFloat("width",text.getCharWidth());
 
-        super.loadVec3f("borderColor", text.getBorderColor().r, text.getBorderColor().g, text.getBorderColor().b);
+        super.loadVec3f("borderColor", text.getBorderColor().r(), text.getBorderColor().g(), text.getBorderColor().b());
         super.loadFloat("borderWidth", text.getCharBorderWidth());
         super.loadFloat("borderEdge", text.getCharBorderEdge());
 

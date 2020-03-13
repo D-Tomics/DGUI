@@ -19,7 +19,6 @@ public class D_TextBox {
 
     private float boxWidth;
     private float boxHeight;
-    private float alpha = 1;
 
     private Font font;
     private String text;
@@ -86,8 +85,6 @@ public class D_TextBox {
     public float getCharBorderWidth() { return charBorderWidth; }
     public float getCharBorderEdge() { return charBorderEdge; }
 
-    public float getAlpha() { return alpha; }
-
     public Color getBorderColor() { return borderColor; }
     public Color getTextColor() { return textColor; }
     public Vector2f getPosition() { return position; }
@@ -140,7 +137,7 @@ public class D_TextBox {
     public void setCharBorderWidth(float width) { this.charBorderWidth = width; }
     public void setCharBorderEdge(float edge) { this.charBorderEdge = edge; }
 
-    public void setAlpha(float alpha) { this.alpha = alpha; }
+    public void setAlpha(float alpha) { this.textColor.a(alpha); }
 
     public void setTextColor(Color textColor) { this.textColor.set(textColor); }
     public void setTextColor(float r, float g, float b) { this.textColor.set(r,g,b); }
@@ -178,7 +175,7 @@ public class D_TextBox {
     @Override
     public String toString() {
         String str = "";
-        for(var c : text.toCharArray())
+        for(char c : text.toCharArray())
         {
             if(c == '\n')
             {

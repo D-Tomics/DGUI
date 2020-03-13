@@ -14,9 +14,29 @@ public class Buffers {
     public static IntBuffer createIntBuffer(int[] data) { return createIntBuffer(data.length, data); }
     public static ByteBuffer createByteBuffer(byte[] data) { return createByteBuffer(data.length, data); }
 
-    public static FloatBuffer createFloatBuffer(int size, float... data) { return BufferUtils.createFloatBuffer(size).put(data).flip(); }
-    public static DoubleBuffer createDoubleBuffer(int size, double... data) { return BufferUtils.createDoubleBuffer(size).put(data).flip(); }
-    public static IntBuffer createIntBuffer(int size, int... data) { return BufferUtils.createIntBuffer(size).put(data).flip(); }
-    public static ByteBuffer createByteBuffer(int size, byte...data) { return BufferUtils.createByteBuffer(size).put(data).flip(); }
+    public static FloatBuffer createFloatBuffer(int size, float... data) {
+        FloatBuffer buffer = BufferUtils.createFloatBuffer(size);
+        buffer.put(data);
+        buffer.flip();
+        return buffer;
+    }
+    public static DoubleBuffer createDoubleBuffer(int size, double... data) {
+        DoubleBuffer buffer = BufferUtils.createDoubleBuffer(size);
+        buffer.put(data);
+        buffer.flip();
+        return buffer;
+    }
+    public static IntBuffer createIntBuffer(int size, int... data) {
+        IntBuffer buffer = BufferUtils.createIntBuffer(size);
+        buffer.put(data);
+        buffer.flip();
+        return buffer;
+    }
+    public static ByteBuffer createByteBuffer(int size, byte...data) {
+        ByteBuffer buffer = BufferUtils.createByteBuffer(size);
+        buffer.put(data);
+        buffer.flip();
+        return buffer;
+    }
 
 }

@@ -1,9 +1,9 @@
 package engine.ui.gui.components;
 
-import engine.ui.IO.Mouse;
+import engine.ui.gui.layouts.Flow;
+import engine.ui.gui.layouts.Layout;
 import engine.ui.gui.manager.constraints.D_LayoutConstraint;
-import engine.ui.gui.manager.layouts.Flow;
-import engine.ui.gui.manager.LayoutManager;
+import engine.ui.utils.observers.Observable;
 
 import java.util.ArrayList;
 
@@ -14,24 +14,35 @@ public abstract class D_Container extends D_Gui{
     private boolean resizing;
     private boolean minimized;
 
-    protected ArrayList<D_Gui> childList;
-    private LayoutManager layoutManager;
+    private ArrayList<D_Gui> childList;
+    private Layout layout;
     D_Container() {
-        layoutManager = new Flow();
+        layout = new Flow();
+    }
+
+    @Override
+    protected void onStateChange(Observable o) {
+        if(layout != null)
+            layout.update(this);
     }
 
     @Override
     protected void setLevel(int level) {
         super.setLevel(level);
         if(childList == null) return;
-        for(var child : childList)
+        for(D_Gui child : childList)
             child.setLevel(level + 1);
+    }
+
+    public void pack() {
+        this.style.setSize(layout.getMaxWidth(), layout.getMaxHeight());
+        this.style.notifyObservers();
     }
 
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         if(childList == null) return;
-        for(var child : childList)
+        for(D_Gui child : childList)
             child.setVisible(visible);
     }
 
@@ -44,22 +55,26 @@ public abstract class D_Container extends D_Gui{
     public boolean isMinimized() { return minimized; }
     public void setMinimized(boolean minimized) { this.minimized = minimized; }
 
-
     public void add(D_Gui gui, D_LayoutConstraint constraint) {
-        add(gui);
-    }
-
-    public void add(D_Gui child) {
         if(childList == null) childList = new ArrayList<>();
-        if(child == null) return;
-        else if(child == this) return;
-        childList.add(child);
-        child.setParent(this);
-        child.setLevel(this.getLevel() + 1);
-        child.setVisible(true);
+        if(gui == null) return;
+        if(gui == this) return;
+
+        layout.addLayoutItem(gui,constraint);
+        childList.add(gui);
+
+        gui.setParent(this);
+        gui.setLevel(this.getLevel() + 1);
+        gui.setVisible(true);
+
         this.style.notifyObservers();
         if(getParent() != null)
             getParent().getStyle().notifyObservers();
+
+    }
+
+    public void add(D_Gui gui) {
+        add(gui,null);
     }
 
     public void add(D_Gui...childArray) {
@@ -67,50 +82,23 @@ public abstract class D_Container extends D_Gui{
             add(child);
     }
 
-    protected void onResize() {
+    public void remove(D_Gui gui) {
+        if(childList == null) return;
+        childList.remove(gui);
+        layout.removeLayoutItem(gui);
     }
 
-    private void resizeContainer(int x, int y, float dx) {
-        style.setWidth(style.getWidth() + dx);
-
-
-
-        /*if(!Mouse.pressed(Mouse.MOUSE_BUTTON_LEFT)) return;
-        if(x == 1)
-            style.setWidth(style.getWidth() + (Mouse.getX() - (style.getX() + style.getWidth())));
-        else {
-            float dx = Mouse.getX() - style.getX();
-            style.setWidth(style.getWidth() + dx);
-            style.getPosition().sub(dx,0);
-        }*/
-    }
-
-    private boolean isMouseYInside() {
-        return Math.abs(Mouse.getY() - style.getCenterY()) < style.getHeight()/2.0f;
-    }
-
-    private boolean isMouseXinBounds() {
-        return Math.abs(Mouse.getX() - style.getCenterX()) < style.getWidth()/2.0f;
+    public void removeAll() {
+        if(childList == null) return;
+        childList.forEach(child -> child.setParent(null));
+        childList = null;
     }
 
     public ArrayList<D_Gui> getChildList() { return childList;}
 
-    public LayoutManager getLayout() {
-        return layoutManager;
-    }
-
-    public void setLayout(LayoutManager layout) {
-        this.layoutManager = layout;
+    public void setLayout(Layout layout) {
+        this.layout = layout;
         this.style.notifyObservers();
-    }
-
-    protected void hideChildren(boolean val) {
-        if(childList == null) return;
-        for(var child : childList) {
-            child.setVisible(!val);
-            if(child instanceof D_Container)
-                ((D_Container) child).hideChildren(!val);
-        }
     }
 
 }

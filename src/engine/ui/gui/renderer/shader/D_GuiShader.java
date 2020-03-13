@@ -20,11 +20,11 @@ public class D_GuiShader extends ShaderProgram{
     private void loadProperties( Style p) {
         //load fill color
         Color fillColor = p.getColor();
-        loadVec4f("prop.fillColor", fillColor.r, fillColor.g, fillColor.b, p.getAlpha());
+        loadVec4f("prop.fillColor", fillColor.r(), fillColor.g(), fillColor.b(), fillColor.a());
 
         //load stroke color
         Color strokeColor = p.getBorderColor();
-        loadVec4f("prop.strokeColor", strokeColor.r, strokeColor.g, strokeColor.b, p.getAlpha());
+        loadVec4f("prop.strokeColor", strokeColor.r(), strokeColor.g(), strokeColor.b(), strokeColor.a());
 
         //load stroke size
         loadFloat("prop.borderWidth", p.getBorderWidth());

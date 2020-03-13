@@ -15,7 +15,7 @@ public class D_TextAlignRight extends D_TextConstraint {
 
     @Override
     public void update(D_Gui gui) {
-        var text = getSource();
+        D_TextBox text = getSource();
         text.getPosition().x = gui.getStyle().getX() + gui.getStyle().getWidth() - text.getMaxTextWidth() - padding;
     }
 }

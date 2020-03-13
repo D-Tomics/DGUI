@@ -26,7 +26,6 @@ public class D_Button extends D_Component{
         }
         if(this.isPressed()) {
             style.setColor(200,200,200);
-            style.setWidth(style.getWidth() + 0.01f);
         }
 
         if(!isHovered() && !isPressed()) {
