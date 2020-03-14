@@ -16,6 +16,15 @@ public class Maths {
         return modelMatrix;
     }
 
+    public static Matrix4f createModelMatrix(float x, float y, float sx, float sy, boolean normalize) {
+        return createModelMatrix(
+                (normalize ? 2 / Window.INSTANCE.getWidth() : 1) * x,
+                (normalize ? 2 / Window.INSTANCE.getHeight() : 1) * y,
+                (normalize ? 1 / Window.INSTANCE.getWidth() : 1) * sx,
+                (normalize ? 1 / Window.INSTANCE.getHeight() : 1) * sy
+        );
+    }
+
     public static Matrix4f createModeMatrix(Style properties) {
         return createModelMatrix(
                 2 * properties.getCenterX() / Window.INSTANCE.getWidth(),
