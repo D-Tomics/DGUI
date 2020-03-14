@@ -2,7 +2,7 @@ package engine.ui.IO.sound;
 
 import org.lwjgl.openal.*;
 
-public class OpenAL {
+public final class OpenAL {
 
     private static boolean initialised; // only one openAL instance in a process is created
     private long device;
