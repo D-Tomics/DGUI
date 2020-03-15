@@ -1,7 +1,5 @@
 package engine.ui.IO.sound;
 
-import engine.ui.IO.Window;
-
 import static org.lwjgl.openal.AL10.*;
 
 public final class SoundSource {
