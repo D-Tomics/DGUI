@@ -9,6 +9,7 @@ public final class SoundBuffer {
     private final int bufferId;
     private int format;
     private int sampleRate;
+    private int bytesPerSample;
     private ByteBuffer buffer;
 
     public SoundBuffer() {
@@ -28,7 +29,6 @@ public final class SoundBuffer {
     public SoundBuffer(ByteBuffer buffer, int format, int sampleRate) {
         bufferId = alGenBuffers();
         set(buffer, format, sampleRate);
-        alBufferData(bufferId,format,buffer,sampleRate);
         SoundManager.get().add(this);
     }
 
@@ -36,6 +36,7 @@ public final class SoundBuffer {
         this.buffer = buffer;
         this.format = format;
         this.sampleRate = sampleRate;
+        this.bytesPerSample = getSampleSizeInBytes();
         alBufferData(bufferId, format, buffer, sampleRate);
     }
 
@@ -55,10 +56,18 @@ public final class SoundBuffer {
         return sampleRate;
     }
 
+    public int getBytesPerSample() {
+        return bytesPerSample;
+    }
+
     public void delete() {
         buffer.clear();
         alDeleteBuffers(bufferId);
     }
 
+    private int getSampleSizeInBytes() {
+        return format == AL_FORMAT_MONO8 || format == AL_FORMAT_STEREO8 ? 1 :
+                format == AL_FORMAT_MONO16 || format == AL_FORMAT_STEREO16 ? 2 : 4;
+    }
 
 }
