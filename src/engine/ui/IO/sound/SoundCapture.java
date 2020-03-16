@@ -7,7 +7,6 @@ import org.lwjgl.openal.ALC10;
 import org.lwjgl.openal.ALC11;
 
 import java.nio.ByteBuffer;
-import java.util.concurrent.Executor;
 
 public class SoundCapture {
 
