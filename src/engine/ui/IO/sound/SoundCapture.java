@@ -20,8 +20,6 @@ public class SoundCapture {
 
     private int state = CAPTURE_IDLE;
 
-    @Deprecated private static Executor executor;
-
     public SoundCapture(int frequency, int bitsPerSample, int channels) {
         if (!ALC10.alcIsExtensionPresent(0, "ALC_EXT_CAPTURE")) {
             throw new IllegalStateException("could'nt record");
@@ -42,21 +40,8 @@ public class SoundCapture {
         return stop(captureDevice, timeInSec);
     }
 
-    @Deprecated
-    public SoundBuffer recordAsync(int timeInSec) {
-        if(timeInSec < 0)
-            throw new IllegalStateException("invalid time : "+timeInSec);
-       SoundBuffer soundBuffer = new SoundBuffer();
-       executor.execute(
-               () -> {
-                   Delay delay = new Delay(timeInSec * 1000);
-                   long captureDevice = start(timeInSec);
-                   while (!delay.over());
-                   SoundBuffer buffer = stop(captureDevice,timeInSec);
-                   soundBuffer.set(buffer.getData(), buffer.getFormat(), buffer.getSampleRate());
-               }
-       );
-       return soundBuffer;
+    public boolean isRecording() {
+        return state == CAPTURE_RECORDING;
     }
 
     public int getState() {
