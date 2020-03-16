@@ -19,6 +19,7 @@ public class SoundCapture {
     private int format;
 
     private int state = CAPTURE_IDLE;
+    private long captureDevice;
 
     public SoundCapture(int frequency, int bitsPerSample, int channels) {
         if (!ALC10.alcIsExtensionPresent(0, "ALC_EXT_CAPTURE")) {
@@ -35,9 +36,9 @@ public class SoundCapture {
         if(timeInSec < 0)
             throw new IllegalStateException("invalid time : "+timeInSec);
         Delay delay = new Delay(timeInSec * 1000);
-        long captureDevice = start(timeInSec);
+        start(timeInSec);
         while (!delay.over()) ;
-        return stop(captureDevice, timeInSec);
+        return stop(timeInSec);
     }
 
     public boolean isRecording() {
@@ -48,32 +49,31 @@ public class SoundCapture {
         return state;
     }
 
-    private int getOpenAlFormat() {
-        return bitsPerSample == 8 ?
-                (channels == 1 ? AL10.AL_FORMAT_MONO8 : AL10.AL_FORMAT_STEREO8) :
-                (channels == 1 ? AL10.AL_FORMAT_MONO16 : AL10.AL_FORMAT_STEREO16);
-    }
-
-    private long start(int timeInSec) {
+    public void start(int timeInSec) {
         int bufferSize = frequency * (bitsPerSample / 8) * channels * (timeInSec + 1);
-        long captureDeviceHandle = getCaptureDevice(bufferSize);
-        ALC11.alcCaptureStart(captureDeviceHandle);
+        captureDevice = getCaptureDevice(bufferSize);
+        ALC11.alcCaptureStart(captureDevice);
         state = CAPTURE_RECORDING;
-        return captureDeviceHandle;
     }
 
-    private SoundBuffer stop(long captureDeviceHandle, int timeInSec) {
-        ALC11.alcCaptureStop(captureDeviceHandle);
+    public SoundBuffer stop( int timeInSec) {
+        ALC11.alcCaptureStop(captureDevice);
         state = CAPTURE_IDLE;
 
         int bufferSize = frequency * channels * bitsPerSample / 8 * (timeInSec + 1);
-        ByteBuffer buffer = getCapturedBuffer(captureDeviceHandle, bufferSize);
-        closeCaptureDevice(captureDeviceHandle);
+        ByteBuffer buffer = getCapturedBuffer(bufferSize);
+        closeCaptureDevice();
         try {
             return new SoundBuffer(buffer, format, frequency);
         } finally {
             buffer.flip();
         }
+    }
+
+    private int getOpenAlFormat() {
+        return bitsPerSample == 8 ?
+                (channels == 1 ? AL10.AL_FORMAT_MONO8 : AL10.AL_FORMAT_STEREO8) :
+                (channels == 1 ? AL10.AL_FORMAT_MONO16 : AL10.AL_FORMAT_STEREO16);
     }
 
     private long getCaptureDevice(int bufferSize) {
@@ -83,15 +83,15 @@ public class SoundCapture {
         return captureDeviceHandle;
     }
 
-    private ByteBuffer getCapturedBuffer(long captureDeviceHandle, int bufferSize) {
-        int capturedSamples = ALC10.alcGetInteger(captureDeviceHandle, ALC11.ALC_CAPTURE_SAMPLES);
+    private ByteBuffer getCapturedBuffer(int bufferSize) {
+        int capturedSamples = ALC10.alcGetInteger(captureDevice, ALC11.ALC_CAPTURE_SAMPLES);
         ByteBuffer buffer = BufferUtils.createByteBuffer(bufferSize);
-        ALC11.alcCaptureSamples(captureDeviceHandle, buffer, capturedSamples);
+        ALC11.alcCaptureSamples(captureDevice, buffer, capturedSamples);
         return buffer;
     }
 
-    private void closeCaptureDevice(long device) {
-        ALC11.alcCaptureCloseDevice(device);
+    private void closeCaptureDevice() {
+        ALC11.alcCaptureCloseDevice(captureDevice);
     }
 
 }
