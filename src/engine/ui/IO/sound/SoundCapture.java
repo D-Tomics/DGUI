@@ -62,11 +62,7 @@ public class SoundCapture {
         int bufferSize = frequency * channels * bitsPerSample / 8 * (timeInSec + 1);
         ByteBuffer buffer = getCapturedBuffer(bufferSize);
         closeCaptureDevice();
-        try {
-            return new SoundBuffer(buffer, format, frequency);
-        } finally {
-            buffer.flip();
-        }
+        return new SoundBuffer(buffer, format, frequency);
     }
 
     private int getOpenAlFormat() {
