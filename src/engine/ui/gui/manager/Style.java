@@ -42,6 +42,7 @@ public class Style extends Observable {
     private Color color;
     private Color borderColor;
 
+    private float cornerRadius;
     private float borderWidth;
 
     private static final int TOP = 0,BOTTOM = 1,LEFT = 2, RIGHT = 3;
@@ -67,6 +68,7 @@ public class Style extends Observable {
     public Vector2f getCenter() { return this.center; }
     public Vector2f getSize() { return this.dimension; }
 
+    public float getCornerRadius() { return cornerRadius; }
     public float getBorderWidth() { return borderWidth; }
 
     public Color getColor() { return color; }
@@ -155,6 +157,13 @@ public class Style extends Observable {
         return this;
     }
     public Style setSize(Vector2f size, boolean changed) { return setSize(size.x,size.y,changed);}
+
+
+    public Style setCornerRadius(float radius) {
+        if(radius <= Math.min(dimension.x, dimension.y) / 2.0f)
+            this.cornerRadius = radius;
+        return this;
+    }
 
     public Style setBorderSize(float size) {
         this.borderWidth = size;

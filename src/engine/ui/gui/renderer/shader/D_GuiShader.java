@@ -2,20 +2,13 @@ package engine.ui.gui.renderer.shader;
 
 import engine.ui.gui.components.D_Gui;
 import engine.ui.gui.manager.Style;
-import engine.ui.utils.colors.Color;
 import engine.ui.utils.Maths;
+import engine.ui.utils.colors.Color;
 
 public class D_GuiShader extends ShaderProgram{
 
     public D_GuiShader() {
         super("dGuiShader.glsl");
-        loadLocations(
-                "transformationMatrix",
-                "prop.fillColor",
-                "prop.strokeColor",
-                "prop.strokeSize"
-        );
-
     }
 
 
@@ -34,7 +27,11 @@ public class D_GuiShader extends ShaderProgram{
         loadVec4f("prop.strokeColor", strokeColor.r(), strokeColor.g(), strokeColor.b(), strokeColor.a());
 
         //load stroke size
-        loadVec2f("prop.strokeSize",2.0f * p.getBorderWidth()/p.getWidth(),2.0f * p.getBorderWidth()/p.getHeight());
+        loadFloat("prop.borderWidth", p.getBorderWidth());
+        //loadVec2f("prop.strokeSize",2.0f * p.getBorderWidth()/p.getWidth(),2.0f * p.getBorderWidth()/p.getHeight());
+
+        loadFloat("prop.radius", p.getCornerRadius());
+        loadVec2f("prop.dimensions", p.getSize());
     }
 
 
