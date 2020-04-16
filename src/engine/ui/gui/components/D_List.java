@@ -16,16 +16,12 @@ public class D_List<T> extends D_Component{
     private static final float CELL_WIDTH = 100;
     private static final float CELL_HEIGHT = 30f;
 
+    private final Listener ON_CELL_SELECT = e -> onSelect((D_GuiQuad) e.getSource());
+
     private HashMap<String, T> items;
 
     private D_GuiQuad container;
     private D_GuiQuad selected;
-
-    private final Listener ON_CELL_SELECT = e -> {
-        selected.setHoverable(true);
-        selected = (D_GuiQuad) e.getSource();
-        this.setSelected(false);
-    };
 
     public D_List(T...items) {
         this.style.setBounds(0,0,CELL_WIDTH,CELL_HEIGHT);
@@ -36,6 +32,7 @@ public class D_List<T> extends D_Component{
         this.setSelectable(true);
         addItem(items);
 
+        this.addEventListener(D_GuiKeyPressEvent.class,this::onKeyPress);
         this.addEventListener(D_GuiFocusLooseEvent.class, e -> this.setSelected(false));
     }
 
@@ -61,7 +58,7 @@ public class D_List<T> extends D_Component{
         if(selected == null) {
             selected = quad;
             selected.setVisible(true);
-            selected.style.setBorderSize(1);
+            selected.style.setBorderSize(0);
             selected.style.setCenter(style.getCenter());
         }
     }
@@ -97,12 +94,46 @@ public class D_List<T> extends D_Component{
         if(getQuads() != null) {
             for(D_GuiQuad quad : getQuads()) {
                 if(quad == container) continue;
-                if(quad.isHovered())
+                if(quad.isHovered()) {
+                    index = 0;
                     quad.style.setBorderSize(1);
-                else
+                }
+                else if(index == 0)
                     quad.style.setBorderSize(0);
             }
         }
+    }
+
+    private int index = 1;
+    private void onKeyPress(D_Event e) {
+        int key = ((D_GuiKeyPressEvent)e).getKey();
+        if(key == GLFW_KEY_ESCAPE)
+            this.setSelected(false);
+        else if(key == GLFW_KEY_DOWN && isSelected()) {
+            if(index == 0) index = 1;
+            getQuads().get(index).style.setBorderSize(0);
+            index++;
+            if(index > items.size()) index = 1;
+            getQuads().get(index).style.setBorderSize(1);
+        } else if(key == GLFW_KEY_UP && isSelected()) {
+            if(index == 0) index = 1;
+            getQuads().get(index).style.setBorderSize(0);
+            index--;
+            if(index <= 0) index = items.size();
+            getQuads().get(index).style.setBorderSize(1);
+        } else if(key == GLFW_KEY_ENTER || key == GLFW_KEY_KP_ENTER) {
+            if(this.isSelected())
+                onSelect(getQuads().get(index));
+            else
+                this.setSelected(true);
+        }
+    }
+
+    private void onSelect(D_GuiQuad gui) {
+        selected.setHoverable(true);
+        selected = gui;
+        selected.style.setBorderSize(0);
+        this.setSelected(false);
     }
 
 }
