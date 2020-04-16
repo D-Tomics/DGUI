@@ -1,8 +1,6 @@
 package engine.ui.gui.components;
 
-import engine.ui.IO.Mouse;
-import engine.ui.gui.animation.D_GuiAnimation;
-import engine.ui.gui.text.D_TextBox;
+import engine.ui.gui.manager.events.D_GuiMousePressEvent;
 import engine.ui.utils.observers.Observable;
 
 import java.util.HashMap;
@@ -12,21 +10,17 @@ public class D_List<T> extends D_Component{
     private static final float CELL_WIDTH = 100;
     private static final float CELL_HEIGHT = 30f;
 
-    private HashMap<D_Geometry, Object> items;
+    private HashMap<String, T> items;
 
-    private D_TextBox selectedText;
-    private T selectedItem;
-
+    private D_Geometry selected;
     public D_List(T...items) {
+        this.style.setBounds(0,0,CELL_WIDTH,CELL_HEIGHT);
         this.setSelectable(true);
-
-        this.selectedText = new D_TextBox("", 0.2f, CELL_WIDTH, CELL_HEIGHT);
-        this.selectedText.setPosition(this.getStyle().getCenter());
-        this.selectedText.setTextColor(0,0,0);
-
-        this.getStyle().setBounds(0,0,CELL_WIDTH,CELL_HEIGHT);
-
         addItem(items);
+    }
+
+    public T getSelectedItem() {
+        return items.get(selected.getText().getText());
     }
 
     public void addItem(T...items) {
@@ -36,69 +30,47 @@ public class D_List<T> extends D_Component{
 
     public void addItem(T item) {
         if(items == null) items = new HashMap<>();
-        if(item == null) return;
+        if(items.containsKey(item.toString())) return;
+        items.put(item.toString(),item);
 
-        D_Geometry cell = new D_Geometry();
-        cell.setSelectable(true);
-        cell.getStyle().setBounds(0,0,CELL_WIDTH,CELL_HEIGHT);
-        cell.getStyle().setColor(200,200,200);
-        cell.setVisible(false);
-
-        cell.addAnimation(new D_GuiAnimation() {
-            @Override
-            protected boolean run(D_Gui gui) {
-                if(cell.isHovered()) {
-                    cell.getStyle().setColor(0x11AA00);
-                } else {
-                    cell.getStyle().setColor(0xAABBCC);
-                }
-                return false;
-            }
+        D_Geometry geometry = new D_Geometry(CELL_WIDTH, CELL_HEIGHT, item.toString());
+        addGeometry(geometry);
+        geometry.addEventListener(D_GuiMousePressEvent.class, e -> {
+            selected.setHoverable(true);
+            selected = (D_Geometry) e.getSource();
+            this.setSelected(false);
         });
 
-        cell.setText(item.toString());
-        cell.getText().setFontSize(0.2f);
-        cell.getText().setTextColor(0,0,0);
-        super.addGeometry(cell);
-
-        items.put(cell,item);
-    }
-
-    public T getSelectedItem() {
-        return selectedItem;
+        if(selected == null) {
+            selected = geometry;
+            selected.setVisible(true);
+            selected.style.setPosition(style.getX(),style.getY());
+        }
     }
 
     @Override
     public void onStateChange(Observable o) {
+        if(this.getGeometries() != null) {
+            float y = style.getY() - CELL_HEIGHT;
+            for(D_Geometry cell : getGeometries()) {
+                cell.style.setPosition(this.style.getX(), y);
+                y -= CELL_HEIGHT;
+                cell.setVisible(this.isSelected());
+            }
+        }
 
+        if(selected != null) {
+            if(!this.isSelected()) {
+                selected.setVisible(true);
+                selected.style.setPosition(style.getX(),style.getY());
+                selected.setHoverable(false);
+            } else
+                selected.setHoverable(true);
+        }
     }
 
     @Override
     protected void onUpdate() {
-
-        selectedText.setVisible(!this.isSelected());
-        if(getGeometries() != null) {
-            boolean hover = false;
-
-            float y = this.style.getY() - CELL_HEIGHT;
-            for(D_Geometry cell : getGeometries()) {
-                cell.getStyle().setPosition(this.style.getX(), y);
-                cell.setVisible(this.isSelected());
-                if(cell.isPressed() && cell.isVisible()) {
-                    selectedText.setText(cell.getText().getText());
-                    selectedItem = (T)items.get(cell);
-                    this.setSelected(false);
-                }
-
-                y -= cell.getStyle().getHeight();
-                hover |= cell.isHovered();
-            }
-
-            if(Mouse.pressed() ) {
-                if(!hover && !this.isHovered()) this.setSelected(false);
-            }
-        }
-
     }
 
 }

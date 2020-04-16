@@ -1,24 +1,33 @@
 package engine.ui.gui.components;
 
 import engine.ui.gui.text.D_TextBox;
+import engine.ui.utils.colors.Color;
 import engine.ui.utils.observers.Observable;
 
 public class D_Geometry extends D_Component {
 
     private D_TextBox textBox;
-    D_Geometry() {
-    }
+    D_Geometry() { }
+    D_Geometry(float width, float height)                               { this.init(width, height, null, null);}
+    D_Geometry(float width, float height, String text)                  { this.init(width, height, text, Color.BLACK);        }
+    D_Geometry(float width, float height, String text, Color textColor) { this.init(width, height, text, textColor);          }
 
-    public void setText(String text) {
+    private void setText(String text, Color color) {
+        if(text == null) return;
         if(textBox == null)
             textBox = new D_TextBox(text,60,style.getWidth(),style.getHeight(), true);
         else
             textBox.setText(text);
+        textBox.setTextColor(color);
         this.addText(textBox);
     }
 
-    public D_TextBox getText() {
-        return textBox;
+    public String    getText()    { return textBox.getText(); }
+    public D_TextBox getTextBox() { return textBox; }
+
+    private void init(float width, float height, String text, Color textColor) {
+        this.style.setSize(width,height);
+        this.setText(text,textColor);
     }
 
     @Override
