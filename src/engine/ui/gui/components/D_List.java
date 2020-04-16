@@ -35,6 +35,8 @@ public class D_List<T> extends D_Component{
         this.addQuad(container);
         this.setSelectable(true);
         addItem(items);
+
+        this.addEventListener(D_GuiFocusLooseEvent.class, e -> this.setSelected(false));
     }
 
     public T getSelectedItem() {
