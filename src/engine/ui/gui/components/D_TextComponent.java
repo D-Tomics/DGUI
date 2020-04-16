@@ -28,7 +28,7 @@ public abstract class D_TextComponent extends D_Component{
         this.addText(this.textBox);
 
         this.cursor = new Cursor(textBox);
-        this.addGeometry(cursor);
+        this.addQuad(cursor);
 
         this.style.setSize(cols * ONE_COL_SIZE, rows * textBox.getMesh().getData().getLineHeight());
         this.style.setColor(Color.WHITE);

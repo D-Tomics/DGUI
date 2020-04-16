@@ -81,7 +81,7 @@ public final class D_GuiEventManager {
     }
 
     public void setFocusedGui(D_Gui gui) {
-        if(gui instanceof D_Geometry)
+        if(gui instanceof D_GuiQuad)
             gui = gui.getParent();
 
         if(focusedGui == gui) return;
@@ -117,8 +117,8 @@ public final class D_GuiEventManager {
             if(gui instanceof D_Container)
                 if(((D_Container) gui).getChildList() != null)
                     update(((D_Container) gui).getChildList());
-            if(gui.getGeometries() != null)
-                gui.getGeometries().forEach(d_geometry -> topFound = updateGui(d_geometry,topFound,button));
+            if(gui.getQuads() != null)
+                gui.getQuads().forEach(d_geometry -> topFound = updateGui(d_geometry,topFound,button));
             topFound = updateGui(gui,topFound,button);
         }
 

@@ -53,8 +53,8 @@ public class D_GuiRenderer {
         if(gui.isVisible()) {
             shader.loadComponent(gui);
             GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP,0,4);
-            if(gui.getGeometries() != null)
-                gui.getGeometries().forEach(D_GuiRenderer::draw);
+            if(gui.getQuads() != null)
+                gui.getQuads().forEach(D_GuiRenderer::draw);
 
             if(gui instanceof D_Container) {
                 D_Gui focusedGui = null;

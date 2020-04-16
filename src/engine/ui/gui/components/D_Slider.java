@@ -20,7 +20,7 @@ public class D_Slider extends D_Component{
     private float maxValue;
 
     private D_TextBox valueText;
-    private D_Geometry bar;
+    private D_GuiQuad bar;
     private float xRelativeToValue = 0;
 
     public D_Slider() {
@@ -32,8 +32,8 @@ public class D_Slider extends D_Component{
     }
 
     public D_Slider(float minValue, float maxValue) {
-        this.bar = new D_Geometry();
-        this.addGeometry(bar);
+        this.bar = new D_GuiQuad();
+        this.addQuad(bar);
         this.minValue = minValue;
         this.maxValue = maxValue;
 

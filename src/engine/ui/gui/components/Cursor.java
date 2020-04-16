@@ -4,7 +4,7 @@ import engine.ui.gui.text.D_TextBox;
 import engine.ui.utils.Delay;
 import engine.ui.utils.colors.Color;
 
-final class Cursor extends D_Geometry{
+final class Cursor extends D_GuiQuad {
 
     private int row;
     private int col;

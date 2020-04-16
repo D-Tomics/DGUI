@@ -12,7 +12,7 @@ public class D_List<T> extends D_Component{
 
     private HashMap<String, T> items;
 
-    private D_Geometry selected;
+    private D_GuiQuad selected;
     public D_List(T...items) {
         this.style.setBounds(0,0,CELL_WIDTH,CELL_HEIGHT);
         this.setSelectable(true);
@@ -20,7 +20,7 @@ public class D_List<T> extends D_Component{
     }
 
     public T getSelectedItem() {
-        return items.get(selected.getText().getText());
+        return items.get(selected.getText());
     }
 
     public void addItem(T...items) {
@@ -33,16 +33,16 @@ public class D_List<T> extends D_Component{
         if(items.containsKey(item.toString())) return;
         items.put(item.toString(),item);
 
-        D_Geometry geometry = new D_Geometry(CELL_WIDTH, CELL_HEIGHT, item.toString());
-        addGeometry(geometry);
-        geometry.addEventListener(D_GuiMousePressEvent.class, e -> {
+        D_GuiQuad quad = new D_GuiQuad(CELL_WIDTH, CELL_HEIGHT, item.toString());
+        addQuad(quad);
+        quad.addEventListener(D_GuiMousePressEvent.class, e -> {
             selected.setHoverable(true);
-            selected = (D_Geometry) e.getSource();
+            selected = (D_GuiQuad) e.getSource();
             this.setSelected(false);
         });
 
         if(selected == null) {
-            selected = geometry;
+            selected = quad;
             selected.setVisible(true);
             selected.style.setPosition(style.getX(),style.getY());
         }
@@ -50,9 +50,9 @@ public class D_List<T> extends D_Component{
 
     @Override
     public void onStateChange(Observable o) {
-        if(this.getGeometries() != null) {
+        if(this.getQuads() != null) {
             float y = style.getY() - CELL_HEIGHT;
-            for(D_Geometry cell : getGeometries()) {
+            for(D_GuiQuad cell : getQuads()) {
                 cell.style.setPosition(this.style.getX(), y);
                 y -= CELL_HEIGHT;
                 cell.setVisible(this.isSelected());

@@ -47,7 +47,7 @@ public abstract class D_Gui implements Observer {
 
     private D_Gui parent;
     private ArrayList<D_TextBox> texts;
-    private ArrayList<D_Geometry> geometries;
+    private ArrayList<D_GuiQuad> quads;
     private ArrayList<D_Constraint> constraints;
     private ArrayList<D_GuiAnimation> animations;
     private HashMap<Class<?>, ArrayList<D_GuiEventListener>> eventListeners;
@@ -201,8 +201,8 @@ public abstract class D_Gui implements Observer {
     public void setVisible(boolean visible) {
         if(!enabled) return;
         this.visible = visible;
-        if(this.geometries != null)
-            for(D_Geometry geometry : geometries) geometry.setVisible(visible);
+        if(this.quads != null)
+            for(D_GuiQuad quad : quads) quad.setVisible(visible);
         if(this.texts != null)
             this.texts.forEach(txt -> txt.setVisible(visible));
         this.style.notifyObservers();
@@ -233,7 +233,7 @@ public abstract class D_Gui implements Observer {
     }
     public Style getStyle() { return style; }
     public D_Gui getParent() { return parent; }
-    public ArrayList<D_Geometry> getGeometries() { return geometries; }
+    public ArrayList<D_GuiQuad> getQuads() { return quads; }
 
     public D_Gui getRoot() {
         if(this.parent != null)
@@ -245,15 +245,15 @@ public abstract class D_Gui implements Observer {
     protected  void setLevel(int level) {
         this.level = level;
     }
-    protected  void addGeometry(D_Geometry geometry) {
-        if(geometries == null) geometries = new ArrayList<>();
-        Objects.requireNonNull(geometry, "trying to add null Geometry");
-        geometries.add(geometry);
-        geometry.setParent(this);
+    protected  void addQuad(D_GuiQuad quad) {
+        if(quads == null) quads = new ArrayList<>();
+        Objects.requireNonNull(quad, "trying to add null Geometry");
+        quads.add(quad);
+        quad.setParent(this);
     }
-    protected void removeGeometry(D_Geometry geometry) {
-        geometries.remove(geometry);
-        geometry.setParent(null);
+    protected void removeQuad(D_GuiQuad quad) {
+        quads.remove(quad);
+        quad.setParent(null);
     }
 
     protected void addText(D_TextBox textBox) {
