@@ -119,7 +119,7 @@ public class GridLayout extends Layout {
                 }
             }
             if(child.getStyle().getHeight() / (constraint.h() + 1) + child.getStyle().getMarginHeight()> getCellHeight(rIndex)) {
-                for(int i = rIndex; i < columns && i <= rIndex + constraint.h(); i++) {
+                for(int i = rIndex; i < rows && i <= rIndex + constraint.h(); i++) {
                     float prewH = cellHeights[i];
                     cellHeights[i] = child.getStyle().getHeight() / (constraint.h() + 1) + child.getStyle().getMarginHeight();
                     parent.getStyle().setHeight(parent.getStyle().getHeight() - prewH + cellHeights[i], false);
