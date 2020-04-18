@@ -119,7 +119,6 @@ public final class D_GuiEventManager {
         }
 
         if(gui.isHoverable() && gui.isVisible() && checkHover(gui)) {
-            if(gui instanceof D_GuiQuad) topFound = false;
             if(!topFound) {
                 topGui = gui;
                 topFound = true;

@@ -244,6 +244,8 @@ public abstract class D_Gui implements Observer {
     protected void setParent(D_Gui parent) { this.parent = parent; }
     protected  void setLevel(int level) {
         this.level = level;
+        for(int i = 0; quads != null && i < quads.size(); i++)
+            quads.get(i).setLevel(level + 1);
     }
     protected  void addQuad(D_GuiQuad quad) {
         if(quads == null) quads = new ArrayList<>();
