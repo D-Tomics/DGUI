@@ -114,7 +114,8 @@ public final class D_GuiEventManager {
         }
 
         if(topGui != null ) {
-            topFound = topGui.getLevel() > gui.getLevel();
+            topFound = topGui != gui;
+            if(gui.getLevel() >= topGui.getLevel() && !topGui.isPressed()) topFound = false;
         }
 
         if(gui.isHoverable() && gui.isVisible() && checkHover(gui)) {
