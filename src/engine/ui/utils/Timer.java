@@ -37,4 +37,7 @@ public final class Timer {
         return time;
     }
 
+    public boolean isStarted() { return started; }
+    public boolean isStopped() { return !started; }
+
 }
