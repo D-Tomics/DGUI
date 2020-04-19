@@ -15,12 +15,8 @@ public final class Timer {
     }
 
     public double stop() {
-        try {
-            started = false;
-            return time;
-        } finally {
-            time = 0;
-        }
+        started = false;
+        return time;
     }
 
     public void update() {
