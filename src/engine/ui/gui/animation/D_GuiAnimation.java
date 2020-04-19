@@ -5,46 +5,34 @@ import engine.ui.utils.Timer;
 
 public abstract class D_GuiAnimation {
 
-    private boolean started;
+    protected abstract void onStart(D_Gui gui);
+    protected abstract void onStop(D_Gui gui);
+    protected abstract boolean run(D_Gui gui);
+
     private Timer timer;
     public D_GuiAnimation() {
         timer = new Timer();
     }
 
     public final void start(D_Gui gui) {
-        if(started) return;
-        started = true;
         timer.start();
         onStart(gui);
     }
 
     public final void stop(D_Gui gui) {
-        if(!started) return;
         timer.stop();
-        started = false;
         onStop(gui);
     }
 
-    public final void update(D_Gui gui) {
-        if(!started) return;
-        start(gui);
+    public final boolean update(D_Gui gui) {
         timer.update();
-        if(run(gui)) {
-            stop(gui);
-        }
+        return run(gui);
     }
 
-    public final void restart() {
+    public final void restart(D_Gui gui) {
         this.timer.restart();
+        start(gui);
     }
 
-    public final Timer getTimer() {
-        return timer;
-    }
-
-    protected abstract boolean run(D_Gui gui);
-
-    protected void onStart(D_Gui gui){};
-    protected void onStop(D_Gui gui){};
-
+    protected double getTime() { return timer.getTime(); }
 }

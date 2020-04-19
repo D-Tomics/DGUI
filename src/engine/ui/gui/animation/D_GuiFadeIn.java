@@ -22,8 +22,8 @@ public class D_GuiFadeIn extends D_GuiAnimation{
 
     @Override
     public boolean run(D_Gui gui) {
-        gui.getStyle().setAlpha((float)(getTimer().getTime()/duration) * Math.abs(alpha2 - alpha1));
-        return getTimer().getTime() >= duration;
+        gui.getStyle().setAlpha((float)(getTime()/duration) * Math.abs(alpha2 - alpha1));
+        return getTime() >= duration;
     }
 
     @Override
