@@ -133,7 +133,7 @@ public abstract class D_Gui implements Observer {
         }
     }
 
-    public void addAnimation(D_GuiAnimation animation) {
+    public void startAnimation(D_GuiAnimation animation) {
         if(!enabled) return;
         if(animation == null) return;
         else if(animations == null) animations = new ArrayList<>();
@@ -142,9 +142,10 @@ public abstract class D_Gui implements Observer {
         animations.add(animation);
     }
 
-    public void removeAnimation(D_GuiAnimation animation) {
+    public void stopAnimation(D_GuiAnimation animation) {
         if(animation == null) return;
         else if(animations == null) return;
+        else if(!animations.contains(animation)) return;
         animation.stop(this);
         animations.remove(animation);
     }
@@ -152,9 +153,9 @@ public abstract class D_Gui implements Observer {
     private void updateAnimations() {
         if(!enabled) return;
         if(animations == null) return;
-        for(D_GuiAnimation animation : animations) {
-            animation.update(this);
-        }
+        for(int i = 0; i < animations.size(); i++)
+            if(animations.get(i).update(this))
+                animations.get(i).stop(this);
     }
 
     public void addConstraint(D_Constraint constraint) {
