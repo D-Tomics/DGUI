@@ -11,6 +11,7 @@ public class D_GuiTransition extends D_GuiAnimation{
     private BiConsumer<D_Gui,Float> transition;
 
     /**
+     * @param name : the name of animation
      * @param duration : time duration in Seconds for which transition takes place
      * @param start : start value of the state the user tries to animate, This value is given to transition BiConsumers accept function
      *              when the animation starts
@@ -21,7 +22,8 @@ public class D_GuiTransition extends D_GuiAnimation{
      *                   the gui in which the animation is started and a float value that represents the change from start to end of
      *                   animation. This value lies between start and stop value and changes linearly during the entire duration
      */
-    public D_GuiTransition(float duration, float start, float stop, BiConsumer<D_Gui,Float> transition) {
+    public D_GuiTransition(String name,float duration, float start, float stop, BiConsumer<D_Gui,Float> transition) {
+        super(name);
         this.duration   = duration;
         this.start      = start;
         this.stop       = stop;

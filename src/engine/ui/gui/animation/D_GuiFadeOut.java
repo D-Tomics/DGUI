@@ -8,13 +8,15 @@ public class D_GuiFadeOut extends D_GuiAnimation{
     private float alpha2;
     private double duration;
 
-    public D_GuiFadeOut(double duration) {
+    public D_GuiFadeOut(String name,double duration) {
+        super(name);
         this.duration = duration;
         this.alpha1 = 1;
         this.alpha2 = 0;
     }
 
-    public D_GuiFadeOut(float alpha1, float alpha2, double duration) {
+    public D_GuiFadeOut(String name,float alpha1, float alpha2, double duration) {
+        super(name);
         this.alpha1 = alpha1;
         this.alpha2 = alpha2;
         this.duration = duration;
