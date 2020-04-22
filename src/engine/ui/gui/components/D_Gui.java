@@ -138,15 +138,16 @@ public abstract class D_Gui implements Observer {
         if(animation == null) return;
         else if(animations == null) animations = new ArrayList<>();
         if(animations.contains(animation)) return;
-        animation.start(this);
-        animations.add(animation);
+        D_GuiAnimation clone = animation.clone();
+        clone.start(this);
+        animations.add(clone);
     }
 
     public void stopAnimation(D_GuiAnimation animation) {
         if(animation == null) return;
         else if(animations == null) return;
-        else if(!animations.contains(animation)) return;
-        animation.stop(this);
+        if(!animations.contains(animation)) return;
+        animations.get(animations.indexOf(animation)).stop(this);
         animations.remove(animation);
     }
 
