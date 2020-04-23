@@ -1,17 +1,10 @@
 package engine.ui.gui.components;
 
 import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextAlignCenter;
-import engine.ui.gui.manager.events.D_GuiMouseMoveEvent;
-import engine.ui.gui.manager.events.D_GuiMousePressEvent;
 import engine.ui.gui.manager.events.D_GuiResizeEvent;
 import engine.ui.gui.text.D_TextBox;
 import engine.ui.utils.colors.Color;
 import engine.ui.utils.observers.Observable;
-import opengl.opengl.OpenGL;
-import opengl.opengl.primitives.Rect;
-
-import static org.lwjgl.opengl.GL11.GL_LINE;
-import static org.lwjgl.opengl.GL11.GL_LINES;
 
 public class D_GuiQuad extends D_Component {
 
