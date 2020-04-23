@@ -1,8 +1,17 @@
 package engine.ui.gui.components;
 
+import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextAlignCenter;
+import engine.ui.gui.manager.events.D_GuiMouseMoveEvent;
+import engine.ui.gui.manager.events.D_GuiMousePressEvent;
+import engine.ui.gui.manager.events.D_GuiResizeEvent;
 import engine.ui.gui.text.D_TextBox;
 import engine.ui.utils.colors.Color;
 import engine.ui.utils.observers.Observable;
+import opengl.opengl.OpenGL;
+import opengl.opengl.primitives.Rect;
+
+import static org.lwjgl.opengl.GL11.GL_LINE;
+import static org.lwjgl.opengl.GL11.GL_LINES;
 
 public class D_GuiQuad extends D_Component {
 
@@ -28,15 +37,17 @@ public class D_GuiQuad extends D_Component {
     private void init(float width, float height, String text, Color textColor) {
         this.style.setSize(width,height);
         this.setText(text,textColor);
+        this.addConstraint(new D_TextAlignCenter(textBox));
+        this.addEventListener(D_GuiResizeEvent.class, event -> {
+            D_GuiResizeEvent e = (D_GuiResizeEvent)event;
+            textBox.setBoxSize(e.getCurrentWidth(), e.getCurrentHeight());
+        });
     }
 
     @Override
     protected void onUpdate() { }
 
     @Override
-    public void onStateChange(Observable o) {
-        if(textBox != null)
-            textBox.setPosition(this.style.getX(),this.style.getY());
-    }
+    public void onStateChange(Observable o) { }
 
 }
