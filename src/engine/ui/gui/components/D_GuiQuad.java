@@ -31,7 +31,7 @@ public class D_GuiQuad extends D_Component {
         this.addText(textBox);
     }
 
-    public String    getText()    { return textBox.getText(); }
+    public String    getText()    { return textBox != null ? textBox.getText() : null; }
     public D_TextBox getTextBox() { return textBox; }
 
     private void init(float width, float height, String text, Color textColor) {
@@ -40,7 +40,7 @@ public class D_GuiQuad extends D_Component {
         this.addConstraint(new D_TextAlignCenter(textBox));
         this.addEventListener(D_GuiResizeEvent.class, event -> {
             D_GuiResizeEvent e = (D_GuiResizeEvent)event;
-            textBox.setBoxSize(e.getCurrentWidth(), e.getCurrentHeight());
+            if(textBox != null) textBox.setBoxSize(e.getCurrentWidth(), e.getCurrentHeight());
         });
     }
 
