@@ -17,6 +17,7 @@ public class D_TextAlignBottom extends D_TextConstraint {
     @Override
     public void update(D_Gui gui) {
         D_TextBox text = getSource();
+        if(text == null) return;
         Style style = gui.getStyle();
         text.getPosition().y = style.getY() + text.getMaxTextHeight() - style.getHeight() + padding;
     }

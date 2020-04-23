@@ -12,9 +12,11 @@ public class D_TextAlignCenter extends D_TextConstraint {
 
     @Override
     public void update(D_Gui gui) {
-        getSource().setPosition(
-                gui.getStyle().getCenterX() - getSource().getBoxWidth() / 2.0f,
-                gui.getStyle().getCenterY() + getSource().getBoxHeight() / 2.0f
-        );
+        if(getSource() != null) {
+            getSource().setPosition(
+                    gui.getStyle().getCenterX() - getSource().getBoxWidth() / 2.0f,
+                    gui.getStyle().getCenterY() + getSource().getBoxHeight() / 2.0f
+            );
+        }
     }
 }

@@ -14,6 +14,7 @@ public class D_TextFill extends D_TextConstraint {
     @Override
     public void update(D_Gui gui) {
         D_TextBox text = getSource();
+        if(text == null) return;
         Style style = gui.getStyle();
         text.setPosition(style.getCenterX(),style.getCenterY());
     }

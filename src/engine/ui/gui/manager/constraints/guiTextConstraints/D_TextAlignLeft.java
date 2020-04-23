@@ -14,6 +14,7 @@ public class D_TextAlignLeft extends D_TextConstraint {
 
     @Override
     public void update(D_Gui gui) {
+        if(getSource() == null) return;
         super.getSource().getPosition().x = gui.getStyle().getX() + padding;
     }
 }
