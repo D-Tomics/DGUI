@@ -1,6 +1,7 @@
 package engine.ui.gui.manager;
 
 import engine.ui.gui.components.D_Gui;
+import engine.ui.gui.components.D_GuiQuad;
 import engine.ui.gui.manager.events.D_GuiResizeEvent;
 import engine.ui.gui.manager.events.D_GuiStateChangeEvent;
 import engine.ui.utils.colors.Color;
@@ -146,7 +147,7 @@ public class Style extends Observable {
     public Style setSize(Vector2f size) { return setSize(size,true);}
 
     public Style setSize(float w, float h, boolean changed) {
-        if(dimension.x != w && dimension.y != h) {
+        if(dimension.x != w || dimension.y != h) {
             for(Observer observer : observers)
                 ((D_Gui) observer).stackEvent(new D_GuiResizeEvent((D_Gui) observer, dimension.x, dimension.y, w, h));
         }
