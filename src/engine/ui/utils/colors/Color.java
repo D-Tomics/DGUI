@@ -49,7 +49,7 @@ public final class Color {
     public float r() { return r * brightness; }
     public float g() { return g * brightness; }
     public float b() { return b * brightness; }
-    public float a() { return a * brightness; }
+    public float a() { return a; }
 
     public void r(float r) { this.r = r; }
     public void g(float g) { this.g = g; }
