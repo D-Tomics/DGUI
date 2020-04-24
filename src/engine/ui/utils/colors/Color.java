@@ -10,6 +10,8 @@ public final class Color {
 
     private float r,g,b,a;
 
+    private float brightness = 1;
+
     public Color() {
         this(0);
     }
@@ -34,6 +36,9 @@ public final class Color {
     public Color set(int r, int g, int b, int a) { return this.set(r / 255f, g / 255f, b / 255f, a / 255f);}
     public Color set(Color color) { return set(color.r, color.g, color.b, color.a); }
 
+    public Color setBrightness(float brightness) { this.brightness = brightness; return this; }
+    public float getBrightness() { return brightness; }
+
     //0xrrggbb
     public void set(int color) {
         this.r = ((byte) ((color >> 16) & 0xFF)) / 255.0f;
@@ -41,10 +46,10 @@ public final class Color {
         this.b = ((byte) ( color        & 0xFF)) / 255.0f;
     }
 
-    public float r() { return r; }
-    public float g() { return g; }
-    public float b() { return b; }
-    public float a() { return a; }
+    public float r() { return r * brightness; }
+    public float g() { return g * brightness; }
+    public float b() { return b * brightness; }
+    public float a() { return a * brightness; }
 
     public void r(float r) { this.r = r; }
     public void g(float g) { this.g = g; }
