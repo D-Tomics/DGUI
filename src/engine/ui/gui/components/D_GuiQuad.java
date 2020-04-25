@@ -33,7 +33,10 @@ public class D_GuiQuad extends D_Component {
         this.addConstraint(new D_TextAlignCenter(textBox));
         this.addEventListener(D_GuiResizeEvent.class, event -> {
             D_GuiResizeEvent e = (D_GuiResizeEvent)event;
-            if(textBox != null) textBox.setBoxSize(e.getCurrentWidth(), e.getCurrentHeight());
+            if(textBox != null) {
+                textBox.setPosition(this.style.getPosition());
+                textBox.setBoxSize(e.getCurrentWidth(), e.getCurrentHeight());
+            }
         });
     }
 
