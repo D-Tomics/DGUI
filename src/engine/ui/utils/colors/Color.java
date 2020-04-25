@@ -34,7 +34,7 @@ public final class Color {
     // integer colors are varied from 0 to 255
     public Color set(int r, int g, int b) { return this.set(r / 255f, g / 255f, b / 255f, 1f);}
     public Color set(int r, int g, int b, int a) { return this.set(r / 255f, g / 255f, b / 255f, a / 255f);}
-    public Color set(Color color) { return set(color.r, color.g, color.b, color.a); }
+    public Color set(Color color) { return set(color.r(), color.g(), color.b(), color.a()); }
 
     public Color setBrightness(float brightness) { this.brightness = brightness; return this; }
     public float getBrightness() { return brightness; }
