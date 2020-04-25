@@ -9,10 +9,10 @@ import engine.ui.utils.observers.Observable;
 public class D_GuiQuad extends D_Component {
 
     private D_TextBox textBox;
-    D_GuiQuad() { }
-    D_GuiQuad(float width, float height)                               { this.init(width, height, null, null);}
-    D_GuiQuad(float width, float height, String text)                  { this.init(width, height, text, Color.BLACK);        }
-    D_GuiQuad(float width, float height, String text, Color textColor) { this.init(width, height, text, textColor);          }
+    public D_GuiQuad() { }
+    public D_GuiQuad(float width, float height)                               { this.init(width, height, null, null);}
+    public D_GuiQuad(float width, float height, String text)                  { this.init(width, height, text, Color.BLACK);        }
+    public D_GuiQuad(float width, float height, String text, Color textColor) { this.init(width, height, text, textColor);          }
 
     private void setText(String text, Color color) {
         if(text == null) return;
