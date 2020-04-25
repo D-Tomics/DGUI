@@ -60,7 +60,8 @@ public abstract class D_Container extends D_Gui{
         if(gui == null) return;
         if(gui == this) return;
 
-        layout.addLayoutItem(gui,constraint);
+        if(layout != null)
+            layout.addLayoutItem(gui,constraint);
         childList.add(gui);
 
         gui.setParent(this);
