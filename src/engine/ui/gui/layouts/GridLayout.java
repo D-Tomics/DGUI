@@ -40,7 +40,7 @@ public class GridLayout extends Layout {
         boolean[][] occupied = new boolean[rows][columns];
         childLoop : for(D_Gui child : parent.getChildList()) {
             GridConstraint constraint = compTable != null ? (GridConstraint)(compTable.get(child)) : null;
-            assert constraint != null;
+            if(constraint == null) constraint = defaultConstraint;
             if(constraint != defaultConstraint) {
                 cIndex = constraint.x();
                 rIndex = constraint.y();
@@ -94,7 +94,7 @@ public class GridLayout extends Layout {
         boolean[][] occupied = new boolean[rows][columns];
         for(D_Gui child : children) {
             GridConstraint constraint = compTable != null ? (GridConstraint)compTable.get(child) : null;
-            assert constraint != null;
+            if(constraint == null) constraint = defaultConstraint;
             if(constraint != defaultConstraint) {
                 cIndex = constraint.x();
                 rIndex = constraint.y();
