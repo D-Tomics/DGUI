@@ -5,10 +5,11 @@ import engine.ui.gui.components.D_Gui;
 import engine.ui.gui.manager.D_GuiEventManager;
 import engine.ui.gui.renderer.D_GuiRenderer;
 import engine.ui.gui.renderer.Loader;
-import engine.ui.utils.abstractions.Listener;
 import engine.ui.gui.text.D_TextMaster;
 import engine.ui.utils.Delay;
 import engine.ui.utils.Time;
+import engine.ui.utils.abstractions.Listener;
+import engine.ui.utils.abstractions.Task;
 import engine.ui.utils.abstractions.Updatable;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 public final class Window {
@@ -39,6 +41,7 @@ public final class Window {
 
     public static Window INSTANCE;
 
+    private ArrayList<Task> tasks;
     private ArrayList<D_Gui> guiList;
     private ArrayList<Updatable> updatables;
     private D_GuiEventManager guiEventManager;
@@ -108,6 +111,19 @@ public final class Window {
         synchronized (this) { updatables.remove(updatable); }
     }
 
+    public void addTask(Task task) {
+        if(task == null) return;
+        if(tasks == null) tasks = new ArrayList<>();
+        if(tasks.contains(task)) return;
+        synchronized (this) { tasks.add(task); }
+    }
+
+    public void removeTask(Task task) {
+        if(task == null) return;
+        if(tasks == null) return;
+        synchronized (this) { tasks.remove(task); }
+    }
+
     public void addHint(int hint, int value) {
         if(windowHints == null) windowHints = new HashMap<>();
         windowHints.put(hint, value);
@@ -158,6 +174,11 @@ public final class Window {
             fps = 0;
         }
         guiEventManager.update(this.guiList);
+        if(tasks != null) {
+            tasks.forEach(Task::apply);
+            tasks.clear();
+        }
+
         glfwSwapBuffers(window_ptr);
         glfwPollEvents();
         Time.update();
