@@ -1,6 +1,7 @@
 package engine.ui.IO;
 
 import engine.ui.IO.events.*;
+import engine.ui.gui.components.D_Container;
 import engine.ui.gui.components.D_Gui;
 import engine.ui.gui.manager.D_GuiEventManager;
 import engine.ui.gui.renderer.D_GuiRenderer;
@@ -197,8 +198,8 @@ public final class Window {
     }
 
     //getters
-    public List<D_Gui> getGuiList() { return guiList; }
-    public List<Updatable> getUpdatables() { return updatables; }
+    public List<D_Gui>     getGuiList()     { return guiList; }
+    public List<Updatable> getUpdatables()  { return updatables; }
 
     public long getWindowPointer() { return window_ptr; }
 
@@ -210,6 +211,17 @@ public final class Window {
 
     public String getTitle() { return title; }
     public D_GuiEventManager getGuiEventManager() { return guiEventManager; }
+
+    public int getTopLayer() {
+        if(guiList == null) return 0;
+        int top = 1;
+        for(D_Gui gui : guiList) {
+            int level = gui instanceof D_Container ? ((D_Container) gui).getTopLevel() : 1;
+            if(level > top)
+                top = level;
+        }
+        return top;
+    }
 
     public int getFrames() { return frames; }
     public static int getMonitorWidth() { return monitorWidth; }
