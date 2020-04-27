@@ -102,4 +102,13 @@ public abstract class D_Container extends D_Gui{
         this.style.notifyObservers();
     }
 
+    public int getTopLevel() {
+        if(childList == null) return getLevel();
+        int top = getLevel() + 1;
+        for(D_Gui child : childList) {
+            int level = child instanceof D_Container ? ((D_Container) child).getTopLevel() : child.getLevel();
+            if(level > top) top = level;
+        }
+        return top;
+    }
 }
