@@ -67,7 +67,12 @@ public final class D_GuiEventManager {
     public void update(ArrayList<D_Gui> guis) {
         boolean topFound = false;
         if(guis == null) return;
-        for(D_Gui gui : guis) {
+        if(topGui != null) {
+            if(!topGui.isVisible())
+                topFound = update(topGui,topFound);
+        }
+        for(int i = 0; i < guis.size(); i++) {
+            D_Gui gui = guis.get(i);
             if(gui instanceof D_Container && ((D_Container) gui).getChildList() != null) {
                 update(((D_Container) gui).getChildList());
             }
