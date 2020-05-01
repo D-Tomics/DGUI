@@ -15,6 +15,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
 public final class D_GuiEventManager {
 
+    private Window window;
     private D_Gui focusedGui;
     private D_Gui topGui;
 
@@ -22,7 +23,8 @@ public final class D_GuiEventManager {
     private GLFWListener charListener;
     private GLFWListener scrollListener;
 
-    public void init() {
+    public void init(Window window) {
+        this.window = window;
         this.keyListener = new GLFWListener(GLFWKeyEvent.class) {
             @Override
             public void invoke(GLFWEvent event) {
@@ -53,18 +55,19 @@ public final class D_GuiEventManager {
             }
         };
 
-        Window.INSTANCE.addListener(this.keyListener);
-        Window.INSTANCE.addListener(this.charListener);
-        Window.INSTANCE.addListener(this.scrollListener);
+        window.addListener(this.keyListener);
+        window.addListener(this.charListener);
+        window.addListener(this.scrollListener);
     }
 
     public void destroy() {
-        Window.INSTANCE.removeListener(this.keyListener);
-        Window.INSTANCE.removeListener(this.charListener);
-        Window.INSTANCE.removeListener(this.scrollListener);
+        window.removeListener(this.keyListener);
+        window.removeListener(this.charListener);
+        window.removeListener(this.scrollListener);
     }
 
     public void update(ArrayList<D_Gui> guis) {
+        if(!window.isFocused()) return;
         boolean topFound = false;
         if(guis == null) return;
         if(topGui != null) {
