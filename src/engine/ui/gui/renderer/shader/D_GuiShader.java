@@ -1,5 +1,6 @@
 package engine.ui.gui.renderer.shader;
 
+import engine.ui.IO.Window;
 import engine.ui.gui.components.D_Gui;
 import engine.ui.gui.manager.Style;
 import engine.ui.utils.Maths;
@@ -7,14 +8,16 @@ import engine.ui.utils.colors.Color;
 
 public class D_GuiShader extends ShaderProgram{
 
-    public D_GuiShader() {
+    private Window window;
+    public D_GuiShader(Window window) {
         super("dGuiShader.glsl");
+        this.window = window;
     }
 
 
     public void loadComponent(D_Gui component) {
         loadProperties(component.getStyle());
-        loadMat4("transformationMatrix",Maths.createModeMatrix(component.getStyle()));
+        loadMat4("transformationMatrix",Maths.createModeMatrix(component.getStyle(),window));
     }
 
     private void loadProperties( Style p) {

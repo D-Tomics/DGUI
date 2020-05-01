@@ -6,8 +6,10 @@ import engine.ui.utils.Maths;
 
 public final class D_TextShader extends ShaderProgram {
 
-    public D_TextShader() {
+    private Window window;
+    public D_TextShader(Window window) {
         super("dTextShader.glsl");
+        this.window = window;
         loadLocations(
                 "texAtlas",
                 "model",
@@ -38,23 +40,25 @@ public final class D_TextShader extends ShaderProgram {
 
         super.loadVec2f(
                 "offset",
-                2 * text.getOffset().x / Window.INSTANCE.getWidth(),
-                2 * text.getOffset().y / Window.INSTANCE.getHeight()
+                2 * text.getOffset().x / window.getWidth(),
+                2 * text.getOffset().y / window.getHeight()
         );
 
         super.loadVec2f(
                 "boxScale",
-                text.getBoxWidth() / Window.INSTANCE.getWidth(),
-                text.getBoxHeight() / Window.INSTANCE.getHeight()
+                text.getBoxWidth() / window.getWidth(),
+                text.getBoxHeight() / window.getHeight()
         );
 
         super.loadMat4(
                 "model",
                 Maths.createModelMatrix(
-                        2 * (text.getPosition().x + text.getOffset().x) / Window.INSTANCE.getWidth(),
-                        2 * (text.getPosition().y + text.getOffset().y) / Window.INSTANCE.getHeight(),
-                        text.getFontSize() / Window.INSTANCE.getWidth(),
-                        text.getFontSize() / Window.INSTANCE.getHeight()
+                        text.getPosition().x + text.getOffset().x,
+                        text.getPosition().y + text.getOffset().y,
+                        text.getFontSize(),
+                        text.getFontSize(),
+                        true,
+                        window
                 )
         );
 
