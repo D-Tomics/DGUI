@@ -1,7 +1,5 @@
 package engine.ui.gui.text.font;
 
-import engine.ui.gui.text.meshCreator.TextLoader;
-
 public enum Fonts {
 
     Calibri_Light(8f),

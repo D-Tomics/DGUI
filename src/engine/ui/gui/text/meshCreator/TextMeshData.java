@@ -22,7 +22,7 @@ public class TextMeshData {
         this.lineHeight = maxTextHeight / lines.size();
     }
 
-    float[] getData() {
+    public float[] getData() {
         return data;
     }
 

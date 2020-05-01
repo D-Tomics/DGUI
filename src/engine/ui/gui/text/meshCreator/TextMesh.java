@@ -9,12 +9,10 @@ public final class TextMesh {
 
     private int vao;
     private int buffer;
-    private TextMeshData meshData;
 
-    TextMesh(int vao, int buffer, TextMeshData meshData) {
+    public TextMesh(int vao, int buffer) {
         this.vao = vao;
         this.buffer = buffer;
-        this.meshData = meshData;
     }
 
     public void bind() {
@@ -25,9 +23,8 @@ public final class TextMesh {
         GL30.glBindVertexArray(0);
     }
 
-    public void updateData(D_TextBox text) {
-        meshData = TextMeshCreator.createTextMesh(text);
-        TextLoader.updateBuffer(buffer,meshData.getData(), Loader.STREAM);
+    public void updateData(TextMeshData meshData,Loader loader) {
+        loader.updateBuffer(buffer,meshData.getData(), Loader.STREAM);
     }
 
     public int getVao() {
@@ -38,7 +35,4 @@ public final class TextMesh {
         return buffer;
     }
 
-    public TextMeshData getData() {
-        return meshData;
-    }
 }

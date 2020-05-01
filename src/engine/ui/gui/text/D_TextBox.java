@@ -4,8 +4,9 @@ import engine.ui.gui.renderer.Loader;
 import engine.ui.gui.text.font.Font;
 import engine.ui.gui.text.font.Fonts;
 import engine.ui.gui.text.meshCreator.Line;
-import engine.ui.gui.text.meshCreator.TextLoader;
 import engine.ui.gui.text.meshCreator.TextMesh;
+import engine.ui.gui.text.meshCreator.TextMeshCreator;
+import engine.ui.gui.text.meshCreator.TextMeshData;
 import engine.ui.utils.colors.Color;
 import org.joml.Vector2f;
 
@@ -23,12 +24,14 @@ public class D_TextBox {
     private Font font;
     private String text;
     private TextMesh mesh;
+    private TextMeshData meshData;
     private Vector2f position;
     private Vector2f offset;
 
     private Color textColor = new Color(Color.WHITE);
     private Color borderColor = new Color(Color.BLACK);
 
+    private boolean update;
     private boolean centered;
     private boolean visible = true;
 
@@ -62,7 +65,7 @@ public class D_TextBox {
         this.boxWidth = boxWidth;
         this.boxHeight = boxHeight;
 
-        this.mesh = TextLoader.loadText(this, Loader.STREAM);
+        this.meshData = TextMeshCreator.createTextMesh(this);
         D_TextMaster.load(this);
     }
 
@@ -73,9 +76,10 @@ public class D_TextBox {
     public String getText() { return text; }
     public Font getFont() { return font; }
     public TextMesh getMesh() { return mesh; }
+    public TextMeshData getMeshData() { return meshData; }
 
-    public float getMaxTextWidth() { return mesh.getData().getMaxTextWidth(); }
-    public float getMaxTextHeight() { return mesh.getData().getMaxTextHeight(); }
+    public float getMaxTextWidth() { return meshData.getMaxTextWidth(); }
+    public float getMaxTextHeight() { return meshData.getMaxTextHeight(); }
     public float getBoxWidth() { return boxWidth; }
     public float getBoxHeight() { return boxHeight; }
     public float getFontSize() { return fontSize; }
@@ -92,44 +96,44 @@ public class D_TextBox {
 
     public int getNumOfLines() { return getLines().size(); }
     public int getLineLength(int lineNum) { return getLine(lineNum) != null ? getLine(lineNum).length() : 0; }
-    public float getLineHeight() { return this.mesh != null ? this.mesh.getData().getLineHeight() : 0; }
-    public Line getLine(int lineNum) { return this.mesh != null ? this.mesh.getData().getLine(lineNum) : null; }
-    public List<Line> getLines() { return this.mesh != null ? this.mesh.getData().getLines() : null; }
+    public float getLineHeight() { return meshData != null ? meshData.getLineHeight() : 0; }
+    public Line getLine(int lineNum) { return meshData != null ? meshData.getLine(lineNum) : null; }
+    public List<Line> getLines() { return meshData != null ? meshData.getLines() : null; }
 
     public void setWrapText(boolean wrapText) {
         if(this.wrapText == wrapText) return;
         this.wrapText = wrapText;
-        update();
+        requestUpdate();
     }
 
     public void setText(String text) {
         if(this.text.equals(text)) return;
         this.text = text;
-        update();
+        requestUpdate();
     }
 
     public void setBoxWidth(float boxWidth ) {
         if(this.boxWidth == boxWidth) return;
         this.boxWidth = boxWidth;
-        update();
+        requestUpdate();
     }
 
     public void setBoxHeight(float boxHeight) {
         if(this.boxHeight == boxHeight) return;
         this.boxHeight = boxHeight;
-        update();
+        requestUpdate();
     }
 
     public void setBoxSize(float boxWidth, float boxHeight) {
         if(this.boxWidth == boxWidth && this.boxHeight == boxHeight) return;
         this.boxWidth = boxWidth;
         this.boxHeight = boxHeight;
-        update();
+        requestUpdate();
     }
 
     public void setFontSize(float fontSize) {
         this.fontSize = fontSize;
-        update();
+        requestUpdate();
     }
 
     public void setCharWidth(float charWidth) { this.charWidth = charWidth; }
@@ -155,7 +159,7 @@ public class D_TextBox {
     public void setCentered(boolean centered) {
         if(this.centered == centered) return;
         this.centered = centered;
-        update();
+        requestUpdate();
     }
 
     public void setFont(Font font) {
@@ -165,11 +169,21 @@ public class D_TextBox {
         this.font = font;
         D_TextMaster.load(this);
 
-        update();
+        requestUpdate();
     }
 
-    private void update() {
-        this.mesh.updateData(this);
+    public void requestUpdate() {
+        meshData = TextMeshCreator.createTextMesh(this);
+        update = true;
+    }
+
+    public void update(Loader loader) {
+        if(mesh == null)
+            mesh = loader.loadText(meshData,Loader.STREAM);
+        if(update) {
+            mesh.updateData(meshData,loader);
+            update = false;
+        }
     }
 
     @Override

@@ -19,7 +19,7 @@ public class D_TextArea extends D_TextComponent {
         super(text, rows, cols);
         this.setScrollable(true);
 
-        this.maxNumOfLines = (int) (style.getHeight() / textBox.getMesh().getData().getLineHeight());
+        this.maxNumOfLines = (int) (style.getHeight() / textBox.getMeshData().getLineHeight());
 
         this.addConstraint(new D_TextAlign(textBox, 5, 0, 5, 0));
 
@@ -60,14 +60,14 @@ public class D_TextArea extends D_TextComponent {
     }
 
     private void onResize(D_Event e) {
-        this.maxNumOfLines = (int)(style.getHeight() / textBox.getMesh().getData().getLineHeight());
+        this.maxNumOfLines = (int)(style.getHeight() / textBox.getMeshData().getLineHeight());
         style.notifyObservers();
     }
 
     private void onScrollEvent(D_Event event) {
         D_GuiScrollEvent e = (D_GuiScrollEvent)event;
         if(textBox.getMaxTextHeight() > getStyle().getHeight()) {
-            float offset = textBox.getMesh().getData().getLineHeight() * (float) e.getYoffset();
+            float offset = textBox.getMeshData().getLineHeight() * (float) e.getYoffset();
 
             if(textBox.getOffset().y - offset < 0 || textBox.getOffset().y - offset >= textBox.getMaxTextHeight()) offset = 0;
             else verticalWindowStart -= e.getYoffset();
@@ -81,11 +81,11 @@ public class D_TextArea extends D_TextComponent {
         if(cursor.getRow() < verticalWindowStart) {
             int drow = verticalWindowStart - cursor.getRow();
             verticalWindowStart -= drow; // window start - row would give offset rows with windowStart as a reference
-            textBox.getOffset().sub(0, drow * textBox.getMesh().getData().getLineHeight());
+            textBox.getOffset().sub(0, drow * textBox.getMeshData().getLineHeight());
         } else if (cursor.getRow() > verticalWindowStart + maxNumOfLines - 1) {
             int drow = cursor.getRow() - verticalWindowStart - maxNumOfLines + 1;
             verticalWindowStart += drow;
-            textBox.getOffset().add(0, drow * textBox.getMesh().getData().getLineHeight());
+            textBox.getOffset().add(0, drow * textBox.getMeshData().getLineHeight());
         }
     }
 

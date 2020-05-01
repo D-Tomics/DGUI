@@ -30,7 +30,7 @@ public abstract class D_TextComponent extends D_Component{
         this.cursor = new Cursor(textBox);
         this.addQuad(cursor);
 
-        this.style.setSize(cols * ONE_COL_SIZE, rows * textBox.getMesh().getData().getLineHeight());
+        this.style.setSize(cols * ONE_COL_SIZE, rows * textBox.getMeshData().getLineHeight());
         this.style.setColor(Color.WHITE);
         this.style.setBorderColor(Color.BLACK);
 
@@ -47,7 +47,7 @@ public abstract class D_TextComponent extends D_Component{
 
     public void setFontSize(float fontSize) {
         this.textBox.setFontSize(fontSize);
-        this.cursor.getStyle().setHeight(textBox.getMesh().getData().getLineHeight());
+        this.cursor.getStyle().setHeight(textBox.getMeshData().getLineHeight());
         style.notifyObservers();
     }
     public void setText(String text) {
