@@ -10,17 +10,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class TextRenderer {
+public class D_TextRenderer {
 
-    private static D_TextShader shader;
 
     private Window window;
-    public TextRenderer(Window window) {
+    private D_TextShader shader;
+    public D_TextRenderer(Window window) {
         this.window = window;
-        if(shader == null)
-            shader = new D_TextShader();
+        shader = new D_TextShader(window);
     }
     public void render(Map<Font, List<D_TextBox>> textMap) {
+        if(textMap == null) return;
         initGL();
         Set<Font> fonts = textMap.keySet();
         for(Font font : fonts) {
@@ -28,9 +28,10 @@ public class TextRenderer {
             font.getFontTexture().bind(0);
             for(D_TextBox text : textMap.get(font)) {
                 if(!text.isVisible()) continue;
+                text.update(window.getLoader());
                 text.getMesh().bind();
                 shader.load(text);
-                GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, text.getMesh().getData().getVertexCount());
+                GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, text.getMeshData().getVertexCount());
                 text.getMesh().unbind();
             }
             shader.stop();
