@@ -17,8 +17,8 @@ public class Keyboard{
     private static boolean[] keys = new boolean[GLFW_KEY_LAST];
     private static boolean[] toggleKeys = new boolean[GLFW_KEY_LAST];
 
-    protected static void init() {
-        Window.INSTANCE.addListener(new GLFWListener(GLFWKeyEvent.class) {
+    protected static void init(Window window) {
+        window.addListener(new GLFWListener(GLFWKeyEvent.class) {
             @Override
             public void invoke(GLFWEvent event) {
                 GLFWKeyEvent keyEvent = (GLFWKeyEvent)event;
