@@ -45,18 +45,18 @@ public final class Mouse {
     private static boolean scrollingY = false;
     private static boolean scrollingX = false;
 
-    protected static void init() {
+    protected static void init(Window window) {
 
-        Window.INSTANCE.addListener(new GLFWListener(GLFWMouseMoveEvent.class) {
+        window.addListener(new GLFWListener(GLFWMouseMoveEvent.class) {
             @Override
             public void invoke(GLFWEvent event) {
-                position.x = (float) ((GLFWMouseMoveEvent)event).getXpos() - Window.INSTANCE.getWidth()/2.0f;
-                position.y = -(float) ((GLFWMouseMoveEvent)event).getYpos() + Window.INSTANCE.getHeight()/2.0f;
+                position.x = (float) ((GLFWMouseMoveEvent)event).getXpos() - event.getSource().getWidth()/2.0f;
+                position.y = -(float) ((GLFWMouseMoveEvent)event).getYpos() + event.getSource().getHeight()/2.0f;
                 isMoving = true;
             }
         });
 
-        Window.INSTANCE.addListener(new GLFWListener(GLFWMouseButtonEvent.class) {
+        window.addListener(new GLFWListener(GLFWMouseButtonEvent.class) {
             @Override
             public void invoke(GLFWEvent event) {
                 GLFWMouseButtonEvent e = (GLFWMouseButtonEvent)event;
@@ -75,7 +75,7 @@ public final class Mouse {
             }
         });
 
-        Window.INSTANCE.addListener(new GLFWListener(GLFWScrollEvent.class) {
+        window.addListener(new GLFWListener(GLFWScrollEvent.class) {
             @Override
             public void invoke(GLFWEvent event) {
                 GLFWScrollEvent e = (GLFWScrollEvent)event;
@@ -96,24 +96,24 @@ public final class Mouse {
 
 
     private static long cursor;
-    public static void setCursor(long cursor) {
+    public static void setCursor(long cursor, Window window) {
         if(Mouse.cursor != cursor) {
             Mouse.cursor = cursor;
-            glfwSetCursor(Window.INSTANCE.getWindowPointer(),cursor);
+            glfwSetCursor(window.getWindowPointer(),cursor);
         }
     }
 
-    public static void hideCursor(boolean value) {
+    public static void hideCursor(boolean value, Window window) {
         if(value)
         {
-            glfwSetInputMode(Window.INSTANCE.getWindowPointer(),GLFW_CURSOR,GLFW_CURSOR_HIDDEN);
-            glfwSetInputMode(Window.INSTANCE.getWindowPointer(),GLFW_CURSOR,GLFW_CURSOR_DISABLED);
+            glfwSetInputMode(window.getWindowPointer(),GLFW_CURSOR,GLFW_CURSOR_HIDDEN);
+            glfwSetInputMode(window.getWindowPointer(),GLFW_CURSOR,GLFW_CURSOR_DISABLED);
             return;
         }
-        glfwSetInputMode(Window.INSTANCE.getWindowPointer(),GLFW_CURSOR,GLFW_CURSOR_NORMAL);
+        glfwSetInputMode(window.getWindowPointer(),GLFW_CURSOR,GLFW_CURSOR_NORMAL);
     }
-    public static void disableCursor() { glfwSetInputMode(Window.INSTANCE.getWindowPointer(),GLFW_CURSOR,GLFW_CURSOR_DISABLED); }
-    public static void enableCursor() { glfwSetInputMode(Window.INSTANCE.getWindowPointer(),GLFW_CURSOR,GLFW_CURSOR_NORMAL); }
+    public static void disableCursor(Window window) { glfwSetInputMode(window.getWindowPointer(),GLFW_CURSOR,GLFW_CURSOR_DISABLED); }
+    public static void enableCursor(Window window) { glfwSetInputMode(window.getWindowPointer(),GLFW_CURSOR,GLFW_CURSOR_NORMAL); }
 
     public static int getMods() { return mods; }
 
@@ -178,8 +178,8 @@ public final class Mouse {
     public static float getX() { return position.x; }
     public static float getY() { return position.y; }
 
-    public static float nGetX() { return position.x + Window.INSTANCE.getWidth()/2.0f; }
-    public static float nGetY() { return -position.y + Window.INSTANCE.getHeight()/2.0f; }
+    public static float nGetX(Window window) { return position.x + window.getWidth()/2.0f; }
+    public static float nGetY(Window window) { return -position.y + window.getHeight()/2.0f; }
 
     public static int getScrollY() { return yScroll; }
     public static int getScrollX() { return xScroll; }
@@ -193,8 +193,8 @@ public final class Mouse {
         @param  view - matrix tha defines a camera
         @return returns the ray from mouse position relative to a camera position
      */
-    public static Vector3f getRay(Matrix4f projection,Matrix4f view) {
-        tempVector.set(2 * getX() / (float) Window.INSTANCE.getWidth(), 2 * getY() / (float) Window.INSTANCE.getHeight(), -1.0f, 1.0f);//clipSpace : z is -1 to indicate forward dir
+    public static Vector3f getRay(Matrix4f projection,Matrix4f view, Window window) {
+        tempVector.set(2 * getX() / (float) window.getWidth(), 2 * getY() / (float) window.getHeight(), -1.0f, 1.0f);//clipSpace : z is -1 to indicate forward dir
         tempVector.mul(projection.invert(tempMatrix)).w = 0; // eyeSpace Vector
         tempVector.mul(view.invert(tempMatrix));   //worldSpace Vector
         ray.set(tempVector.x,tempVector.y,tempVector.z);
