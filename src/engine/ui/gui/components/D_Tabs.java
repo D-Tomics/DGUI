@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class D_Tabs extends D_Container{
 
-    private static final float QUAD_HEIGHT = 20;
+    private static final float QUAD_HEIGHT = 30;
 
     private D_GuiQuad currentQuad;
     private D_Panel currentTab;
