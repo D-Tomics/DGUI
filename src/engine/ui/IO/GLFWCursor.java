@@ -29,25 +29,25 @@ public class GLFWCursor {
     private static standardCursors previous = standardCursors.ARROW;
     private static standardCursors current = standardCursors.ARROW;
     private static boolean changed;
-    public static void setCursor(standardCursors cursor) {
+    public static void setCursor(Window window, standardCursors cursor) {
         if(cursor == current) return;
         changed = true;
         current = cursor;
-        set();
+        set(window);
     }
 
     public static standardCursors getCursor() {
         return current;
     }
 
-    private static void set() {
-        glfwSetCursor(Window.INSTANCE.getWindowPointer(),current.get());
+    private static void set(Window window) {
+        glfwSetCursor(window.getWindowPointer(),current.get());
     }
 
-    public static void reset() {
+    public static void reset(Window window) {
         if(previous == current) return;
         current = previous;
-        set();
+        set(window);
     }
 
 }

@@ -186,13 +186,13 @@ public final class D_GuiEventManager {
             topGui instanceof D_CheckBox ||
             topGui instanceof D_List<?> ||
             topGui instanceof D_Slider
-        ) GLFWCursor.setCursor(GLFWCursor.standardCursors.HAND);
+        ) GLFWCursor.setCursor(window,GLFWCursor.standardCursors.HAND);
         else if(
                 topGui instanceof D_Label ||
                 topGui instanceof D_TextComponent
-        ) GLFWCursor.setCursor(GLFWCursor.standardCursors.I_BEAM);
+        ) GLFWCursor.setCursor(window,GLFWCursor.standardCursors.I_BEAM);
         else
-            GLFWCursor.setCursor(GLFWCursor.standardCursors.ARROW);
+            GLFWCursor.setCursor(window,GLFWCursor.standardCursors.ARROW);
     }
 
 }
