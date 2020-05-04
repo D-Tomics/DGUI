@@ -329,7 +329,7 @@ public final class Window {
 
         glfwSetErrorCallback(new GLFWErrorCallback() {
             public void invoke(int error, long description) {
-                System.err.println(getDescription(description));
+                throw new IllegalStateException(getDescription(description));
             }
         });
 
