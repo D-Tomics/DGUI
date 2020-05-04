@@ -377,7 +377,6 @@ public final class Window {
         glfwSetMouseButtonCallback(window_ptr, new GLFWMouseButtonCallback() {
             @Override
             public void invoke(long window, int button, int action, int mods) {
-                if(!focused) return;
                 invokeEventListeners(new GLFWMouseButtonEvent(getThis(),button,action,mods));
                 if(action == GLFW_PRESS)
                     invokeEventListeners(new GLFWMouseButtonPressEvent(getThis(),button,mods));
@@ -389,7 +388,7 @@ public final class Window {
         glfwSetScrollCallback(window_ptr, new GLFWScrollCallback() {
             @Override
             public void invoke(long window, double xoffset, double yoffset) {
-                if(focused) invokeEventListeners(new GLFWScrollEvent(getThis(),xoffset,yoffset));
+                invokeEventListeners(new GLFWScrollEvent(getThis(),xoffset,yoffset));
             }
         });
 
