@@ -22,6 +22,7 @@ public final class D_GuiEventManager {
     private GLFWListener keyListener;
     private GLFWListener charListener;
     private GLFWListener scrollListener;
+    private GLFWListener focusLoseListener;
 
     public void init(Window window) {
         this.window = window;
@@ -55,15 +56,25 @@ public final class D_GuiEventManager {
             }
         };
 
+        this.focusLoseListener = new GLFWListener(GLFWWindowFocusLooseEvent.class) {
+            @Override
+            public void invoke(GLFWEvent event) {
+                topGui = null;
+                updateCursor();
+            }
+        };
+
         window.addListener(this.keyListener);
         window.addListener(this.charListener);
         window.addListener(this.scrollListener);
+        window.addListener(this.focusLoseListener);
     }
 
     public void destroy() {
         window.removeListener(this.keyListener);
         window.removeListener(this.charListener);
         window.removeListener(this.scrollListener);
+        window.removeListener(this.focusLoseListener);
     }
 
     public void update(ArrayList<D_Gui> guis) {
