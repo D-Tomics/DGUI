@@ -94,7 +94,8 @@ public final class D_GuiEventManager {
                 for(D_Gui quad : gui.getQuads())
                     topFound = update(quad,topFound);
             topFound = update(gui,topFound);
-            updateCursor();
+            if(window.isFocused())
+                updateCursor();
         }
     }
 
