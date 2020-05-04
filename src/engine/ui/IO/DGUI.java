@@ -5,6 +5,7 @@ import engine.ui.utils.Time;
 import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
+import static org.lwjgl.glfw.GLFW.glfwWaitEvents;
 
 public class DGUI {
 
@@ -26,7 +27,7 @@ public class DGUI {
         return exitRequested;
     }
 
-    public static void update() {
+    public static void update(boolean poll) {
         for(int i = 0; i < windowsList.size(); i++) {
             Window window = windowsList.get(i);
             if(window.didExit())  {
@@ -35,14 +36,17 @@ public class DGUI {
             }
             if(!window.isExitRequested()) {
                 window.makeCurrent();
-                window.update();
+                window.update(false,poll);
             } else {
                 window.destroy();
                 windowsList.remove(window);
             }
         }
         Time.update();
-        glfwPollEvents();
+        if(poll)
+            glfwPollEvents();
+        else
+            glfwWaitEvents();
     }
 
     public static void terminate() {
