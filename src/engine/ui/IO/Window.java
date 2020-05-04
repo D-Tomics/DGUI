@@ -109,7 +109,6 @@ public final class Window {
     }
 
     public void update() {
-        renderer.render();
         Mouse.update();
         guiEventManager.update(this.guiList);
         if(updatables != null ) updatables.forEach(Updatable::update);
@@ -117,6 +116,7 @@ public final class Window {
             tasks.forEach(Task::apply);
             tasks.clear();
         }
+        renderer.render();
 
         fps++;
         if(oneSecDelay.over()) {
