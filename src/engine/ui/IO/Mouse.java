@@ -7,6 +7,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -85,6 +86,15 @@ public final class Mouse {
                 xScroll = (int)e.getXoffset();
                 if(e.getXoffset() != 0)
                     scrollingX = true;
+            }
+        });
+
+        window.addListener(new GLFWListener(GLFWWindowCloseEvent.class) {
+            @Override
+            public void invoke(GLFWEvent event) {
+                pressedButton = MOUSE_NULL;
+                Arrays.fill(pressedButtons, 0);
+                Arrays.fill(pressCount, 0);
             }
         });
 
