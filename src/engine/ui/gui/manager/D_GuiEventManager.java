@@ -122,7 +122,7 @@ public final class D_GuiEventManager {
     private boolean checkHover(D_Gui gui) {
         float cx = gui.getStyle().getCenterX();
         float cy = gui.getStyle().getCenterY();
-        return Maths.checkPointCollision(Mouse.getX(),Mouse.getY(),cx,cy,gui.getStyle().getWidth(),gui.getStyle().getHeight());
+        return Maths.checkPointCollision(Mouse.getX(),Mouse.getY(),cx,cy,gui.getStyle().getWidth(),gui.getStyle().getHeight()) && window.isFocused();
     }
 
 
