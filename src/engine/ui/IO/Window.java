@@ -29,11 +29,12 @@ public final class Window {
     private static Delay oneSecDelay = new Delay(1000);
 
     private static boolean init;
-    private static void initGLFW() {
+    public static void initGLFW() {
         if(init) return;
         init = glfwInit();
         if(!init) throw  new IllegalStateException("could'nt initialize glfw");
         OpenAL.create();
+        Time.init();
     }
 
     public static void terminate() {
@@ -80,7 +81,7 @@ public final class Window {
         this.loader = new Loader(this);
         this.renderer = new MasterRenderer(this);
         initGLFW();
-
+        DGUI.load(this);
         if(INSTANCE == null) INSTANCE = this;
     }
 
@@ -271,7 +272,6 @@ public final class Window {
     public void exit() { glfwSetWindowShouldClose(window_ptr,true); }
 
     private void initializeComponents() {
-        Time.init();
         Mouse.init(this);
         Keyboard.init(this);
 
