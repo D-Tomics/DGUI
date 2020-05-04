@@ -108,7 +108,12 @@ public final class Window {
         INSTANCE = this;
     }
 
+    @Deprecated
     public void update() {
+        update(true,true);
+    }
+
+    void update(boolean update, boolean poll) {
         Mouse.update();
         guiEventManager.update(this.guiList);
         if(updatables != null ) updatables.forEach(Updatable::update);
@@ -124,8 +129,13 @@ public final class Window {
             fps = 0;
         }
         glfwSwapBuffers(window_ptr);
-        glfwPollEvents();
-        Time.update();
+        if(update) {
+            if(poll)
+                glfwPollEvents();
+            else
+                glfwWaitEvents();
+            Time.update();
+        }
     }
 
     public void destroy() {
