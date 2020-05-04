@@ -126,6 +126,7 @@ public final class Window {
     }
 
     public void destroy() {
+        invokeEventListeners(new GLFWWindowCloseEvent(this));
         renderer.cleanUp();
         guiEventManager.destroy();
         glfwDestroyWindow(window_ptr);
