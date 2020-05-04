@@ -26,7 +26,7 @@ public class DGUI {
         return exitRequested;
     }
 
-    public static void onUpdate() {
+    public static void update() {
         for(int i = 0; i < windowsList.size(); i++) {
             Window window = windowsList.get(i);
             if(window.didExit())  {
