@@ -78,7 +78,6 @@ public final class D_GuiEventManager {
     }
 
     public void update(ArrayList<D_Gui> guis) {
-        if(!window.isFocused()) return;
         boolean topFound = false;
         if(guis == null) return;
         if(topGui != null) {
