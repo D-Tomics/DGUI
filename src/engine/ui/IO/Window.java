@@ -60,6 +60,7 @@ public final class Window {
     private static float monitorAspectRatio;
 
     public static Window INSTANCE;
+    private static Window current;
 
     private Loader loader;
     private MasterRenderer renderer;
@@ -86,6 +87,8 @@ public final class Window {
     }
 
     public void makeCurrent() {
+        if(current == this) return;
+        current = this;
         glfwMakeContextCurrent(window_ptr);
     }
 
