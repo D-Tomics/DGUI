@@ -151,20 +151,21 @@ public final class Window {
         exited = true;
     }
 
-    public void addListener(Class<? extends GLFWEvent> eventClass, Listener listener) {
-        addListener(new GLFWListener(eventClass) {
+    public GLFWListener addListener(Class<? extends GLFWEvent> eventClass, Listener listener) {
+        return addListener(new GLFWListener(eventClass) {
             public void invoke(GLFWEvent event) {
                 listener.invoke(event);
             }
         });
     }
 
-    public void addListener(GLFWListener listener) {
+    public GLFWListener addListener(GLFWListener listener) {
         Objects.requireNonNull(listener,"listener should'nt be null");
         if(listenerMap == null) listenerMap = new HashMap<>();
         List<GLFWListener> listeners = listenerMap.computeIfAbsent(listener.getEventClass(), k -> new ArrayList<>());
-        if(listeners.contains(listener)) return;
+        if(listeners.contains(listener)) return null;
         listeners.add(listener);
+        return listener;
     }
 
     public void removeListener(GLFWListener listener) {
