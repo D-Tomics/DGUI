@@ -219,6 +219,12 @@ public final class Window {
 
     public void hint(int hint, int value) { glfwWindowHint(hint,value); }
 
+    public void focus() {
+        glfwFocusWindow(window_ptr);
+        focused = true;
+        INSTANCE = this;
+    }
+
     //getters
     public List<D_Gui>     getGuiList()     { return guiList; }
     public List<Updatable> getUpdatables()  { return updatables; }
