@@ -103,6 +103,10 @@ public final class Window {
 
         initializeComponents();
 
+        INSTANCE = this;
+    }
+
+    public void show() {
         glfwShowWindow(window_ptr);
         focused = true;
         INSTANCE = this;
