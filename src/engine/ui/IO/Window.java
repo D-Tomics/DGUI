@@ -87,6 +87,7 @@ public final class Window {
     }
 
     public void makeCurrent() {
+        if(this.didExit()) return;
         if(current == this) return;
         current = this;
         glfwMakeContextCurrent(window_ptr);
