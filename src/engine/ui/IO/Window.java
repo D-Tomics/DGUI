@@ -95,6 +95,7 @@ public final class Window {
     public void create() { create(null, true); }
 
     public void create(Window share, boolean createContext) {
+        hint(GLFW_VISIBLE,GLFW_FALSE);
         window_ptr = glfwCreateWindow(width,height,title, fullScreen ? glfwGetPrimaryMonitor() : 0, share != null ? share.getWindowPointer() : 0);
         if(window_ptr == 0) throw new IllegalStateException("window creation failed");
         glfwMakeContextCurrent(window_ptr);
@@ -328,6 +329,7 @@ public final class Window {
                 aspectRatio = (float)w/(float)h;
                 GL11.glViewport(0,0,width,height);
                 invokeEventListeners(new GLFWWindowSizeEvent(getThis()));
+                if(guiList != null) guiList.forEach(gui -> gui.getStyle().notifyObservers());
             }
         });
 
