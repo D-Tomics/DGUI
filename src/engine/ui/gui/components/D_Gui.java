@@ -78,8 +78,8 @@ public abstract class D_Gui implements Observer {
     protected abstract void onUpdate();
     protected abstract void onStateChange(Observable o);
 
-    public void addEventListener(Class<? extends D_GuiEvent> d_guiEventClass, Listener listener) {
-        addEventListener(new D_GuiEventListener(d_guiEventClass) {
+    public D_GuiEventListener addEventListener(Class<? extends D_GuiEvent> d_guiEventClass, Listener listener) {
+        return addEventListener(new D_GuiEventListener(d_guiEventClass) {
             @Override
             public void invokeEvent(D_GuiEvent event) {
                 listener.invoke(event);
@@ -87,8 +87,8 @@ public abstract class D_Gui implements Observer {
         });
     }
 
-    public void addEventListener(D_GuiEventListener listener) {
-        if(listener == null) return;
+    public D_GuiEventListener addEventListener(D_GuiEventListener listener) {
+        if(listener == null) return null;
         if(eventListeners == null)
             eventListeners = new HashMap<>();
         Class<? extends D_GuiEvent> eventClass = listener.getEventClass();
@@ -98,6 +98,7 @@ public abstract class D_Gui implements Observer {
             eventListeners.put(eventClass,listeners);
         }
         listeners.add(listener);
+        return listener;
     }
 
     public void removeListener(D_GuiEventListener listener) {
