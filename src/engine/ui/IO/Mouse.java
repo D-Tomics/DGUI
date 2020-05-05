@@ -187,6 +187,7 @@ public final class Mouse {
 
     public static float getX() { return position.x; }
     public static float getY() { return position.y; }
+    public static Vector2f getPosition() { return position; }
 
     public static float nGetX(Window window) { return position.x + window.getWidth()/2.0f; }
     public static float nGetY(Window window) { return -position.y + window.getHeight()/2.0f; }
