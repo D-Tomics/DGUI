@@ -223,6 +223,12 @@ public final class Window {
     public List<D_Gui>     getGuiList()     { return guiList; }
     public List<Updatable> getUpdatables()  { return updatables; }
 
+    public int[] getPos() {
+        int[] x = new int[1];
+        int[] y = new int[1];
+        glfwGetWindowPos(window_ptr,x,y);
+        return new int[] { x[0], y[0]};
+    }
 
     public int getFrames() { return frames; }
     public long getWindowPointer() { return window_ptr; }
@@ -260,6 +266,10 @@ public final class Window {
     private Window getThis() { return this; }
 
     //setters
+    public void setPosition(float x, float y) {
+        glfwSetWindowPos(window_ptr, (int) x, (int) y);
+    }
+
     public void setSize(int width, int height) {
         this.width = width;
         this.height = height;
