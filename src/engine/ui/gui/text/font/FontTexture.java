@@ -22,6 +22,8 @@ import static org.lwjgl.stb.STBImage.*;
 public class FontTexture {
 
     private int id;
+    private int width;
+    private int height;
 
     public FontTexture(String path) {
         try {
@@ -46,6 +48,9 @@ public class FontTexture {
         GL11.glDeleteTextures(id);
     }
 
+    public int getWidth() { return width; }
+    public int getHeight() { return height; }
+
     private int load(String path) throws IOException {
         int[] w = {1}, h = {1}, c = {1};
         InputStream in = this.getClass().getResourceAsStream(path);
@@ -68,6 +73,8 @@ public class FontTexture {
 
     private int generateTexture(int width, int height, ByteBuffer data) {
         int id = GL11.glGenTextures();
+        this.width = width;
+        this.height = height;
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, data);
 
