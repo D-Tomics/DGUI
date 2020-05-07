@@ -22,14 +22,29 @@ public class Flow extends Layout {
         currentRow.clear();
         for(D_Gui child : parent.getChildList()){
             if(x + child.getStyle().getWidth() + child.getStyle().getMarginWidth() + parent.getStyle().getPaddingRight() > parent.getStyle().getX() + parent.getStyle().getWidth()) {
+
+                float rowHeight = getRowHeight(currentRow);
+                float rowWidth = getRowWidth(currentRow);
+                if(getMaxHeight() < Math.abs(y - parent.getStyle().getY()) + rowHeight)
+                    setMaxHeight(Math.abs(y - parent.getStyle().getY()) + rowHeight);
+                if(getMaxWidth() < rowWidth)
+                    setMaxWidth(rowWidth);
+
                 positionComponents(parent,currentRow,y);
                 x = parent.getStyle().getX() + parent.getStyle().getPaddingLeft();
-                y -=  getRowHeight(currentRow);
+                y -=  rowHeight;
                 currentRow.clear();
             }
+
+            float height = Math.abs(y - parent.getStyle().getY()) + child.getStyle().getHeight() + child.getStyle().getMarginHeight();
+            if( height > getMaxHeight()) setMaxHeight(height);
+
             currentRow.add(child);
             x += child.getStyle().getWidth() + child.getStyle().getMarginWidth();
         }
+
+        float rowWidth = getRowWidth(currentRow);
+        if(getMaxWidth() < rowWidth) setMaxWidth(rowWidth);
 
         positionComponents(parent,currentRow,y);
     }
