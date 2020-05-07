@@ -28,7 +28,7 @@ public class D_List<T> extends D_Component{
 
     public D_List(T...items) {
         this.setScrollable(true);
-        this.style.setBounds(0,0,CELL_WIDTH,CELL_HEIGHT);
+        this.style.setBounds(0,0,CELL_WIDTH,CELL_HEIGHT, false);
         this.container = new D_GuiQuad(CELL_WIDTH,CELL_HEIGHT * Math.min(items.length, windowSize));
         this.container.setVisible(false);
         this.container.setHoverable(false);
@@ -76,7 +76,18 @@ public class D_List<T> extends D_Component{
     @Override
     public void onStateChange(Observable o) {
         if(this.getQuads() != null) {
-            float y = style.getY() - 3 * CELL_HEIGHT / 2.0f;
+            container.style.setPosition(style.getX(), style.getY() - CELL_HEIGHT);
+            if(container.style.getY() - container.style.getHeight() <= -Window.INSTANCE.getHeight() / 2.0f) {
+                float dy = container.style.getY() - container.style.getHeight() + Window.INSTANCE.getHeight() / 2.0f;
+                container.style.setPosition(style.getX(), style.getY() - dy);
+            }
+
+            if(container.style.getY() >= Window.INSTANCE.getHeight() / 2.0f) {
+                float dy = container.style.getY() - Window.INSTANCE.getHeight() / 2.0f;
+                container.style.setPosition(style.getX(), style.getY() - dy);
+            }
+
+            float y = container.style.getY() - CELL_HEIGHT / 2.0f;
             for(int i = 1; i <= items.size(); i++) {
                 D_GuiQuad cell = getQuads().get(i);
                 if(i >= windowStart && i <= windowStop) {
@@ -96,16 +107,6 @@ public class D_List<T> extends D_Component{
                 selected.setHoverable(false);
                 container.setVisible(false);
             } else {
-                container.style.setPosition(style.getX(), style.getY() - CELL_HEIGHT);
-                if(container.style.getY() - container.style.getHeight() <= -Window.INSTANCE.getHeight() / 2.0f) {
-                    float dy = container.style.getY() - container.style.getHeight() + Window.INSTANCE.getHeight() / 2.0f;
-                    container.style.setPosition(style.getX(), style.getY() - dy);
-                }
-
-                if(container.style.getY() >= Window.INSTANCE.getHeight() / 2.0f) {
-                    float dy = container.style.getY() - Window.INSTANCE.getHeight() / 2.0f;
-                    container.style.setPosition(style.getX(), style.getY() - dy);
-                }
                 container.setVisible(true);
                 selected.setHoverable(true);
             }
