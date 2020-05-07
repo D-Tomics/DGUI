@@ -39,6 +39,9 @@ public class Flow extends Layout {
             float height = Math.abs(y - parent.getStyle().getY()) + child.getStyle().getHeight() + child.getStyle().getMarginHeight();
             if( height > getMaxHeight()) setMaxHeight(height);
 
+            if(height > parent.getStyle().getHeight())
+                parent.getStyle().setHeight(height, false);
+
             currentRow.add(child);
             x += child.getStyle().getWidth() + child.getStyle().getMarginWidth();
         }
