@@ -20,7 +20,11 @@ public class D_Tabs extends D_Container{
     private D_GuiTransition fadeIn = new D_GuiTransition("fadeIn",0.3f,0.3f,0.8f, (gui, aFloat) -> gui.style.setAlpha(aFloat));
 
     public D_Tabs(float x, float y, float width, float height) {
+        this();
         this.style.setBounds(x,y,width,height);
+    }
+
+    public D_Tabs() {
         this.style.setAlpha(0);
         this.style.setBorderSize(1);
         this.setLayout(null);
@@ -35,23 +39,20 @@ public class D_Tabs extends D_Container{
         add(panel);
 
         if(panel.style.getWidth() > this.style.getWidth())
-            this.style.setWidth(panel.style.getWidth());
-        else {
-            panel.style.setWidth(this.style.getWidth());
-            panel.style.notifyObservers();
-        }
+            this.style.setWidth(panel.style.getWidth(), false);
+        else
+            panel.style.setWidth(this.style.getWidth(), false);
 
         if(panel.style.getHeight() > this.style.getHeight() - QUAD_HEIGHT)
-            this.style.setHeight(panel.style.getHeight() + QUAD_HEIGHT);
-        else {
-            panel.style.setHeight(this.style.getHeight() - QUAD_HEIGHT);
-        }
+            this.style.setHeight(panel.style.getHeight() + QUAD_HEIGHT, false);
+        else
+            panel.style.setHeight(this.style.getHeight() - QUAD_HEIGHT, false);
 
 
         D_GuiQuad quad = new D_GuiQuad(this.style.getWidth() / tabs.size(), QUAD_HEIGHT,tabName);
         quad.getTextBox().setTextColor(Color.WHITE);
         quad.getTextBox().getTextColor().setBrightness(0.1f);
-        quad.style.setPosition(style.getX(), style.getY());
+        quad.style.setPosition(style.getX(), style.getY(), false);
         quad.style.setColor(color);
         quad.style.getColor().setBrightness(0.5f);
 
@@ -70,7 +71,6 @@ public class D_Tabs extends D_Container{
 
             style.notifyObservers();
         });
-        quad.style.notifyObservers();
         addQuad(quad);
 
         if(currentTab == null) {
@@ -106,14 +106,24 @@ public class D_Tabs extends D_Container{
             for(D_GuiQuad quad : getQuads()) {
                 quad.style.setBounds(x,style.getY(),style.getWidth() / tabs.size(),QUAD_HEIGHT);
                 x += style.getWidth() / tabs.size();
-                quad.style.notifyObservers();
             }
         }
 
         if(getChildList() != null) {
             for(D_Gui child : getChildList()) {
-                if(child == currentTab)
-                    child.style.setPosition(style.getX(), style.getY() - QUAD_HEIGHT);
+                if(child == currentTab) {
+                    child.style.setPosition(style.getX(), style.getY() - QUAD_HEIGHT, false);
+
+                    if(child.style.getHeight() + QUAD_HEIGHT> this.style.getHeight())
+                        this.style.setHeight(child.style.getHeight() + QUAD_HEIGHT, false);
+                    else
+                        child.style.setHeight(this.style.getHeight() - QUAD_HEIGHT, false);
+
+                    if(child.style.getWidth() > this.style.getWidth())
+                        this.style.setWidth(child.style.getWidth(), false);
+                    else
+                        child.style.setWidth(this.style.getWidth(), false);
+                }
                 else
                     child.setVisible(false);
                 child.style.notifyObservers();
