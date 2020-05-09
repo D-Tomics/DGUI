@@ -1,23 +1,23 @@
 package engine.ui.gui.manager.events;
 
-import engine.ui.gui.components.D_Slider;
+import engine.ui.gui.components.D_Gui;
 
-public class D_GuiValueChangeEvent extends D_GuiEvent{
+public class D_GuiValueChangeEvent<T> extends D_GuiEvent{
 
-    private float prevValue;
-    private float newValue;
+    private T prevValue;
+    private T newValue;
 
-    public D_GuiValueChangeEvent(D_Slider slider, float prevValue, float newValue) {
+    public D_GuiValueChangeEvent(D_Gui slider, T prevValue, T newValue) {
         super(slider);
         this.prevValue = prevValue;
         this.newValue = newValue;
     }
 
-    public float getPrevValue() {
+    public T getPrevValue() {
         return prevValue;
     }
 
-    public float getNewValue() {
+    public T getNewValue() {
         return newValue;
     }
 }

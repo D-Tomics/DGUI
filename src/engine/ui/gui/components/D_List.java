@@ -160,10 +160,12 @@ public class D_List<T> extends D_Component{
     }
 
     private void onSelect(D_GuiQuad gui) {
+        D_GuiQuad previous = selected;
         selected.setHoverable(true);
         selected = gui;
         selected.style.setBorderSize(0);
         this.setSelected(false);
+        this.stackEvent(new D_GuiValueChangeEvent<>(this,items.get(previous.getText()),items.get(selected.getText())));
     }
 
     private void onScroll(D_Event event) {
