@@ -33,10 +33,10 @@ public final class D_TextMaster {
         window.addListener(sizeChangeListener);
     }
 
-    protected static void load(D_TextBox text) {
+    protected static void load(Window window, D_TextBox text) {
         if(textMap == null)
             textMap = new HashMap<>();
-        Map<Font, List<D_TextBox>> map = textMap.computeIfAbsent(Window.INSTANCE, k -> new HashMap<>());
+        Map<Font, List<D_TextBox>> map = textMap.computeIfAbsent(window, k -> new HashMap<>());
         List<D_TextBox> texts = map.computeIfAbsent(text.getFont(),k -> new ArrayList<>());
         texts.add(text);
     }

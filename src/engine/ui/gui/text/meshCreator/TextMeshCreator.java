@@ -11,11 +11,11 @@ public final class TextMeshCreator {
 
     public static final float LINE_HEIGHT = 1;
 
-    public static TextMeshData createTextMesh(D_TextBox text) {
+    public static TextMeshData createTextMesh(Window window, D_TextBox text) {
         List<Float> vertexData = new ArrayList<Float>();
 
         float vps = LINE_HEIGHT / text.getFont().getFontFile().getLineHeight();
-        float hps = vps / Window.INSTANCE.getAspectRatio();
+        float hps = vps / window.getAspectRatio();
 
 
         float maxWidth = 0;
