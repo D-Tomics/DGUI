@@ -4,16 +4,13 @@
 layout (location = 0) in vec2 aVertex;
 layout (location = 1) in vec2 aTexCoords;
 
-out vec2 glPosition;
 out vec2 vertex;
 out vec2 texCoords;
 
-uniform float fontSize;
 uniform mat4 model;
 
 void main() {
     gl_Position = model *  vec4(aVertex,0,1);
-    glPosition = gl_Position.xy;
     vertex = vec2(model[0][0] * aVertex.x, model[1][1] * aVertex.y);
     texCoords = aTexCoords;
 }
@@ -24,7 +21,6 @@ void main() {
 out vec4 aColor;
 in vec2 texCoords;
 
-in vec2 glPosition;
 in vec2 vertex;
 
 uniform sampler2D texAtlas;
