@@ -15,7 +15,7 @@ import java.util.List;
 
 public class D_TextBox {
 
-    private static final Fonts DEFAULT = Fonts.Agency_FB;
+    private static final Fonts DEFAULT = Fonts.Courier_New;
 
     private boolean wrapText;
 
@@ -58,8 +58,8 @@ public class D_TextBox {
         this.position = new Vector2f(0);
         this.offset = new Vector2f(0);
         this.fontSize = fontSize;
-        this.charWidth = 0.45f;
-        this.charEdge = 0.19f;
+        this.charWidth = 0.4212f;
+        this.charEdge = 0.309f;
         this.wrapText = false;
         this.window = Window.INSTANCE;
 
