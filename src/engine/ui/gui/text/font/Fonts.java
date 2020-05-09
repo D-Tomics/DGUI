@@ -8,7 +8,8 @@ public enum Fonts {
     Courier_New(8),
     Roboto_Thin(8),
     Candara(8),
-    Agency_FB(8);
+    Agency_FB(8),
+    Segoe_UI(5);
 
     private Font font;
     private float desiredPadding ;
