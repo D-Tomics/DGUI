@@ -342,11 +342,13 @@ public final class Window {
         glfwSetWindowSizeCallback(window_ptr, new GLFWWindowSizeCallback() {
             public void invoke(long window, int w, int h) {
                 getThis().makeCurrent();
+                float prevWidth = width;
+                float prevHeight = height;
                 width = w;
                 height = h;
                 aspectRatio = (float)w/(float)h;
                 GL11.glViewport(0,0,width,height);
-                invokeEventListeners(new GLFWWindowSizeEvent(getThis()));
+                invokeEventListeners(new GLFWWindowSizeEvent(getThis(),prevWidth,prevHeight));
                 if(guiList != null) guiList.forEach(gui -> gui.getStyle().notifyObservers());
             }
         });
