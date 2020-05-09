@@ -11,8 +11,10 @@ public final class TextMeshCreator {
 
     public static final float LINE_HEIGHT = 1;
 
+    private static List<Float> vertexData;
     public static TextMeshData createTextMesh(Window window, D_TextBox text) {
-        List<Float> vertexData = new ArrayList<Float>();
+        if(vertexData == null)
+            vertexData = new ArrayList<>();
 
         float vps = LINE_HEIGHT / text.getFont().getFontFile().getLineHeight();
         float hps = vps / window.getAspectRatio();
@@ -66,15 +68,19 @@ public final class TextMeshCreator {
             cursorY -= LINE_HEIGHT;
         }
 
-        return new TextMeshData(
-                listToArray(vertexData),
-                vertexData.size() / 4,
-                lines,
-                maxWidth * relativeFontSize / 2.0f, // maxWidth is in screen space of (0,1)=> needs conversion
-                // (fontSize / Window.getWidth()) * Window.getWidth() / 2
-                (lines.size() * LINE_HEIGHT) * text.getFontSize() / 2.0f
-                // (fontSize / Window.getHeight()) * Window.getHeight() / 2
-        );
+        try {
+            return new TextMeshData(
+                    listToArray(vertexData),
+                    vertexData.size() / 4,
+                    lines,
+                    maxWidth * relativeFontSize / 2.0f, // maxWidth is in screen space of (0,1)=> needs conversion
+                    // (fontSize / Window.getWidth()) * Window.getWidth() / 2
+                    (lines.size() * LINE_HEIGHT) * text.getFontSize() / 2.0f
+                    // (fontSize / Window.getHeight()) * Window.getHeight() / 2
+            );
+        } finally {
+            vertexData.clear();
+        }
     }
 
     private static void addCharacterDataToVertexData(List<Float> vertexData, FontChar character, float cursorX, float cursorY, float hps, float vps) {
