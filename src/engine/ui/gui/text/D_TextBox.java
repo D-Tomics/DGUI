@@ -1,5 +1,6 @@
 package engine.ui.gui.text;
 
+import engine.ui.IO.Window;
 import engine.ui.gui.renderer.Loader;
 import engine.ui.gui.text.font.Font;
 import engine.ui.gui.text.font.Fonts;
@@ -20,6 +21,8 @@ public class D_TextBox {
 
     private float boxWidth;
     private float boxHeight;
+
+    private Window window;
 
     private Font font;
     private String text;
@@ -58,6 +61,7 @@ public class D_TextBox {
         this.charWidth = 0.45f;
         this.charEdge = 0.19f;
         this.wrapText = false;
+        this.window = Window.INSTANCE;
 
         this.font = font;
         this.centered = centered;
@@ -65,8 +69,8 @@ public class D_TextBox {
         this.boxWidth = boxWidth;
         this.boxHeight = boxHeight;
 
-        this.meshData = TextMeshCreator.createTextMesh(this);
-        D_TextMaster.load(this);
+        this.meshData = TextMeshCreator.createTextMesh(window,this);
+        D_TextMaster.load(window, this);
     }
 
     public boolean isCentered() { return centered; }
@@ -167,13 +171,13 @@ public class D_TextBox {
 
         D_TextMaster.remove(this);
         this.font = font;
-        D_TextMaster.load(this);
+        D_TextMaster.load(window,this);
 
         requestUpdate();
     }
 
     public void requestUpdate() {
-        meshData = TextMeshCreator.createTextMesh(this);
+        meshData = TextMeshCreator.createTextMesh(window,this);
         update = true;
     }
 
