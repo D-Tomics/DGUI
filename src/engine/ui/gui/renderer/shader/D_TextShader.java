@@ -55,7 +55,7 @@ public final class D_TextShader extends ShaderProgram {
                 Maths.createModelMatrix(
                         text.getPosition().x + text.getOffset().x,
                         text.getPosition().y + text.getOffset().y,
-                        text.getFontSize(),
+                        text.getFontSize() * window.getAspectRatio(),
                         text.getFontSize(),
                         true,
                         window

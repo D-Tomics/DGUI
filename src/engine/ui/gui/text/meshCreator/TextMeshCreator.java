@@ -17,12 +17,31 @@ public final class TextMeshCreator {
         float vps = LINE_HEIGHT / text.getFont().getFontFile().getLineHeight();
         float hps = vps / window.getAspectRatio();
 
-
         float maxWidth = 0;
 
+        //here vps is a constant for a font type. while hps is dependant on windows dimensions
+        //if we just used font size of the text for widths and heights calculation, when window resize happens
+        //the text becomes stretched or compressed. To avoid this we have to counter the change in window aspect ratio in hps.
+        // So we need to change the font size relation to window size change(aspect ratio change).
+        // To achieve this we need to multiply font size with aspect ratio of window , we get font size in relation to window,
+        // but keeps the text not affected by stretching.
+        // Since vps is a constant we don't need to change the font size for height calculations.
+        // hence consider where we calculate width of the text
+        //          (a + b + c + ...) * hps * fontSize / 2 ---(1)
+        // here a,b,c is the char widths of each characters in the text
+        //          hps = vps / wAr ----{2} , wAr is window aspect ratio
+        //          (2) in (1) =>
+        //                      (a + b + c + .....) * (vps / wAr) * fontSize / 2 ----(3)
+        //from above equation its clear that when ever wAr changes width stretches or compresses
+        // to counter that we take,
+        //           fontSize = fontSize * wAr
+        //            (3)=> (a + b + c + ....) * vps * fontSize / 2
+        // so in effect the width or height of the text remains unchanged by window resize.
+        // Only down side is this calculation needs to be done when ever the window resize occurs. Otherwise the text will start
+        // stretching
+        float relativeFontSize = text.getFontSize() * window.getAspectRatio();
 
-        List<Line> lines = createStructure(text,hps);
-
+        List<Line> lines = createStructure(window,text,hps,relativeFontSize);
 
         float cursorX;
         float cursorY = 0;
@@ -35,7 +54,7 @@ public final class TextMeshCreator {
             //box size in normalized screen space form is 2 * boxSize / WindowWidth;
             cursorX =
                     text.isCentered() ?
-                            text.getBoxWidth() / text.getFontSize() - line.getMaxWidth() * 0.5f
+                            text.getBoxWidth() / relativeFontSize - line.getMaxWidth() * 0.5f
                             :
                             0;
             if(line.getMaxWidth() > maxWidth)
@@ -51,10 +70,10 @@ public final class TextMeshCreator {
                 listToArray(vertexData),
                 vertexData.size() / 4,
                 lines,
-                maxWidth * text.getFontSize() / 2.0f, // maxWidth is in screen space of (0,1)=> needs conversion
-                // (text.getFontSize() / Window.getWidth()) * Window.getWidth() / 2
+                maxWidth * relativeFontSize / 2.0f, // maxWidth is in screen space of (0,1)=> needs conversion
+                // (fontSize / Window.getWidth()) * Window.getWidth() / 2
                 (lines.size() * LINE_HEIGHT) * text.getFontSize() / 2.0f
-                // (text.getFontSize() / Window.getHeight()) * Window.getHeight() / 2
+                // (fontSize / Window.getHeight()) * Window.getHeight() / 2
         );
     }
 
@@ -71,18 +90,18 @@ public final class TextMeshCreator {
         );
     }
 
-    private static List<Line> createStructure(D_TextBox textBox, float hps) {
+    private static List<Line> createStructure(Window window, D_TextBox textBox, float hps, float relativeFontSize) {
         List<Line> lines = textBox.getLines() == null ? new ArrayList<>() : textBox.getLines();
         lines.clear();
         char[] characterArray = textBox.getText().toCharArray();
 
-        Line currentLine = new Line(textBox.getBoxWidth(), textBox.getFontSize());
+        Line currentLine = new Line(textBox.getBoxWidth(), relativeFontSize);
         lines.add(currentLine);
         for(char character : characterArray) {
             FontChar fontCharacter = textBox.getFont().getFontFile().getFontChar(character);
             boolean added = currentLine.addCharToLine(fontCharacter, textBox.isWrapped(), hps);
             if(!added) {
-                currentLine = new Line(textBox.getBoxWidth(), textBox.getFontSize());
+                currentLine = new Line(textBox.getBoxWidth(), relativeFontSize);
                 currentLine.addCharToLine(fontCharacter,textBox.isWrapped(),hps);
                 lines.add(currentLine);
             }
