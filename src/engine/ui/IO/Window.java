@@ -12,6 +12,7 @@ import engine.ui.utils.Time;
 import engine.ui.utils.abstractions.Listener;
 import engine.ui.utils.abstractions.Task;
 import engine.ui.utils.abstractions.Updatable;
+import org.joml.Vector2f;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
@@ -281,6 +282,10 @@ public final class Window {
         this.width = width;
         this.height = height;
         glfwSetWindowSize(window_ptr, width, height);
+    }
+
+    public void setSize(Vector2f size) {
+        setSize((int) size.x, (int) size.y);
     }
 
     public void setFullScreen(boolean fullScreen) {
