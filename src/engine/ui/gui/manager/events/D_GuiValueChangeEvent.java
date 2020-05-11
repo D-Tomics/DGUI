@@ -7,8 +7,8 @@ public class D_GuiValueChangeEvent<T> extends D_GuiEvent{
     private T prevValue;
     private T newValue;
 
-    public D_GuiValueChangeEvent(D_Gui slider, T prevValue, T newValue) {
-        super(slider);
+    public D_GuiValueChangeEvent(D_Gui gui, T prevValue, T newValue) {
+        super(gui);
         this.prevValue = prevValue;
         this.newValue = newValue;
     }
