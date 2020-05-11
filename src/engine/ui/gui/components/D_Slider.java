@@ -13,7 +13,7 @@ import static org.lwjgl.glfw.GLFW.*;
 public class D_Slider extends D_Component{
 
     private static final float SLIDER_WIDTH = 125;
-    private static final float SLIDER_HEIGHT = 20;
+    private static final float SLIDER_HEIGHT = 30.0F;
 
     private float value = 0;
     private float minValue;
@@ -33,6 +33,7 @@ public class D_Slider extends D_Component{
 
     public D_Slider(float minValue, float maxValue) {
         this.bar = new D_GuiQuad();
+        this.bar.setHoverable(false);
         this.addQuad(bar);
         this.minValue = minValue;
         this.maxValue = maxValue;
@@ -47,7 +48,7 @@ public class D_Slider extends D_Component{
         this.addText(valueText);
 
         this.addConstraints(new D_TextAlignTop(valueText,0));
-        this.addConstraints(new D_TextAlignRight(valueText,0));
+        this.addConstraints(new D_TextAlignRight(valueText,5));
     }
 
     public D_Slider(float minValue, float maxValue, float value) {
@@ -72,7 +73,7 @@ public class D_Slider extends D_Component{
             value = (xRelativeToValue/style.getWidth()) * (maxValue - minValue)   + minValue;
             this.valueText.setText(value+"");
             style.notifyObservers();
-            this.stackEvent(new D_GuiValueChangeEvent(this, prevVal, value));
+            this.stackEvent(new D_GuiValueChangeEvent<>(this, prevVal, value));
         }
 
         if(this.isFocused()) {
@@ -121,7 +122,7 @@ public class D_Slider extends D_Component{
             value = minValue;
         else if(value > maxValue) value = maxValue;
         float prevVal = this.value;
-        this.stackEvent(new D_GuiValueChangeEvent(this, prevVal, value));
+        this.stackEvent(new D_GuiValueChangeEvent<>(this, prevVal, value));
         this.value = value;
         this.xRelativeToValue = ((value - minValue)/(maxValue - minValue)) * style.getWidth();
         this.valueText.setText(this.value+"");
