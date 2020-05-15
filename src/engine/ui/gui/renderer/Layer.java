@@ -7,6 +7,7 @@ import engine.ui.gui.text.font.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This class represents a single layer in a gui system. Its basically a wrapper class for a List of guis and a text map.
@@ -27,8 +28,13 @@ public class Layer {
 
     protected void push(D_Gui gui) {
         guis.add(gui);
-        if(gui.getTextMap() != null)
-            textMap.putAll(gui.getTextMap());
+        if(gui.getTextMap() != null) {
+            Set<Font> fonts = gui.getTextMap().keySet();
+            for(Font font : fonts) {
+                List<D_TextBox> texts = textMap.computeIfAbsent(font,e ->new ArrayList<>());
+                texts.addAll(gui.getTextMap().get(font));
+            }
+        }
     }
 
     protected ArrayList<D_Gui> getGuis() {
