@@ -8,6 +8,7 @@ import engine.ui.gui.manager.events.D_GuiEvent;
 import engine.ui.gui.manager.events.D_GuiEventListener;
 import engine.ui.gui.manager.events.D_GuiMousePressEvent;
 import engine.ui.gui.text.D_TextBox;
+import engine.ui.gui.text.font.Font;
 import engine.ui.utils.abstractions.Listener;
 import engine.ui.utils.observers.Observable;
 import engine.ui.utils.observers.Observer;
@@ -46,11 +47,11 @@ public abstract class D_Gui implements Observer {
     private boolean hoverable;
 
     private D_Gui parent;
-    private ArrayList<D_TextBox> texts;
     private ArrayList<D_GuiQuad> quads;
     private ArrayList<D_Constraint> constraints;
     private ArrayList<D_GuiAnimation> animations;
     private HashMap<Class<?>, ArrayList<D_GuiEventListener>> eventListeners;
+    private HashMap<Font,ArrayList<D_TextBox>> textMap;
 
     public D_Gui() {
 
@@ -206,8 +207,10 @@ public abstract class D_Gui implements Observer {
         this.visible = visible;
         if(this.quads != null)
             for(D_GuiQuad quad : quads) quad.setVisible(visible);
-        if(this.texts != null)
-            this.texts.forEach(txt -> txt.setVisible(visible));
+        if(this.textMap != null){
+            Set<Font> fonts = textMap.keySet();
+            for(Font font : fonts) for(D_TextBox textBox : textMap.get(font)) textBox.setVisible(visible);
+        }
         this.style.notifyObservers();
     }
     public void setScrollable(boolean scrollable) { this.scrollable = scrollable; }
@@ -237,6 +240,7 @@ public abstract class D_Gui implements Observer {
     public Style getStyle() { return style; }
     public D_Gui getParent() { return parent; }
     public ArrayList<D_GuiQuad> getQuads() { return quads; }
+    public HashMap<Font, ArrayList<D_TextBox>> getTextMap() { return textMap; }
 
     public D_Gui getRoot() {
         if(this.parent != null)
@@ -263,16 +267,17 @@ public abstract class D_Gui implements Observer {
 
     protected void addText(D_TextBox textBox) {
         if(textBox == null) return;
-        if(texts == null) texts = new ArrayList<>();
+        if(textMap == null) textMap = new HashMap<>();
+        ArrayList<D_TextBox> texts = textMap.computeIfAbsent(textBox.getFont(), k -> new ArrayList<>());
         if(texts.contains(textBox)) return;
         texts.add(textBox);
         style.notifyObservers();
     }
 
     protected void removeText(D_TextBox textBox) {
+        if(textMap == null) return;
         if(textBox == null) return;
-        if(texts == null) return;
-        texts.remove(textBox);
+        textMap.get(textBox.getFont()).remove(textBox);
     }
 
 }
