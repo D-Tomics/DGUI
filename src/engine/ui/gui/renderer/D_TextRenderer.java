@@ -12,22 +12,22 @@ import java.util.Set;
 
 public class D_TextRenderer {
 
-
     private Window window;
     private D_TextShader shader;
+
     public D_TextRenderer(Window window) {
         this.window = window;
         shader = new D_TextShader(window);
     }
+
     public void render(Map<Font, List<D_TextBox>> textMap) {
-        if(textMap == null) return;
-        initGL();
+        if (textMap == null) return;
         Set<Font> fonts = textMap.keySet();
-        for(Font font : fonts) {
+        for (Font font : fonts) {
             shader.start();
             font.getFontTexture().bind(0);
-            for(D_TextBox text : textMap.get(font)) {
-                if(!text.isVisible()) continue;
+            for (D_TextBox text : textMap.get(font)) {
+                if (!text.isVisible()) continue;
                 text.update(window.getLoader());
                 text.getMesh().bind();
                 shader.load(text);
@@ -36,12 +36,6 @@ public class D_TextRenderer {
             }
             shader.stop();
         }
-    }
-
-    private void initGL() {
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA,GL11.GL_ONE_MINUS_SRC_ALPHA);
     }
 
     public void cleanUp() {
