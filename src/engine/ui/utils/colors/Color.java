@@ -56,6 +56,18 @@ public final class Color {
     public void b(float b) { this.b = b; }
     public void a(float a) { this.a = a; }
 
+    public static Color mix(Color a, Color b, float mix) {
+        return mix(a, b, new Color(), mix);
+    }
+
+    public static Color mix(Color a, Color b, Color dest, float mix) {
+        dest.r = a.r() * (1.0f - mix) + b.r() * mix;
+        dest.g = a.g() * (1.0f - mix) + b.g() * mix;
+        dest.b = a.b() * (1.0f - mix) + b.b() * mix;
+        dest.a = a.a() * (1.0f - mix) + b.a() * mix;
+        return dest;
+    }
+
     @Override
     public String toString() {
         return "< "+r+" , "+g+" , "+b +" , " + a+ " >";
