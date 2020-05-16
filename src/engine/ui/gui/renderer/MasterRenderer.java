@@ -34,6 +34,7 @@ public class MasterRenderer {
         for (Layer layer : layerStack) {
             guiRenderer.render(layer.getGuis());
             DTextRenderer.render(layer.getTextMap());
+            layer.clear();
         }
     }
 
@@ -42,15 +43,17 @@ public class MasterRenderer {
         DTextRenderer.cleanUp();
     }
 
-    private void setUpLayers(List<D_Gui> guis) {
+    private void setUpLayers(final List<? extends D_Gui> guis) {
         if (guis == null) return;
         for (int i = 0; i < guis.size(); i++) {
             D_Gui gui = guis.get(i);
             Layer layer = layerStack.get(gui.getLevel());
             if (layer == null) layerStack.push(layer = new Layer());
-            if (layer.contains(gui)) continue;
             layer.push(gui);
-            if(gui.getQuads() != null) gui.getQuads().forEach(layerStack.getOverLay()::push);
+            if(gui.isFocused()) {
+                if(gui.getQuads() != null) gui.getQuads().forEach(layerStack.getOverLay()::push);
+            } else
+                if(gui.getQuads() != null) setUpLayers(gui.getQuads());
             if (gui instanceof D_Container) setUpLayers(((D_Container) gui).getChildList());
         }
     }

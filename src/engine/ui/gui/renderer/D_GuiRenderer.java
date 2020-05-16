@@ -28,8 +28,8 @@ public class D_GuiRenderer {
         shader.start();
         D_Gui focused = null;
         for (D_Gui component : components) {
-            if(component == window.getGuiEventManager().getFocusedGui()) {
-                focused = window.getGuiEventManager().getFocusedGui();
+            if(component.isFocused()) {
+                focused = component;
                 continue;
             }
             draw(component);
