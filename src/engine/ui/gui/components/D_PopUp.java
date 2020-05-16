@@ -29,9 +29,10 @@ public class D_PopUp extends D_Container{
     }
 
     public void hide() {
+        if(!shown) return;
         shown = false;
         window.addTask(() -> window.remove(this));
-        this.requestFocus(false);
+        this.requestLooseFocus(true);
         this.setVisible(false);
     }
 
