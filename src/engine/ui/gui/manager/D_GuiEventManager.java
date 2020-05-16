@@ -131,6 +131,10 @@ public final class D_GuiEventManager {
         if(gui.requestedFocus()) {
             setFocusedGui(gui);
             gui.requestFocus(false);
+        } else if(gui.requestedLooseFocus()) {
+            if(gui == focusedGui)
+                setFocusedGui(null);
+            gui.requestLooseFocus(false);
         }
 
         if(topGui != null ) {
