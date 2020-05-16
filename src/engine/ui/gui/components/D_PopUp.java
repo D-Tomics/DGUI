@@ -24,12 +24,14 @@ public class D_PopUp extends D_Container{
         shown = true;
         window.add(this);
         this.setLevel(window.getTopLayer());
+        this.requestFocus(true);
         this.setVisible(true);
     }
 
     public void hide() {
         shown = false;
         window.addTask(() -> window.remove(this));
+        this.requestFocus(false);
         this.setVisible(false);
     }
 
