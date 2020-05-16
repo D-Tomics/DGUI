@@ -37,6 +37,11 @@ public class Layer {
         }
     }
 
+    protected void clear() {
+        guis.clear();
+        textMap.clear();
+    }
+
     protected ArrayList<D_Gui> getGuis() {
         return guis;
     }
