@@ -5,6 +5,7 @@ import engine.ui.IO.events.GLFWKeyPressEvent;
 import engine.ui.IO.events.GLFWListener;
 import engine.ui.IO.events.GLFWWindowCloseEvent;
 import engine.ui.IO.events.GLFWWindowFocusGainEvent;
+import engine.ui.gui.layouts.Alignment;
 import engine.ui.gui.layouts.GridLayout;
 import engine.ui.gui.manager.constraints.gui_constraints.RelativePosition;
 import engine.ui.gui.manager.constraints.layout_constraints.GridConstraint;
@@ -78,7 +79,7 @@ public abstract class D_OptionPane extends D_Container{
         D_Panel panel = new D_Panel(new GridLayout(2,2));
         D_Button ok = new D_Button("ok");
         D_Button cancel = new D_Button("cancel");
-        panel.add(new D_Label(message), new GridConstraint(0, 0, 1, 0, true));
+        panel.add(new D_Label(message), new GridConstraint(0, 0, 1, 0, Alignment.CENTER));
         panel.add(ok, cancel);
         panel.pack();
         panel.addConstraint(new RelativePosition(confirm,0,0));
@@ -147,7 +148,7 @@ public abstract class D_OptionPane extends D_Container{
         input.getStyle().setMarginTop(0);
 
         panel.add(label);
-        panel.add(input, new GridConstraint(0,1,1,0,true));
+        panel.add(input, new GridConstraint(0,1,1,0,Alignment.CENTER));
         panel.add(ok,cancel);
         panel.pack();
 

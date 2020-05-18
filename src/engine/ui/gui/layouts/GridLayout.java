@@ -16,7 +16,7 @@ public class GridLayout extends Layout {
     private int columns;
     private float[] cellWidths;
     private float[] cellHeights;
-    private GridConstraint defaultConstraint = new GridConstraint(0,0,0,0,true);
+    private GridConstraint defaultConstraint = new GridConstraint(0,0,0,0,Alignment.CENTER);
     private Hashtable< D_Gui, D_LayoutConstraint> compTable;
 
     public GridLayout(int rows, int columns) {
@@ -56,11 +56,12 @@ public class GridLayout extends Layout {
                 }
             }
 
-            child.getStyle().setPosition(
-                    parent.getStyle().getX() + parent.getStyle().getPaddingLeft() + getWidthUptoCol(cIndex) + child.getStyle().getMarginLeft()
-                            + (constraint.isCentered() ? (getWidthFromTo(cIndex,cIndex + constraint.w())- child.getStyle().getMarginWidth() - child.getStyle().getWidth()) / 2.0f : 0),
-                    parent.getStyle().getY() - parent.getStyle().getPaddingTop() - getHeightUptoRow(rIndex) - child.getStyle().getMarginTop()
-                            - (constraint.isCentered() ? (getHeightFromTo(rIndex, rIndex + constraint.h()) - child.getStyle().getMarginHeight() - child.getStyle().getHeight()) / 2.0f : 0)
+            constraint.alignment().setComponentPosition(
+                    parent.getStyle().getX() + parent.getStyle().getPaddingLeft() + getWidthUptoCol(cIndex),
+                    parent.getStyle().getY() - parent.getStyle().getPaddingTop() - getHeightUptoRow(rIndex),
+                    getWidthFromTo(cIndex,cIndex + constraint.w()),
+                    getHeightFromTo(rIndex, rIndex + constraint.h()),
+                    child, true
             );
             for(int j = rIndex; j < rows && j <= rIndex + constraint.h(); j++)
                 for(int i = cIndex; i < columns && i <= cIndex + constraint.w(); i++)
