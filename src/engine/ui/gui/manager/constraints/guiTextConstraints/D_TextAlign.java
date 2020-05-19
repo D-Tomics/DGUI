@@ -2,7 +2,7 @@ package engine.ui.gui.manager.constraints.guiTextConstraints;
 
 import engine.ui.gui.components.D_Gui;
 import engine.ui.gui.manager.Style;
-import engine.ui.gui.manager.constraints.D_TextConstraint;
+import engine.ui.gui.manager.constraints.D_Constraint;
 import engine.ui.gui.text.D_TextBox;
 
 /**
@@ -10,15 +10,16 @@ import engine.ui.gui.text.D_TextBox;
  *
  * @author Abdul Kareem
  */
-public class D_TextAlign extends D_TextConstraint {
+public class D_TextAlign extends D_Constraint {
 
     private float padLeft;
     private float padTop;
     private float padRight;
     private float padBottom;
+    private D_TextBox source;
 
     public D_TextAlign(D_TextBox source, float padLeft, float padTop, float padRight, float padBottom) {
-        super(source);
+        this.source = source;
         this.padLeft = padLeft;
         this.padTop = padTop;
         this.padRight = padRight;
@@ -27,15 +28,15 @@ public class D_TextAlign extends D_TextConstraint {
 
     @Override
     protected void init(D_Gui gui) {
-        super.getSource().setBoxSize(
-                super.getSource().getBoxWidth() - padLeft - padRight,
-                super.getSource().getBoxHeight() - padTop - padBottom
+        source.setBoxSize(
+                source.getBoxWidth() - padLeft - padRight,
+                source.getBoxHeight() - padTop - padBottom
         );
     }
 
     @Override
     protected void update(D_Gui gui) {
-        D_TextBox text = getSource();
+        D_TextBox text = source;
         Style style = gui.getStyle();
 
         text.setPosition(
