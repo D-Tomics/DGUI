@@ -14,8 +14,6 @@ public class GridLayout extends Layout {
     private boolean init;
     private int rows;
     private int columns;
-    private float defaultCellWidth;
-    private float defaultCellHeight;
     private float[] cellWidths;
     private float[] cellHeights;
     private GridConstraint defaultConstraint = new GridConstraint(0,0,0,0,Alignment.CENTER);
@@ -80,15 +78,9 @@ public class GridLayout extends Layout {
     }
 
     private void initCellSizes(D_Container parent) {
-        if(init) {
-            if(defaultCellWidth == parent.getStyle().getWidth() / columns &&
-                    defaultCellHeight == parent.getStyle().getHeight() / rows)
-                return;
-        }
-        defaultCellWidth = parent.getStyle().getWidth() / columns;
-        defaultCellHeight = parent.getStyle().getHeight() / rows;
-        Arrays.fill(cellWidths, defaultCellWidth);
-        Arrays.fill(cellHeights, defaultCellHeight);
+        if(init) return;
+        Arrays.fill(cellWidths, parent.getStyle().getWidth() / columns);
+        Arrays.fill(cellHeights, parent.getStyle().getHeight() / rows);
         init = true;
     }
 
