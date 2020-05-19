@@ -2,6 +2,13 @@ package engine.ui.gui.animation;
 
 import engine.ui.gui.components.D_Gui;
 
+/**
+ * This class represents a Fade In effect that changes alpha of the gui linearly from low to high value w.r.t
+ * the life time of the animation.
+ *
+ * @see D_GuiAnimation
+ * @author Abdul kareem
+ */
 public class D_GuiFadeIn extends D_GuiAnimation{
 
     private float alpha1;

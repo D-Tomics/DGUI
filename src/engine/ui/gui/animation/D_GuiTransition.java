@@ -4,6 +4,14 @@ import engine.ui.gui.components.D_Gui;
 
 import java.util.function.BiConsumer;
 
+/** This class represents a linear transition effect that can be applied to a gui.
+ *
+ * @see D_GuiAnimation
+ * @see #D_GuiTransition(String, float, float, float, BiConsumer)
+ *
+ * @author Abdul Kareem
+ */
+
 public class D_GuiTransition extends D_GuiAnimation{
     private float duration;
     private float start;
