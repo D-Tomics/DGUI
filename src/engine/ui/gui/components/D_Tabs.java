@@ -17,7 +17,7 @@ public class D_Tabs extends D_Container{
     private HashMap<String, D_Panel> tabs;
     private Color color = new Color(0.1f,0.1f,0.1f,0.8f);
 
-    private D_GuiTransition fadeIn = new D_GuiTransition("fadeIn",0.3f,0.3f,0.8f, (gui, aFloat) -> gui.style.setAlpha(aFloat));
+    private D_GuiTransition fadeIn = new D_GuiTransition("fadeIn",0.6f,0.3f,0.8f, (gui, aFloat) -> gui.style.setAlpha(aFloat));
 
     public D_Tabs(float x, float y, float width, float height) {
         this();
@@ -27,7 +27,6 @@ public class D_Tabs extends D_Container{
     public D_Tabs() {
         this.style.setAlpha(0);
         this.style.setBorderSize(1);
-        this.setLayout(null);
     }
 
     public void add(String tabName, D_Panel panel) {
@@ -36,6 +35,7 @@ public class D_Tabs extends D_Container{
 
         tabs.put(tabName, panel);
         panel.setVisible(false);
+        panel.getStyle().getBorderColor().a(0);
         add(panel);
 
         if(panel.style.getWidth() > this.style.getWidth())
