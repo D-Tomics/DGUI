@@ -12,30 +12,6 @@ import org.joml.Vector2f;
 
 public class Style extends Observable {
 
-    public Style script(String script) {
-        String[] options = script.split(";");
-        for(String option : options) {
-            String[] variables = option.split(":");
-            switch (variables[0]) {
-                case "x": setX(Float.parseFloat(variables[1]));break;
-                case "y" : setY(Float.parseFloat(variables[1])); break;
-                case "w" : setWidth(Float.parseFloat(variables[1])); break;
-                case "h" : setHeight(Float.parseFloat(variables[1])); break;
-                case "borderSize" : setBorderSize(Float.parseFloat(variables[1])); break;
-                case "color":
-                    String[] values = variables[1].split(",");
-                    if(values.length == 1) {
-                        this.color.set(Integer.parseInt(variables[1]));
-                    } else if(values.length == 3){
-                        this.color.set(Float.parseFloat(values[0]), Float.parseFloat(values[1]), Float.parseFloat(values[2]));
-                    }
-                    break;
-            }
-        }
-        return this;
-    }
-
-
     private Vector2f position;
     private Vector2f center;
     private Vector2f dimension;
