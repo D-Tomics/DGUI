@@ -6,6 +6,13 @@ import engine.ui.gui.manager.constraints.D_LayoutConstraint;
 
 import java.util.ArrayList;
 
+/**
+ * This is the default layout of container. This adds children to the container from the center and shifts the to left
+ * on each addition. once the children occupy more than the width of the parent next child is added to next line.
+ *
+ * @see Layout
+ * @author Abdul Kareeem
+ */
 public class Flow extends Layout {
 
     private ArrayList<D_Gui> currentRow = new ArrayList<>();

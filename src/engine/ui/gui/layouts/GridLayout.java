@@ -9,6 +9,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
 
+/**
+ * This layout adds the children in a grid fashion on the parent.
+ * This layout creates grid of fixed rows and columns to which on each addition the children
+ * are added from left to right. The cell in which the children gets end up in and its alignment in the cell can be controlled
+ * via <Code>GridConstraint</Code>.
+ *
+ * @see Layout
+ * @see engine.ui.gui.manager.constraints.layout_constraints.GridConstraint
+ * @see Alignment
+ *
+ * @author Abdul Kareem
+ */
 public class GridLayout extends Layout {
 
     private boolean init;
