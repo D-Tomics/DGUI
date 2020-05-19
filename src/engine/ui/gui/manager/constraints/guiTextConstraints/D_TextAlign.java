@@ -5,6 +5,11 @@ import engine.ui.gui.manager.Style;
 import engine.ui.gui.manager.constraints.D_TextConstraint;
 import engine.ui.gui.text.D_TextBox;
 
+/**
+ * This constraints aligns text position in relation to a gui
+ *
+ * @author Abdul Kareem
+ */
 public class D_TextAlign extends D_TextConstraint {
 
     private float padLeft;

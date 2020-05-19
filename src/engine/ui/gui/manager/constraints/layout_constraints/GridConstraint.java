@@ -3,6 +3,14 @@ package engine.ui.gui.manager.constraints.layout_constraints;
 import engine.ui.gui.layouts.Alignment;
 import engine.ui.gui.manager.constraints.D_LayoutConstraint;
 
+/**
+ * This constraint represents the position and size of the cell were a gui occupies in a grid layout.
+ * This also specifies the alignment of the gui in the cell
+ *
+ * @see engine.ui.gui.layouts.GridLayout
+ *
+ * @author Abdul Kareem
+ */
 public class GridConstraint extends D_LayoutConstraint {
 
     private int x;

@@ -4,6 +4,10 @@ import engine.ui.gui.components.D_Gui;
 import engine.ui.gui.manager.constraints.D_TextConstraint;
 import engine.ui.gui.text.D_TextBox;
 
+/** This class aligns text in relation to the left side of a gui
+ *
+ * @author Abdul Kareem
+ */
 public class D_TextAlignLeft extends D_TextConstraint {
 
     private float padding;

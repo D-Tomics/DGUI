@@ -5,6 +5,10 @@ import engine.ui.gui.manager.Style;
 import engine.ui.gui.manager.constraints.D_TextConstraint;
 import engine.ui.gui.text.D_TextBox;
 
+/** This class aligns text in relation to the bottom of a gui
+ *
+ * @author Abdul Kareem
+ */
 public class D_TextAlignBottom extends D_TextConstraint {
 
     private float padding;
