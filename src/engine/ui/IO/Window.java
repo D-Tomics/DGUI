@@ -73,6 +73,10 @@ public final class Window {
 
     private HashMap<Class<?>, List<GLFWListener>> listenerMap;
 
+    public Window() {
+        this(1,1,"",false);
+    }
+
     public Window(int width, int height, String title, boolean fullScreen) {
         this.width = width;
         this.height = height;
