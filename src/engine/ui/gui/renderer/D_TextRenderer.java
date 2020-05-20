@@ -10,17 +10,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**The instance of this class renders the texts given to it in order on to the window that owns it.
+ * There will be one instance of this class per window.
+ *
+ * @author Abdul Kareem
+ */
 public class D_TextRenderer {
 
     private Window window;
     private D_TextShader shader;
 
-    public D_TextRenderer(Window window) {
+    D_TextRenderer(Window window) {
         this.window = window;
         shader = new D_TextShader(window);
     }
 
-    public void render(Map<Font, List<D_TextBox>> textMap) {
+    void render(Map<Font, List<D_TextBox>> textMap) {
         if (textMap == null) return;
         Set<Font> fonts = textMap.keySet();
         for (Font font : fonts) {
@@ -38,7 +43,7 @@ public class D_TextRenderer {
         }
     }
 
-    public void cleanUp() {
+    void cleanUp() {
         shader.cleanUp();
     }
 

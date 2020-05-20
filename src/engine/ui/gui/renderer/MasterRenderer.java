@@ -9,6 +9,15 @@ import java.util.List;
 
 import static org.lwjgl.opengl.GL11.glDisable;
 
+/**
+ * This is the master renderer that renders both gui and texts.
+ * This class renders them based on the layers they occupy in.
+ * There will be one instance of this class per Window.
+ *
+ * @see Layer
+ * @see LayerStack
+ * @author Abdul Kareem
+ */
 public class MasterRenderer {
 
     private LayerStack layerStack;

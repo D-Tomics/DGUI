@@ -13,6 +13,11 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class helps to manage a shader file.
+ *
+ * @author Abdul Kareem
+ */
 public abstract class ShaderProgram {
 
     private static final int MAX_SHADERS_PER_PROGRAM = 2;

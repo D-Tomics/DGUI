@@ -13,6 +13,13 @@ import org.lwjgl.opengl.GL30;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class helps to load vertex Array Objects and vertex Buffer objects with data and also allows
+ * to update vbo.
+ * There will be one instance of this class per Window
+ *
+ * @author Abdul Kareem
+ */
 public class Loader {
 
     public static final int STATIC = GL15.GL_STATIC_DRAW;

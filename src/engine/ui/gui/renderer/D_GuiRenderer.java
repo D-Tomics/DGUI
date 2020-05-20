@@ -11,19 +11,25 @@ import java.util.ArrayList;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLE_STRIP;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 
+/**The instance of this class renders the gui's given to it in order on to the window that owns it.
+ * There will be one instance of this class per window.
+ * If one of the gui's are focused then it'll be rendered last.
+ *
+ * @author Abdul Kareem
+ */
 public class D_GuiRenderer {
 
     private int vao;
     private Window window;
     private D_GuiShader shader;
 
-    public D_GuiRenderer(Window window) {
+    D_GuiRenderer(Window window) {
         this.window = window;
         shader = new D_GuiShader(window);
         vao = window.getLoader().load2dVertexData(new float[]{1, 1, -1, 1, 1, -1, -1, -1});
     }
 
-    public void render(ArrayList<D_Gui> components) {
+    void render(ArrayList<D_Gui> components) {
         bindVAO();
         shader.start();
         D_Gui focused = null;

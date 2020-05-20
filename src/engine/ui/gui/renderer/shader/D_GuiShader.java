@@ -6,6 +6,11 @@ import engine.ui.gui.manager.Style;
 import engine.ui.utils.Maths;
 import engine.ui.utils.colors.Color;
 
+/**
+ * This class helps to manage the gui shader.
+ *
+ * @author Abdul Kareem
+ */
 public class D_GuiShader extends ShaderProgram{
 
     private Window window;

@@ -4,6 +4,11 @@ import engine.ui.IO.Window;
 import engine.ui.gui.text.D_TextBox;
 import engine.ui.utils.Maths;
 
+/**
+ * This class helps to manage the text shader
+ *
+ * @author Abdul Kareem
+ */
 public final class D_TextShader extends ShaderProgram {
 
     private Window window;
