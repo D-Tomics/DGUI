@@ -2,6 +2,11 @@ package engine.ui.gui.manager.events;
 
 import engine.ui.gui.components.D_Gui;
 
+/**This represents a character event.
+ *
+ * @author Abdul Kareem
+ *
+ */
 public class D_GuiCharEvent extends D_GuiEvent {
 
     private int codePoint;

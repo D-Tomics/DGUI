@@ -13,6 +13,13 @@ import java.util.ArrayList;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
+/**
+ * This class is the event generator for the gui system.
+ * It keeps track of the top and focused gui.
+ * Each Window in an application has their own event managers
+ *
+ * @author Abdul Kareem
+ */
 public final class D_GuiEventManager {
 
     private Window window;

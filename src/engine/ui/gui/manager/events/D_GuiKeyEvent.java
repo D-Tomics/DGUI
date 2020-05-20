@@ -1,7 +1,12 @@
 package engine.ui.gui.manager.events;
 
 import engine.ui.gui.components.D_Gui;
+import org.lwjgl.glfw.GLFW;
 
+/**This event is fired on the focused gui when keyboard keys are pressed or released or repeated
+ *
+ * @author Abdul Kareem
+ */
 public class D_GuiKeyEvent extends D_GuiEvent {
 
     private int key;
@@ -9,6 +14,15 @@ public class D_GuiKeyEvent extends D_GuiEvent {
     private int mods;
     private int action;
 
+    /**
+     * Will be called when a key is pressed, repeated or released.
+     *
+     * @param gui      the gui that has received the event
+     * @param key      the keyboard key that was pressed or released
+     * @param scanCode the system-specific scancode of the key
+     * @param mods      bitfield describing which modifiers keys were held down
+     * @param action   the key action. One of:<br><table><tr><td>{@link GLFW#GLFW_PRESS PRESS}</td><td>{@link GLFW#GLFW_RELEASE RELEASE}</td><td>{@link GLFW#GLFW_REPEAT REPEAT}</td></tr></table>
+     */
     public D_GuiKeyEvent(D_Gui gui, int key, int scanCode, int mods, int action) {
         super(gui);
         this.key = key;
