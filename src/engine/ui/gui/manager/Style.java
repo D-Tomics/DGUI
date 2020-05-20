@@ -1,15 +1,20 @@
 package engine.ui.gui.manager;
 
 import engine.ui.gui.components.D_Gui;
-import engine.ui.gui.components.D_GuiQuad;
 import engine.ui.gui.manager.events.D_GuiResizeEvent;
-import engine.ui.gui.manager.events.D_GuiStateChangeEvent;
 import engine.ui.utils.colors.Color;
 import engine.ui.utils.colors.ColorFactory;
 import engine.ui.utils.observers.Observable;
 import engine.ui.utils.observers.Observer;
 import org.joml.Vector2f;
 
+/**
+ * This class represents the visual style position and size of a gui.
+ * The user can change the above mentioned params of a gui via this class.
+ * Every gui created on an application has a Style object with it.
+ *
+ * @author  Abdul Kareem
+ */
 public class Style extends Observable {
 
     private Vector2f position;
@@ -204,8 +209,4 @@ public class Style extends Observable {
                 "border_size : "+borderWidth+"\n";
     }
 
-    @Override
-    protected void onNotification(Observer observer) {
-        ((D_Gui)observer).stackEvent(new D_GuiStateChangeEvent((D_Gui)observer));
-    }
 }
