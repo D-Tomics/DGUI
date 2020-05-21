@@ -1,5 +1,8 @@
 package engine.ui.gui.text.font;
 
+/**
+ * This enum holds the fonts that are already loaded into the engine
+ */
 public enum Fonts {
 
     Calibri_Light(8f),

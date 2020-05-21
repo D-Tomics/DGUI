@@ -3,6 +3,11 @@ package engine.ui.gui.text.font;
 import java.io.*;
 import java.util.HashMap;
 
+/**
+ * This file loads .fnt file that holds character data and stores these data in a list of <code>FontChar</code>
+ *
+ * @author Abdul Kareem
+ */
 public class FontFile {
 
     private static final int PAD_TOP = 0, PAD_RIGHT = 1, PAD_BOTTOM = 2, PAD_LEFT = 3;

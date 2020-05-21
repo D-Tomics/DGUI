@@ -7,6 +7,11 @@ import engine.ui.gui.text.font.FontChar;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class creates the mesh for the text that is specified.
+ *
+ * @author Abdul Kareem
+ */
 public final class TextMeshCreator {
 
     public static final float LINE_HEIGHT = 1;

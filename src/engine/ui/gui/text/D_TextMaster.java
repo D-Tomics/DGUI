@@ -8,6 +8,10 @@ import engine.ui.gui.text.font.Font;
 
 import java.util.*;
 
+/**This class keeps track of all the texts in the application for each window.
+ *
+ * @author Abdul Kareem
+ */
 public final class D_TextMaster {
 
     private static Map<Window,Map<Font, List<D_TextBox>>> textMap;

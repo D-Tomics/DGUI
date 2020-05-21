@@ -5,6 +5,11 @@ import engine.ui.gui.text.D_TextBox;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+/**Acts as a wrapper around vao and vbo that holds the text mesh data.
+ *
+ * @author Abdul Kareem
+ *
+ */
 public final class TextMesh {
 
     private int vao;

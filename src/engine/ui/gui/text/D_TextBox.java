@@ -13,6 +13,15 @@ import org.joml.Vector2f;
 
 import java.util.List;
 
+/**
+ * This class represents a text in the application.
+ * This creates a text inside a box. The box size and position can specified externally.
+ * Beyond this box the text wont be rendered or discarded in the shader.
+ *
+ * If {@code wrapText} is enabled then the text beyond the box width is placed on a new line.
+ *
+ * @author Abdul Kareem
+ */
 public class D_TextBox {
 
     private static final Fonts DEFAULT = Fonts.Agency_FB;
@@ -53,6 +62,14 @@ public class D_TextBox {
     }
 
 
+    /**
+     * @param text      the text that needs to be displayed
+     * @param fontSize  font size of the text
+     * @param boxWidth  width of the box in which the text needs to be displayed, beyond this width the text will not be rendered
+     * @param boxHeight height of the box in which the text needs to be displayed, beyond this height the text will not be rendered
+     * @param font      font type of the text
+     * @param centered  this represents whether the text need to be centered in the box horizontally
+     */
     public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight, Font font, boolean centered) {
         this.text = text;
         this.position = new Vector2f(0);
@@ -104,6 +121,11 @@ public class D_TextBox {
     public Line getLine(int lineNum) { return meshData != null ? meshData.getLine(lineNum) : null; }
     public List<Line> getLines() { return meshData != null ? meshData.getLines() : null; }
 
+    /** this method makes the text wrap inside the box.
+     * i.e it places the texts beyond the box width in a new line.
+     *
+     * @param wrapText whether to place text beyond box width in a new line.
+     */
     public void setWrapText(boolean wrapText) {
         if(this.wrapText == wrapText) return;
         this.wrapText = wrapText;
@@ -154,6 +176,12 @@ public class D_TextBox {
     public void setBorderColor(float r, float g, float b) { this.borderColor.set(r,g,b); }
 
     public void setOffset(Vector2f offset) { this.offset.set(offset); }
+
+    /** This method sets the offset from the box position that the text gets rendered
+     *
+     * @param x x offset position from the box position the text gets rendered
+     * @param y y offset position from the box position the text gets rendered
+     */
     public void setOffset(float x, float y) { this.offset.set(x,y); }
 
     public void setPosition(Vector2f position) { this.position.set(position); }
@@ -176,7 +204,7 @@ public class D_TextBox {
         requestUpdate();
     }
 
-    public void requestUpdate() {
+    void requestUpdate() {
         meshData = TextMeshCreator.createTextMesh(window,this);
         update = true;
     }

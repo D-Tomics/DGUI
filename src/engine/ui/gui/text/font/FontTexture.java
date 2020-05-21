@@ -19,6 +19,11 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_REPEAT;
 import static org.lwjgl.stb.STBImage.*;
 
+/**This class represents an Font texture Atlas.
+ * The instance of this class holds and manages an openGl texture id.
+ *
+ * @author Abdul Kareem
+ */
 public class FontTexture {
 
     private int id;
