@@ -7,6 +7,21 @@ import java.util.ArrayList;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwWaitEvents;
 
+/**
+ * This class represents the entry point into the API.
+ * This class should be initialised before calling any methods from the api, and should be terminated
+ * after the use of api.
+ * If the application that uses this api has an update loop then this class's update function should be included in that.
+ * If not then an update loop like
+ * <pre>
+ *     while(!DGUI.exitRequested()) {
+ *         DGUI.update(true);
+ *     }
+ * </pre>
+ *
+ * This loop should be in the same thread that initialised DGUI.
+ *
+ */
 public class DGUI {
 
     protected static ArrayList<Window> windowsList;
