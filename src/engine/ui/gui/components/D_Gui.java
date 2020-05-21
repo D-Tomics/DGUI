@@ -18,6 +18,12 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.Set;
 
+/**This is an abstract representation of a gui. Every gui in this API extends this class.
+ * This class is responsible for managing, assigning, updating  events, animations, texts, and its states.
+ *
+ * @author Abdul Kareem
+ *
+ */
 public abstract class D_Gui implements Observer {
 
     private static final D_GuiEventListener ON_PRESS_FOCUS_LISTENER = new D_GuiEventListener(D_GuiMousePressEvent.class) {

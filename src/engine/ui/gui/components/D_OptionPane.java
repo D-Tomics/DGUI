@@ -18,6 +18,11 @@ import java.util.function.Consumer;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+/**
+ * This component represents a standard dialog box that prompts users for a value or informs them of something in a new window
+ *
+ * @author Abdul Kareem
+ */
 public abstract class D_OptionPane extends D_Container{
 
     public static final int OK = 1, CANCEL = 0;

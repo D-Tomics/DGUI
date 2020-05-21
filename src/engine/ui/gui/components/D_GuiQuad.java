@@ -6,6 +6,12 @@ import engine.ui.gui.text.D_TextBox;
 import engine.ui.utils.colors.Color;
 import engine.ui.utils.observers.Observable;
 
+/**
+ * This class is used when a gui requires additional geometry.
+ * A quad can be added to a gui via {@code gui.addQuad} method
+ *
+ * @author Abdul Kareem
+ */
 public class D_GuiQuad extends D_Component {
 
     private D_TextBox textBox;

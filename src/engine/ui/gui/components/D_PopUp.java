@@ -2,6 +2,12 @@ package engine.ui.gui.components;
 
 import engine.ui.IO.Window;
 
+/**
+ * This component represents a dialog box that informs user of something.
+ * This component appears on top of all the other component in a window.
+ *
+ * @author Abdul Kareem
+ */
 public class D_PopUp extends D_Container{
 
     private Window window;

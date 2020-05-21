@@ -4,12 +4,16 @@ import engine.ui.gui.text.D_TextBox;
 import engine.ui.utils.colors.Color;
 import engine.ui.utils.observers.Observable;
 
+/**
+ * This represents a pressable button with a name in a gui system.
+ *
+ * @author Abdul Kareem
+ */
 public class D_Button extends D_Component{
 
     private static final float WIDTH = 100, HEIGHT = 30;
 
     private D_TextBox name;
-    private Color pressedColor = new Color(0.1f,0.1f,0.1f);
     public D_Button(String name) {
 
         this.name = new D_TextBox(name,75,WIDTH,HEIGHT, true);

@@ -5,6 +5,12 @@ import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextAlignTop;
 import engine.ui.gui.text.D_TextBox;
 import engine.ui.utils.observers.Observable;
 
+/**This class represents a text in a gui system.
+ * If a text is required it is added via this class.
+ *
+ * @author Abdul Kareem
+ *
+ */
 public class D_Label extends D_Component{
 
     private D_TextBox text;

@@ -7,6 +7,11 @@ import engine.ui.utils.observers.Observable;
 
 import java.util.ArrayList;
 
+/**This class represents a container.
+ * Every gui that holds multiple other gui are sub classes of this class.
+ *
+ * @author Abdul Kareem
+ */
 public abstract class D_Container extends D_Gui{
 
     private boolean minimizable;

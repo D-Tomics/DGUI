@@ -3,6 +3,10 @@ package engine.ui.gui.components;
 import engine.ui.IO.Mouse;
 import engine.ui.gui.layouts.Layout;
 
+/**D_Panel represents a generic container can hold components specified by the user
+ *
+ * @author Abdul Kareem
+ */
 public class D_Panel extends D_Container {
 
     private static final int DEFAULT_WIDTH = 150;

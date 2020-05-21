@@ -11,6 +11,10 @@ import org.lwjgl.glfw.GLFW;
 
 import static engine.ui.IO.Mouse.MOUSE_BUTTON_LEFT;
 
+/**This is an abstract class that represents components which lets the user edit its text graphically
+ *
+ * @author Abdul Kareem
+ */
 public abstract class D_TextComponent extends D_Component{
 
     private static final int ONE_COL_SIZE = 50;//pixels

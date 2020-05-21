@@ -2,6 +2,11 @@ package engine.ui.gui.components;
 
 import engine.ui.utils.observers.Observable;
 
+/**
+ * This class represents a gui that is selectable
+ *
+ * @author Abdul Kareem
+ */
 public class D_CheckBox extends D_Component {
 
 

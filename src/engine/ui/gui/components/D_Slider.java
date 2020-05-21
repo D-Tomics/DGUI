@@ -9,7 +9,11 @@ import engine.ui.utils.observers.Observable;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-
+/**This class lets the user graphically select a value by sliding
+ * a bar within a bounded interval.
+ *
+ * @author Abdul Kareem
+ */
 public class D_Slider extends D_Component{
 
     private static final float SLIDER_WIDTH = 125;

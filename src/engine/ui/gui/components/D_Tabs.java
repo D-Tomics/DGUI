@@ -8,6 +8,13 @@ import engine.ui.utils.observers.Observable;
 
 import java.util.HashMap;
 
+/**
+ * This class lets the user switch between a group of components by
+ * clicking on a tab with a given title.
+ *
+ * @author Abdul Kareem
+ *
+ */
 public class D_Tabs extends D_Container{
 
     private static final float QUAD_HEIGHT = 30;

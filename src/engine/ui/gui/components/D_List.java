@@ -10,6 +10,10 @@ import java.util.HashMap;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+/**This class represents a drop down list component
+ *
+ * @param <T> The class of data contained in a list
+ */
 public class D_List<T> extends D_Component{
 
     private static final float CELL_WIDTH = 100;

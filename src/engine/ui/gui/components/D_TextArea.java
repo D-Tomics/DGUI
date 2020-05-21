@@ -10,6 +10,11 @@ import org.lwjgl.glfw.GLFW;
 
 import static engine.ui.IO.Mouse.MOUSE_BUTTON_LEFT;
 
+/**
+ * This class lets the user type a text line by line in a specified area that spans over multiple lines.
+ *
+ * @author Abdul Kareem
+ */
 public class D_TextArea extends D_TextComponent {
 
     private int maxNumOfLines;
