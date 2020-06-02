@@ -1,5 +1,7 @@
 package engine.ui.gui.text.font;
 
+import engine.ui.gui.renderer.Loader;
+
 /**
  * This enum holds the fonts that are already loaded into the engine
  */
@@ -20,9 +22,9 @@ public enum Fonts {
         this.desiredPadding = desiredPadding;
     }
 
-    public Font getFont() {
+    public Font getFont(Loader loader) {
         if(this.font == null)
-            this.font = new Font("/text/" + this.name(), desiredPadding);
+            this.font = new Font("/text/" + this.name(), desiredPadding, loader);
         return font;
     }
 

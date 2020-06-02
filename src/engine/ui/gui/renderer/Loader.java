@@ -5,13 +5,21 @@ import engine.ui.gui.text.D_TextBox;
 import engine.ui.gui.text.meshCreator.TextMesh;
 import engine.ui.gui.text.meshCreator.TextMeshCreator;
 import engine.ui.gui.text.meshCreator.TextMeshData;
+import engine.ui.utils.Buffers;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import java.io.*;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_REPEAT;
+import static org.lwjgl.stb.STBImage.stbi_image_free;
+import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
 
 /**
  * This class helps to load vertex Array Objects and vertex Buffer objects with data and also allows
@@ -31,6 +39,7 @@ public class Loader {
 
     private List<Integer> vaos = new ArrayList<>();
     private List<Integer> vbos = new ArrayList<>();
+    private List<Integer> textures = new ArrayList<>();
 
     public TextMesh loadText(TextMeshData meshData, int usage) {
         int vao = createVao();
@@ -49,11 +58,25 @@ public class Loader {
         return vao;
     }
 
+    public Texture loadTexture(String path) {
+        int[] w = {1}, h = {1}, c = {1};
+        InputStream in = getTextureInputStream(path);
+        if(in == null)
+            return new Texture(-1,0,0);
+
+        ByteBuffer imageBuffer = Buffers.createByteBuffer(getImageData(in));
+        ByteBuffer data = stbi_load_from_memory(imageBuffer, w, h, c, 4);
+        if(data == null) {
+            System.err.println(" error loading texture from "+path);
+            return new Texture(0,0,0);
+        }
+        return generateTexture(w[0], h[0], data);
+    }
+
     public void cleanUp() {
-        for(int vbo : vbos)
-            GL15.glDeleteBuffers(vbo);
-        for(int vao : vaos)
-            GL30.glDeleteVertexArrays(vao);
+        vbos.forEach(GL15::glDeleteBuffers);
+        vaos.forEach(GL30::glDeleteVertexArrays);
+        textures.forEach(GL11::glDeleteTextures);
     }
 
     public void updateBuffer(int buffer, float[] data, int usage) {
@@ -86,6 +109,54 @@ public class Loader {
     protected void unbind() {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
         GL30.glBindVertexArray(0);
+    }
+
+    //texture stuff
+
+    private Texture generateTexture(int width, int height, ByteBuffer data) {
+        int id = GL11.glGenTextures();
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, data);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+
+        stbi_image_free(data);
+        return new Texture(id,width,height);
+    }
+
+    private InputStream getTextureInputStream(String path) {
+        InputStream in = this.getClass().getResourceAsStream(path);
+        if(in == null) {
+            try {
+                File file = new File(path);
+                if(!file.exists()) {
+                    System.err.println("texture " + path+" does'nt exist");
+                    return null;
+                }
+                in = new FileInputStream(file);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return in;
+    }
+
+    private byte[] getImageData(InputStream in) {
+        int readBytes = 0;
+        byte[] read = new byte[1024];
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        //for jdk 9+ image data = in.readAllBytes();
+        try {
+            while((readBytes = in.read(read)) != -1)
+                os.write(read,0,readBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return os.toByteArray();
     }
 
 }
