@@ -58,6 +58,11 @@ public class Loader {
         return vao;
     }
 
+    /**This method loads a texture from memory to vram
+     *
+     * @param path the path to which the texture exists
+     * @return  returns the instance of Texture class
+     */
     public Texture loadTexture(String path) {
         int[] w = {1}, h = {1}, c = {1};
         InputStream in = getTextureInputStream(path);
@@ -73,12 +78,41 @@ public class Loader {
         return generateTexture(w[0], h[0], data);
     }
 
+    /**This method generates a texture into vram with specified width height and data
+     *
+     * @param width     width of texture to be generated
+     * @param height    height of texture to be generated
+     * @param data      the color data of each pixel in the texture
+     * @return          returns instance of Texture class
+     */
+    public Texture generateTexture(int width, int height, ByteBuffer data) {
+        int id = GL11.glGenTextures();
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, data);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+
+        stbi_image_free(data);
+        return new Texture(id,width,height);
+    }
+
+    /**This method deletes all vaos, vbos and textures that are loaded
+     */
     public void cleanUp() {
         vbos.forEach(GL15::glDeleteBuffers);
         vaos.forEach(GL30::glDeleteVertexArrays);
         textures.forEach(GL11::glDeleteTextures);
     }
 
+    /**This method updates the data of a buffer
+     *
+     * @param buffer opengl buffer id whose data needs to be updated
+     * @param data   new data to be stored in the buffer
+     * @param usage  the operation that this buffer is used for
+     */
     public void updateBuffer(int buffer, float[] data, int usage) {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,buffer);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, data.length * Float.BYTES ,usage);
@@ -112,20 +146,6 @@ public class Loader {
     }
 
     //texture stuff
-
-    private Texture generateTexture(int width, int height, ByteBuffer data) {
-        int id = GL11.glGenTextures();
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, data);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
-
-        stbi_image_free(data);
-        return new Texture(id,width,height);
-    }
 
     private InputStream getTextureInputStream(String path) {
         InputStream in = this.getClass().getResourceAsStream(path);
