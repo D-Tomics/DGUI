@@ -35,7 +35,7 @@ public abstract class D_TextComponent extends D_Component{
         this.addQuad(cursor);
 
         this.style.setSize(cols * ONE_COL_SIZE, rows * textBox.getMeshData().getLineHeight());
-        this.style.setColor(Color.WHITE);
+        this.style.setBgColor(Color.WHITE);
         this.style.setBorderColor(Color.BLACK);
 
         this.textBox.setBoxHeight(this.style.getHeight());

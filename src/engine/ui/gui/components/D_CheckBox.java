@@ -22,9 +22,9 @@ public class D_CheckBox extends D_Component {
     @Override
     public void onUpdate() {
         if(this.isSelected()) {
-            style.setColor(0x11AA00); // 17 170 0
+            style.setBgColor(0x11AA00); // 17 170 0
         } else {
-            style.setColor(0xAABBCC); // 170 187 204
+            style.setBgColor(0xAABBCC); // 170 187 204
         }
     }
 

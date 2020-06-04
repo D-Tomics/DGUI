@@ -45,7 +45,7 @@ public class D_Slider extends D_Component{
         style.setBounds(0,0,SLIDER_WIDTH,SLIDER_HEIGHT,false);
 
         bar.style.setBounds(style.getX(),style.getY(),0,SLIDER_HEIGHT);
-        bar.style.setColor(0x667788);
+        bar.style.setBgColor(0x667788);
 
         this.valueText = new D_TextBox(minValue+"",70,SLIDER_WIDTH,SLIDER_HEIGHT);
         this.valueText.setTextColor(0f,0f,0f);

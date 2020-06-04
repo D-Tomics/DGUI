@@ -26,14 +26,14 @@ public class D_Button extends D_Component{
     @Override
     public void onUpdate() {
         if(this.isHovered()) {
-            style.setColor(170,167,224);
+            style.setBgColor(170,167,224);
         }
         if(this.isPressed()) {
-            style.setColor(200,200,200);
+            style.setBgColor(200,200,200);
         }
 
         if(!isHovered() && !isPressed()) {
-            style.setColor(170,187,204);
+            style.setBgColor(170,187,204);
         }
 
     }

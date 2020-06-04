@@ -21,7 +21,7 @@ public class Style extends Observable {
     private Vector2f center;
     private Vector2f dimension;
 
-    private Color color;
+    private Color bgColor;
     private Color borderColor;
 
     private float cornerRadius;
@@ -32,7 +32,7 @@ public class Style extends Observable {
     private float[] margin = new float[] { 10,10,10,10};
 
     public Style() {
-        this.color = new Color();
+        this.bgColor = new Color();
         this.borderColor = new Color();
         this.position = new Vector2f(0);
         this.dimension = new Vector2f(0);
@@ -53,7 +53,7 @@ public class Style extends Observable {
     public float getCornerRadius() { return cornerRadius; }
     public float getBorderWidth() { return borderWidth; }
 
-    public Color getColor() { return color; }
+    public Color getBgColor() { return bgColor; }
     public Color getBorderColor() { return borderColor; }
 
     public float getMarginTop() { return margin[TOP]; }
@@ -152,17 +152,17 @@ public class Style extends Observable {
         return this;
     }
 
-    public void setAlpha(float alpha) { this.color.a(Math.max(0, Math.min(1, alpha))); }
+    public void setAlpha(float alpha) { this.bgColor.a(Math.max(0, Math.min(1, alpha))); }
 
     public void setBorderColor(Color color) { this.borderColor.set(color); }
     public void setBorderColor(int borderColor) { this.borderColor = ColorFactory.createColor(borderColor, this.borderColor); }
     public void setBorderColor(float r, float g, float b) { this.borderColor = ColorFactory.createColor(r,g,b,this.borderColor); }
     public void setBorderColor(int r, int g, int b) {  setBorderColor(r / 255f, g / 255f, b / 255f); }
 
-    public void setColor(float r, float g, float b) { this.color = ColorFactory.createColor(r,g,b,color); }
-    public void setColor(int r, int g, int b) { setColor(r / 255f, b / 255f, g / 255f); }
-    public void setColor(int color) { this.color = ColorFactory.createColor(color,this.color); }
-    public void setColor(Color color) { this.color.set(color); }
+    public void setBgColor(float r, float g, float b) { this.bgColor = ColorFactory.createColor(r,g,b, bgColor); }
+    public void setBgColor(int r, int g, int b) { setBgColor(r / 255f, b / 255f, g / 255f); }
+    public void setBgColor(int bgColor) { this.bgColor = ColorFactory.createColor(bgColor,this.bgColor); }
+    public void setBgColor(Color color) { this.bgColor.set(color); }
 
     public void setMarginTop(float margin) { this.margin[TOP] = margin; }
     public void setMarginBottom(float margin) { this.margin[BOTTOM] = margin; }
@@ -192,7 +192,7 @@ public class Style extends Observable {
         this.position.set(style.getPosition());
         this.dimension.set(style.getSize());
         this.center.set(style.getCenter());
-        this.color.set(style.getColor());
+        this.bgColor.set(style.getBgColor());
         this.borderColor.set(style.getBorderColor());
 
         this.borderWidth = style.getBorderWidth();
@@ -204,7 +204,7 @@ public class Style extends Observable {
     public String toString() {
         return "pos : <"+position.x + " , "+position.y+"> \n"+
                 "scale : <"+ dimension.x+" , "+ dimension.y+">\n"+
-                "color : <"+color+">\n"+
+                "color : <"+ bgColor +">\n"+
                 "border_color : <"+borderColor+">\n"+
                 "border_size : "+borderWidth+"\n";
     }

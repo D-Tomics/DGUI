@@ -1,8 +1,6 @@
 package engine.ui.gui.components;
 
 import engine.ui.gui.text.D_TextBox;
-import engine.ui.gui.text.meshCreator.TextMesh;
-import engine.ui.gui.text.meshCreator.TextMeshCreator;
 import engine.ui.utils.Delay;
 import engine.ui.utils.colors.Color;
 
@@ -19,7 +17,7 @@ final class Cursor extends D_GuiQuad {
 
         this.style.setWidth(1);
         this.style.setHeight(this.textBox.getMeshData().getLineHeight());
-        this.style.setColor(Color.BLACK);
+        this.style.setBgColor(Color.BLACK);
         this.style.setBorderSize(0);
         this.setVisible(false);
     }
