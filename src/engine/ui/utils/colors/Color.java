@@ -73,4 +73,10 @@ public final class Color {
         return "< "+r+" , "+g+" , "+b +" , " + a+ " >";
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null || obj.getClass() != this.getClass()) return false;
+        Color color = (Color)obj;
+        return color.r() == r() && color.g() == g() && color.b() == b() && color.a() == a();
+    }
 }
