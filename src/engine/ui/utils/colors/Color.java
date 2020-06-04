@@ -77,6 +77,18 @@ public final class Color {
     public boolean equals(Object obj) {
         if(obj == null || obj.getClass() != this.getClass()) return false;
         Color color = (Color)obj;
-        return color.r() == r() && color.g() == g() && color.b() == b() && color.a() == a();
+        return color == this ||
+                (color.r() == r() && color.g() == g() && color.b() == b() && color.a() == a());
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Float.hashCode(r());
+        result = prime * result + Float.hashCode(g());
+        result = prime * result + Float.hashCode(b());
+        result = prime * result + Float.hashCode(a());
+        return result;
     }
 }
