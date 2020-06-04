@@ -32,7 +32,7 @@ public class D_Label extends D_Component{
         style.setWidth(this.text.getMaxTextWidth());
         style.setHeight(this.text.getMaxTextHeight());
         style.setAlpha(0);
-        style.setBorderSize(0);
+        style.setBorderWidth(0);
         this.addConstraint(new D_TextAlignTop( this.text,-2));
     }
 

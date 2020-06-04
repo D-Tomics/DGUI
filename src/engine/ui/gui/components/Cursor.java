@@ -18,7 +18,7 @@ final class Cursor extends D_GuiQuad {
         this.style.setWidth(1);
         this.style.setHeight(this.textBox.getMeshData().getLineHeight());
         this.style.setBgColor(Color.BLACK);
-        this.style.setBorderSize(0);
+        this.style.setBorderWidth(0);
         this.setVisible(false);
     }
 

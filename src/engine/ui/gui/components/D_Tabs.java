@@ -33,7 +33,7 @@ public class D_Tabs extends D_Container{
 
     public D_Tabs() {
         this.style.setAlpha(0);
-        this.style.setBorderSize(1);
+        this.style.setBorderWidth(1);
     }
 
     public void add(String tabName, D_Panel panel) {

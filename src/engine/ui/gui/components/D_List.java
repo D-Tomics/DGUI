@@ -65,14 +65,14 @@ public class D_List<T> extends D_Component{
 
         D_GuiQuad quad = new D_GuiQuad(CELL_WIDTH - 2, CELL_HEIGHT - 2, item.toString());
         quad.addEventListener(D_GuiMousePressEvent.class, ON_CELL_SELECT);
-        quad.style.setBorderSize(0);
+        quad.style.setBorderWidth(0);
         quad.setVisible(false);
         addQuad(quad);
 
         if(selected == null) {
             selected = quad;
             selected.setVisible(true);
-            selected.style.setBorderSize(0);
+            selected.style.setBorderWidth(0);
             selected.style.setCenter(style.getCenter());
         }
     }
@@ -124,10 +124,10 @@ public class D_List<T> extends D_Component{
                 if(quad == container) continue;
                 if(quad.isHovered()) {
                     index = 0;
-                    quad.style.setBorderSize(1);
+                    quad.style.setBorderWidth(1);
                 }
                 else if(index == 0)
-                    quad.style.setBorderSize(0);
+                    quad.style.setBorderWidth(0);
             }
         }
     }
@@ -141,18 +141,18 @@ public class D_List<T> extends D_Component{
             this.setSelected(false);
         else if(key == GLFW_KEY_DOWN && isSelected()) {
             if(index == 0) index = 1;
-            getQuads().get(index).style.setBorderSize(0);
+            getQuads().get(index).style.setBorderWidth(0);
             index++;
             if(index > items.size()) index = items.size();
-            getQuads().get(index).style.setBorderSize(1);
+            getQuads().get(index).style.setBorderWidth(1);
             if(index >= windowStop)
                 updateScrollWindow(1);
         } else if(key == GLFW_KEY_UP && isSelected()) {
             if(index == 0) index = 1;
-            getQuads().get(index).style.setBorderSize(0);
+            getQuads().get(index).style.setBorderWidth(0);
             index--;
             if(index <= 0) index = 1;
-            getQuads().get(index).style.setBorderSize(1);
+            getQuads().get(index).style.setBorderWidth(1);
             if(index <= windowStart)
                 updateScrollWindow(-1);
         } else if(key == GLFW_KEY_ENTER || key == GLFW_KEY_KP_ENTER) {
@@ -167,7 +167,7 @@ public class D_List<T> extends D_Component{
         D_GuiQuad previous = selected;
         selected.setHoverable(true);
         selected = gui;
-        selected.style.setBorderSize(0);
+        selected.style.setBorderWidth(0);
         this.setSelected(false);
         this.stackEvent(new D_GuiValueChangeEvent<>(this,items.get(previous.getText()),items.get(selected.getText())));
     }

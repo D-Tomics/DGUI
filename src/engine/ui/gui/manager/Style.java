@@ -147,7 +147,7 @@ public class Style extends Observable {
         return this;
     }
 
-    public Style setBorderSize(float size) {
+    public Style setBorderWidth(float size) {
         this.borderWidth = size;
         return this;
     }

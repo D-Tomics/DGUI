@@ -17,7 +17,7 @@ public class D_Panel extends D_Container {
 
     public D_Panel() {
         this.style.setBounds(0,0,DEFAULT_WIDTH,DEFAULT_HEIGHT);
-        this.style.setBorderSize(1f);
+        this.style.setBorderWidth(1f);
         this.style.setBgColor(0.1f,0.1f,0.1f);
         this.style.setAlpha(0.8f);
     }
