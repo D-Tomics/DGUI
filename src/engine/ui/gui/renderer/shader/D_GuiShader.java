@@ -34,11 +34,6 @@ public class D_GuiShader extends ShaderProgram{
         Color fillColor = p.getBgColor();
         loadVec4f("prop.fillColor", fillColor.r(), fillColor.g(), fillColor.b(), fillColor.a());
 
-        //load texture
-        Texture bgTexture = p.getBgTexture();
-        if(bgTexture != null)
-            bgTexture.bind(0);
-
         //load stroke color
         Color strokeColor = p.getBorderColor();
         loadVec4f("prop.strokeColor", strokeColor.r(), strokeColor.g(), strokeColor.b(), strokeColor.a());

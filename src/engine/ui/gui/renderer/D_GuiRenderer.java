@@ -61,8 +61,15 @@ public class D_GuiRenderer {
 
     private void draw(D_Gui gui) {
         if (gui == null || !gui.isVisible()) return;
+
+        if(gui.getStyle().getBgTexture() != null)
+            gui.getStyle().getBgTexture().bind(0);
+
         shader.loadComponent(gui);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+        if(gui.getStyle().getBgTexture() != null)
+            WHITE_TEXTURE.bind(0);
     }
 
     void cleanUp() {
