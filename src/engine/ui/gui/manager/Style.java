@@ -2,6 +2,7 @@ package engine.ui.gui.manager;
 
 import engine.ui.gui.components.D_Gui;
 import engine.ui.gui.manager.events.D_GuiResizeEvent;
+import engine.ui.gui.renderer.Texture;
 import engine.ui.utils.colors.Color;
 import engine.ui.utils.observers.Observable;
 import engine.ui.utils.observers.Observer;
@@ -19,6 +20,8 @@ public class Style extends Observable {
     private Vector2f position;
     private Vector2f center;
     private Vector2f dimension;
+
+    private Texture bgTexture;
 
     private Color bgColor;
     private Color borderColor;
@@ -68,6 +71,8 @@ public class Style extends Observable {
 
     public Color getBgColor()     { return bgColor;     }
     public Color getBorderColor() { return borderColor; }
+
+    public Texture getBgTexture() { return bgTexture; }
 
     // setters
     public Style setBounds(float x, float y, float width, float height)                  { return setBounds(x,y,width,height,true);                       }
@@ -157,6 +162,8 @@ public class Style extends Observable {
     public Style setBgColor(Color color)               { this.bgColor.set(color); return this; }
     public Style setBgColor(int r, int g, int b)       { this.bgColor.set(r,g,b); return this; }
     public Style setBgColor(float r, float g, float b) { this.bgColor.set(r,g,b); return this; }
+
+    public Style setBgTexture(Texture bgTexture) { this.bgTexture = bgTexture; return this; }
 
     public Style setMarginTop(float margin)     { this.margin[TOP]     = margin; return this; }
     public Style setMarginBottom(float margin)  { this.margin[BOTTOM]  = margin; return this; }
