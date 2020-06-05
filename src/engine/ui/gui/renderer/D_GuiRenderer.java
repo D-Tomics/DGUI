@@ -3,6 +3,7 @@ package engine.ui.gui.renderer;
 import engine.ui.IO.Window;
 import engine.ui.gui.components.D_Gui;
 import engine.ui.gui.renderer.shader.D_GuiShader;
+import engine.ui.utils.Buffers;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
@@ -22,17 +23,20 @@ public class D_GuiRenderer {
     private int vao;
     private Window window;
     private D_GuiShader shader;
+    private final Texture WHITE_TEXTURE;
 
     D_GuiRenderer(Window window) {
         this.window = window;
         shader = new D_GuiShader(window);
         vao = window.getLoader().load2dVertexData(new float[]{1, 1, -1, 1, 1, -1, -1, -1});
+        this.WHITE_TEXTURE = window.getLoader().generateTexture(1, 1, Buffers.createByteBuffer(4, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF));
     }
 
     void render(ArrayList<D_Gui> components) {
         bindVAO();
         shader.start();
         D_Gui focused = null;
+        WHITE_TEXTURE.bind(0);
         for (D_Gui component : components) {
             if(component.isFocused()) {
                 focused = component;
