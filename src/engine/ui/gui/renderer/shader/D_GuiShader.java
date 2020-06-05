@@ -3,6 +3,7 @@ package engine.ui.gui.renderer.shader;
 import engine.ui.IO.Window;
 import engine.ui.gui.components.D_Gui;
 import engine.ui.gui.manager.Style;
+import engine.ui.gui.renderer.Texture;
 import engine.ui.utils.Maths;
 import engine.ui.utils.colors.Color;
 
@@ -16,6 +17,9 @@ public class D_GuiShader extends ShaderProgram{
     private Window window;
     public D_GuiShader(Window window) {
         super("dGuiShader.glsl");
+        super.start();
+        super.loadInt("bgTexture",0);
+        super.stop();
         this.window = window;
     }
 
@@ -29,6 +33,11 @@ public class D_GuiShader extends ShaderProgram{
         //load fill color
         Color fillColor = p.getBgColor();
         loadVec4f("prop.fillColor", fillColor.r(), fillColor.g(), fillColor.b(), fillColor.a());
+
+        //load texture
+        Texture bgTexture = p.getBgTexture();
+        if(bgTexture != null)
+            bgTexture.bind(0);
 
         //load stroke color
         Color strokeColor = p.getBorderColor();
