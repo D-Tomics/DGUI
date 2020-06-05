@@ -11,6 +11,8 @@ import org.lwjgl.opengl.GL13;
  */
 public class Texture {
 
+    private static Texture boundTexture;
+
     private int id;
     private int width;
     private int height;
@@ -28,12 +30,16 @@ public class Texture {
     }
 
     public void bind(int unit) {
+        if(boundTexture == this) return;
         if(unit > 32) return;
+        boundTexture = this;
         GL13.glActiveTexture(GL13.GL_TEXTURE0 + unit);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
     }
 
     public void unbind() {
+        if(boundTexture == this)
+            boundTexture = null;
         GL11.glBindTexture(GL11.GL_TEXTURE_2D,0);
     }
 
