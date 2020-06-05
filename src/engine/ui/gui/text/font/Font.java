@@ -17,7 +17,7 @@ public class Font {
 
     public Font(String path , float padding, Loader loader) {
         this.fontFile = new FontFile(path + ".fnt", padding );
-        this.fontTexture = loader.loadTexture(path + ".png");
+        this.fontTexture = loader.loadTexture(path + ".png", false);
     }
 
     public FontFile getFontFile() { return fontFile; }

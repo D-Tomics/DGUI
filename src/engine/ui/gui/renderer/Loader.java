@@ -18,8 +18,7 @@ import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_REPEAT;
-import static org.lwjgl.stb.STBImage.stbi_image_free;
-import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
+import static org.lwjgl.stb.STBImage.*;
 
 /**
  * This class helps to load vertex Array Objects and vertex Buffer objects with data and also allows
@@ -60,16 +59,18 @@ public class Loader {
 
     /**This method loads a texture from memory to vram
      *
-     * @param path the path to which the texture exists
-     * @return  returns the instance of Texture class
+     * @param path         the path to which the texture exists
+     * @param flipVertical whether to flip the texture vertically
+     * @return             returns the instance of Texture class
      */
-    public Texture loadTexture(String path) {
+    public Texture loadTexture(String path, boolean flipVertical) {
         int[] w = {1}, h = {1}, c = {1};
         InputStream in = getTextureInputStream(path);
         if(in == null)
             return new Texture(-1,0,0);
 
         ByteBuffer imageBuffer = Buffers.createByteBuffer(getImageData(in));
+        stbi_set_flip_vertically_on_load(flipVertical);
         ByteBuffer data = stbi_load_from_memory(imageBuffer, w, h, c, 4);
         if(data == null) {
             System.err.println(" error loading texture from "+path);
