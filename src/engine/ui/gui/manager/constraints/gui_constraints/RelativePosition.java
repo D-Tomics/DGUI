@@ -22,12 +22,7 @@ public class RelativePosition extends D_Constraint {
      * @param yPercent y position in percentage (0 - 100)
      */
     public RelativePosition(Window window, String xPercent, String yPercent) {
-        this(Float.parseFloat(xPercent) / 100.0f, Float.parseFloat(yPercent) / 100.0f);
-    }
-
-    @Deprecated
-    public RelativePosition(float relativeX, float relativeY) {
-        this(Window.INSTANCE,relativeX, relativeY);
+        this(window,Float.parseFloat(xPercent) / 100.0f, Float.parseFloat(yPercent) / 100.0f);
     }
 
     /**
