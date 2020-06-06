@@ -53,11 +53,13 @@ public abstract class D_Gui implements Observer {
     private boolean hoverable;
 
     private D_Gui parent;
+    private ArrayList<D_Icon> icons;
     private ArrayList<D_GuiQuad> quads;
     private ArrayList<D_Constraint> constraints;
     private ArrayList<D_GuiAnimation> animations;
-    private HashMap<Class<?>, ArrayList<D_GuiEventListener>> eventListeners;
+
     private HashMap<Font,ArrayList<D_TextBox>> textMap;
+    private HashMap<Class<?>, ArrayList<D_GuiEventListener>> eventListeners;
 
     public D_Gui() {
 
@@ -126,6 +128,20 @@ public abstract class D_Gui implements Observer {
         for(D_GuiEventListener listener : listeners) {
             listener.stackEvents(event);
         }
+    }
+
+    public void addIcon(D_Icon icon, D_Constraint constraint) {
+        if(icons == null) icons = new ArrayList<>();
+        icons.add(icon);
+        icon.addConstraint(constraint);
+        icon.setLevel(this.level  + 1);
+        style.notifyObservers();
+    }
+
+    public void removeIcon(D_Icon icon) {
+        if(icons == null) return;
+        icons.remove(icon);
+        style.notifyObservers();
     }
 
     public void unstackEvents() {
@@ -245,6 +261,7 @@ public abstract class D_Gui implements Observer {
     }
     public Style getStyle() { return style; }
     public D_Gui getParent() { return parent; }
+    public ArrayList<D_Icon> getIcons() { return icons; }
     public ArrayList<D_GuiQuad> getQuads() { return quads; }
     public HashMap<Font, ArrayList<D_TextBox>> getTextMap() { return textMap; }
 
@@ -259,11 +276,14 @@ public abstract class D_Gui implements Observer {
         this.level = level;
         for(int i = 0; quads != null && i < quads.size(); i++)
             quads.get(i).setLevel(level + 1);
+        for(int i = 0; icons != null && i < icons.size(); i++)
+            icons.get(i).setLevel(level + 1);
     }
     protected  void addQuad(D_GuiQuad quad) {
         if(quads == null) quads = new ArrayList<>();
         Objects.requireNonNull(quad, "trying to add null Geometry");
         quads.add(quad);
+        quad.setLevel(this.level + 1);
         quad.setParent(this);
     }
     protected void removeQuad(D_GuiQuad quad) {
