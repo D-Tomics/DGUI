@@ -12,12 +12,10 @@ import java.util.Iterator;
 public class LayerStack implements Iterable<Layer> {
 
     private int stackPointer;
-    private Layer overLay;
     private ArrayList<Layer> layers;
 
     protected LayerStack() {
         this.layers = new ArrayList<>();
-        this.layers.add(overLay = new Layer());
     }
 
     protected void push(Layer layer) {
@@ -29,8 +27,14 @@ public class LayerStack implements Iterable<Layer> {
         return index < stackPointer ? layers.get(index) : null;
     }
 
-    protected Layer getOverLay() {
-        return overLay;
+    protected Layer getOverLay(int index) {
+        Layer overLay = null;
+        if(stackPointer + index > layers.size()) {
+            overLay = new Layer();
+            layers.add(overLay);
+            return overLay;
+        } else
+            return layers.get(stackPointer + index - 1);
     }
 
     @Override
