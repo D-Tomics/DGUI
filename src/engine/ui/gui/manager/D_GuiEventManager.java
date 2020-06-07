@@ -100,6 +100,9 @@ public final class D_GuiEventManager {
             if(gui.getQuads() != null)
                 for(D_Gui quad : gui.getQuads())
                     topFound = update(quad,topFound);
+            if(gui.getIcons() != null)
+                for(D_Icon icon : gui.getIcons())
+                    icon.update();
             topFound = update(gui,topFound);
             if(window.isFocused())
                 updateCursor();

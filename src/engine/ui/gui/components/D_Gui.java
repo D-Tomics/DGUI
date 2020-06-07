@@ -82,6 +82,9 @@ public abstract class D_Gui implements Observer {
     public void updateStates(Observable o) {
         runConstraints();
         onStateChange(o);
+        if(icons != null)
+            for(D_Icon icon : icons)
+                icon.updateStates(icon.getStyle());
     }
 
     protected abstract void onUpdate();
