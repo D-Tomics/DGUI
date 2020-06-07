@@ -17,7 +17,9 @@ public class D_Icon extends D_Gui{
                 .setSize(width, height)
                 .setBorderWidth(0)
                 .setAlpha(0)
-                .setBgColor(Color.WHITE);
+                .setBgColor(Color.WHITE)
+                .setMargin(0)
+                .setPadding(0);
     }
 
     @Override
