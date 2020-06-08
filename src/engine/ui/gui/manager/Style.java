@@ -165,31 +165,49 @@ public class Style extends Observable {
 
     public Style setBgTexture(Texture bgTexture) { this.bgTexture = bgTexture; return this; }
 
-    public Style setMarginTop(float margin)     { this.margin[TOP]     = margin; return this; }
-    public Style setMarginBottom(float margin)  { this.margin[BOTTOM]  = margin; return this; }
-    public Style setMarginLEFT(float margin)    { this.margin[LEFT]    = margin; return this; }
-    public Style setMarginRight(float margin)   { this.margin[RIGHT]   = margin; return this; }
-    public Style setMargin(float margin)        { return setMargin(margin, margin, margin, margin); }
+    public Style setMarginTop   (float margin)                               { return this.setMarginTop   (margin, true);             }
+    public Style setMarginBottom(float margin)                               { return this.setMarginBottom(margin, true);             }
+    public Style setMarginLeft  (float margin)                               { return this.setMarginLeft  (margin, true);             }
+    public Style setMarginRight (float margin)                               { return this.setMarginRight (margin, true);             }
+    public Style setMargin      (float margin)                               { return this.setMargin      (margin, true);             }
+    public Style setMargin(float top, float bottom, float left, float right) { return this.setMargin(top, bottom, left, right, true); }
 
-    public Style setMargin(float top, float bottom, float left, float right) {
+    public Style setMarginTop   (float margin, boolean changed) { this.margin[TOP]     = margin; if(changed) notifyObservers(); return this; }
+    public Style setMarginBottom(float margin, boolean changed) { this.margin[BOTTOM]  = margin; if(changed) notifyObservers(); return this; }
+    public Style setMarginLeft  (float margin, boolean changed) { this.margin[LEFT]    = margin; if(changed) notifyObservers(); return this; }
+    public Style setMarginRight (float margin, boolean changed) { this.margin[RIGHT]   = margin; if(changed) notifyObservers(); return this; }
+    public Style setMargin      (float margin, boolean changed) { return setMargin(margin, margin, margin, margin,changed);                  }
+
+    public Style setMargin(float top, float bottom, float left, float right, boolean changed) {
         margin[TOP] = top;
         margin[BOTTOM] = bottom;
         margin[LEFT] = left;
         margin[RIGHT] = right;
+        if(changed)
+            notifyObservers();
         return this;
     }
 
-    public Style setPaddingTop(float padding)    { this.padding[TOP]    = padding; return this; }
-    public Style setPaddingBottom(float padding) { this.padding[BOTTOM] = padding; return this; }
-    public Style setPaddingLeft(float padding)   { this.padding[LEFT]   = padding; return this; }
-    public Style setPaddingRight(float padding)  { this.padding[RIGHT]  = padding; return this; }
-    public Style setPadding(float padding)       { return this.setPadding(padding, padding, padding, padding);}
+    public Style setPaddingTop   (float padding)                              { return this.setPaddingTop   (padding, true);       }
+    public Style setPaddingBottom(float padding)                              { return this.setPaddingBottom(padding, true);       }
+    public Style setPaddingLeft  (float padding)                              { return this.setPaddingLeft  (padding, true);       }
+    public Style setPaddingRight (float padding)                              { return this.setPaddingRight (padding, true);       }
+    public Style setPadding      (float padding)                              { return this.setPadding      (padding, true);       }
+    public Style setPadding(float top, float bottom, float left, float right) { return setPadding(top, bottom, left, right, true); }
 
-    public Style setPadding(float top, float bottom, float left, float right) {
+    public Style setPaddingTop   (float padding, boolean changed) { this.padding[TOP]    = padding; if(changed) notifyObservers(); return this; }
+    public Style setPaddingBottom(float padding, boolean changed) { this.padding[BOTTOM] = padding; if(changed) notifyObservers(); return this; }
+    public Style setPaddingLeft  (float padding, boolean changed) { this.padding[LEFT]   = padding; if(changed) notifyObservers(); return this; }
+    public Style setPaddingRight (float padding, boolean changed) { this.padding[RIGHT]  = padding; if(changed) notifyObservers(); return this; }
+    public Style setPadding      (float padding, boolean changed) { return this.setPadding(padding, padding, padding, padding, changed);        }
+
+    public Style setPadding(float top, float bottom, float left, float right, boolean changed) {
         padding[TOP] = top;
         padding[BOTTOM] = bottom;
         padding[RIGHT] = right;
         padding[LEFT] = left;
+        if(changed)
+            notifyObservers();
         return this;
     }
 
