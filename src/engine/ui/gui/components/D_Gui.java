@@ -232,6 +232,8 @@ public abstract class D_Gui implements Observer {
         this.visible = visible;
         if(this.quads != null)
             for(D_GuiQuad quad : quads) quad.setVisible(visible);
+        if(this.icons != null)
+            for(D_Icon icon : icons) icon.setVisible(visible);
         if(this.textMap != null){
             Set<Font> fonts = textMap.keySet();
             for(Font font : fonts) for(D_TextBox textBox : textMap.get(font)) textBox.setVisible(visible);
