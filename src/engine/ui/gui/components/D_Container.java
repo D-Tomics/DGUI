@@ -49,6 +49,7 @@ public abstract class D_Container extends D_Gui{
         if(childList == null) return;
         for(D_Gui child : childList)
             child.setVisible(visible);
+        style.notifyObservers();
     }
 
     public boolean isResizing() { return resizing; }
