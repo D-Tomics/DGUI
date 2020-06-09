@@ -20,7 +20,7 @@ public class D_GuiQuad extends D_Component {
     public D_GuiQuad(float width, float height, String text)                  { this.init(width, height, text, Color.BLACK);        }
     public D_GuiQuad(float width, float height, String text, Color textColor) { this.init(width, height, text, textColor);          }
 
-    private void setText(String text, Color color) {
+    public void setText(String text, Color color) {
         if(text == null) return;
         if(textBox == null)
             textBox = new D_TextBox(text,60,style.getWidth(),style.getHeight(), true);
