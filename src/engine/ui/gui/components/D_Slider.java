@@ -5,6 +5,7 @@ import engine.ui.IO.Mouse;
 import engine.ui.gui.manager.events.D_GuiValueChangeEvent;
 import engine.ui.gui.text.D_TextBox;
 import engine.ui.gui.manager.constraints.guiTextConstraints.*;
+import engine.ui.utils.colors.Color;
 import engine.ui.utils.observers.Observable;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -46,10 +47,11 @@ public class D_Slider extends D_Component{
 
         bar.style.setBounds(style.getX(),style.getY(),0,SLIDER_HEIGHT);
         bar.style.setBgColor(0x667788);
-
-        this.valueText = new D_TextBox(minValue+"",70,SLIDER_WIDTH,SLIDER_HEIGHT);
-        this.valueText.setTextColor(0f,0f,0f);
-        this.addText(valueText);
+        bar.setText(minValue+"", Color.BLACK);
+        this.valueText = bar.getTextBox();
+        this.valueText.setFontSize(70);
+        this.valueText.setBoxSize(SLIDER_WIDTH,SLIDER_HEIGHT);
+        this.valueText.setCentered(false);
 
         this.addConstraints(new D_TextAlignTop(valueText,0));
         this.addConstraints(new D_TextAlignRight(valueText,5));
