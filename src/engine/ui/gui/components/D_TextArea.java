@@ -1,7 +1,9 @@
 package engine.ui.gui.components;
 
 import engine.ui.IO.Mouse;
-import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextAlign;
+import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextAlignLeft;
+import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextAlignTop;
+import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextFill;
 import engine.ui.gui.manager.events.D_GuiResizeEvent;
 import engine.ui.gui.manager.events.D_GuiScrollEvent;
 import engine.ui.utils.D_Event;
@@ -26,7 +28,7 @@ public class D_TextArea extends D_TextComponent {
 
         this.maxNumOfLines = (int) (style.getHeight() / textBox.getMeshData().getLineHeight());
 
-        this.addConstraint(new D_TextAlign(textBox, 5, 0, 5, 0));
+        this.addConstraint(new D_TextAlignTop(this.textBox,0,new D_TextAlignLeft(this.textBox,5, new D_TextFill(this.textBox,10,0))));
 
         this.addEventListener(D_GuiScrollEvent.class, this::onScrollEvent);
         this.addEventListener(D_GuiResizeEvent.class, this::onResize);
