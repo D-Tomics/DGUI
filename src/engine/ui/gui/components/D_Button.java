@@ -1,5 +1,6 @@
 package engine.ui.gui.components;
 
+import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextAlignCenter;
 import engine.ui.gui.text.D_TextBox;
 import engine.ui.utils.colors.Color;
 import engine.ui.utils.observers.Observable;
@@ -16,9 +17,10 @@ public class D_Button extends D_Component{
     private D_TextBox name;
     public D_Button(String name) {
 
-        this.name = new D_TextBox(name,75,WIDTH,HEIGHT, true);
+        this.name = new D_TextBox(name,75,WIDTH,HEIGHT, false);
         this.name.setTextColor(Color.BLACK);
         this.addText(this.name);
+        this.addConstraint(new D_TextAlignCenter(this.name));
 
         style.setBounds(0,0,WIDTH,HEIGHT);
     }
@@ -39,10 +41,5 @@ public class D_Button extends D_Component{
     }
 
     @Override
-    public void onStateChange(Observable o) {
-        name.setPosition(
-                style.getX(),
-                style.getY()
-        );
-    }
+    public void onStateChange(Observable o) { }
 }

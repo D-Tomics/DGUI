@@ -11,18 +11,50 @@ import engine.ui.gui.text.D_TextBox;
 public class D_TextAlignCenter extends D_Constraint {
 
     private D_TextBox source;
+    private boolean xCenter;
+    private boolean yCenter;
+    private D_Constraint constraint;
 
+    /**
+     * @param source     the text that should be aligned
+     */
     public D_TextAlignCenter(D_TextBox source) {
+        this(source, true, true, null);
+    }
+
+    /**
+     * @param source     the text that should be aligned
+     * @param xCenter    whether or not to align on x axis
+     * @param yCenter    whether or not to align on y axis
+     */
+    public D_TextAlignCenter(D_TextBox source, boolean xCenter, boolean yCenter) {
+        this(source, xCenter, yCenter, null);
+    }
+
+    /**
+     * @param source     the text that should be aligned
+     * @param xCenter    whether or not to align on x axis
+     * @param yCenter    whether or not to align on y axis
+     * @param constraint any other constraints of type <code>D_Constraint</code>.
+     *                   If it xCenter is enabled and this constraint modifies x position of the text,
+     *                   then this constrain overwrites the current constraint. Similarly, if yCenter is enabled and this
+     *                   constraint modifies y position, then it overwrites current constraint.
+     */
+    public D_TextAlignCenter(D_TextBox source, boolean xCenter, boolean yCenter, D_Constraint constraint) {
         this.source = source;
+        this.xCenter = xCenter;
+        this.yCenter = yCenter;
+        this.constraint = constraint;
     }
 
     @Override
     public void update(D_Gui gui) {
-        if(source != null) {
-            source.setPosition(
-                    gui.getStyle().getCenterX() - source.getBoxWidth() / 2.0f,
-                    gui.getStyle().getCenterY() + source.getBoxHeight() / 2.0f
-            );
-        }
+        if(source == null) return;
+
+        if(xCenter) source.getPosition().x = gui.getStyle().getCenterX() - Math.min(source.getBoxWidth(), source.getMaxTextWidth()) / 2.0f;
+        if(yCenter) source.getPosition().y = gui.getStyle().getCenterY() + Math.min(source.getBoxHeight(), source.getMaxTextHeight()) / 2.0f;
+
+        if(constraint != null)
+            constraint.run(gui);
     }
 }
