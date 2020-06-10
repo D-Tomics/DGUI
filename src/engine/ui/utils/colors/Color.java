@@ -32,9 +32,9 @@ public final class Color {
 
     //0xrrggbb
     public Color set(int color) {
-        this.r = ((byte) ((color >> 16) & 0xFF)) / 255.0f;
-        this.g = ((byte) ((color >>  8) & 0xFF)) / 255.0f;
-        this.b = ((byte) ( color        & 0xFF)) / 255.0f;
+        this.r = ((color >> 16) & 0xFF) / 255.0f;
+        this.g = ((color >>  8) & 0xFF) / 255.0f;
+        this.b = ( color        & 0xFF) / 255.0f;
         return this;
     }
 
