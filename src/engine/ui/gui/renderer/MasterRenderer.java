@@ -5,7 +5,6 @@ import engine.ui.gui.components.D_Container;
 import engine.ui.gui.components.D_Gui;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.glDisable;
@@ -62,7 +61,7 @@ public class MasterRenderer {
             layer.push(gui);
             if(gui.getIcons() != null) setUpLayers(gui.getIcons());
             if(gui.isFocused()) {
-                if(gui.getQuads() != null) gui.getQuads().forEach(layerStack.getOverLay(0)::push);
+                if(gui.getQuads() != null) gui.getQuads().forEach(layerStack.getOverLay(1)::push);
             } else
                 if(gui.getQuads() != null) setUpLayers(gui.getQuads());
             if (gui instanceof D_Container) setUpLayers(((D_Container) gui).getChildList());
