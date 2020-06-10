@@ -42,7 +42,7 @@ public class D_Tabs extends D_Container{
 
         tabs.put(tabName, panel);
         panel.setVisible(false);
-        panel.getStyle().getBorderColor().a(0);
+        panel.getStyle().setBorderWidth(0);
         add(panel);
 
         if(panel.style.getWidth() > this.style.getWidth())
@@ -58,7 +58,7 @@ public class D_Tabs extends D_Container{
 
         D_GuiQuad quad = new D_GuiQuad(this.style.getWidth() / tabs.size(), QUAD_HEIGHT,tabName);
         quad.getTextBox().setTextColor(Color.WHITE);
-        quad.getTextBox().getTextColor().setBrightness(0.1f);
+        quad.getTextBox().getTextColor().setBrightness(0.5f);
         quad.style.setPosition(style.getX(), style.getY(), false);
         quad.style.setBgColor(color);
         quad.style.getBgColor().setBrightness(0.5f);
@@ -66,13 +66,11 @@ public class D_Tabs extends D_Container{
         quad.addEventListener(D_GuiMousePressEvent.class, e -> {
             String name = quad.getText();
 
-            currentTab.stopAnimation(fadeIn);
             currentQuad.style.getBgColor().setBrightness(0.5f);
-            currentQuad.getTextBox().getTextColor().setBrightness(0.1f);
+            currentQuad.getTextBox().getTextColor().setBrightness(0.5f);
             currentTab = tabs.get(name);
             currentQuad = quad;
             currentTab.setVisible(true);
-            currentTab.startAnimation(fadeIn);
             currentQuad.getTextBox().getTextColor().setBrightness(1f);
             currentQuad.style.getBgColor().setBrightness(1);
 
