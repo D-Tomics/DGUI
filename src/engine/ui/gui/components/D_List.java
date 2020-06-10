@@ -58,12 +58,16 @@ public class D_List<T> extends D_Component{
             addItem(item);
     }
 
-    public void addItem(T item) {
-        if(items == null) items = new HashMap<>();
-        if(items.containsKey(item.toString())) return;
-        items.put(item.toString(),item);
+    public D_List<T> addItem(T item) {
+        return this.addItem(item.toString(), item);
+    }
 
-        D_GuiQuad quad = new D_GuiQuad(CELL_WIDTH - 2, CELL_HEIGHT - 2, item.toString());
+    public D_List<T> addItem(String text, T item) {
+        if(items == null) items = new HashMap<>();
+        if(items.containsKey(item.toString())) return this;
+        items.put(text,item);
+
+        D_GuiQuad quad = new D_GuiQuad(CELL_WIDTH - 2, CELL_HEIGHT - 2, text);
         quad.addEventListener(D_GuiMousePressEvent.class, ON_CELL_SELECT);
         quad.style.setBorderWidth(0);
         quad.setVisible(false);
@@ -75,6 +79,8 @@ public class D_List<T> extends D_Component{
             selected.style.setBorderWidth(0);
             selected.style.setCenter(style.getCenter());
         }
+        this.container.getStyle().setHeight(CELL_HEIGHT * Math.min(items.size(), windowSize));
+        return this;
     }
 
     @Override
