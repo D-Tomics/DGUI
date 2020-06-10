@@ -1,6 +1,7 @@
 package engine.ui.gui.components;
 
 import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextAlignCenter;
+import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextFill;
 import engine.ui.gui.manager.events.D_GuiResizeEvent;
 import engine.ui.gui.text.D_TextBox;
 import engine.ui.utils.colors.Color;
@@ -36,14 +37,8 @@ public class D_GuiQuad extends D_Component {
     private void init(float width, float height, String text, Color textColor) {
         this.style.setSize(width,height);
         this.setText(text,textColor);
-        this.addConstraint(new D_TextAlignCenter(textBox));
-        this.addEventListener(D_GuiResizeEvent.class, event -> {
-            D_GuiResizeEvent e = (D_GuiResizeEvent)event;
-            if(textBox != null) {
-                textBox.setPosition(this.style.getPosition());
-                textBox.setBoxSize(e.getCurrentWidth(), e.getCurrentHeight());
-            }
-        });
+        this.addConstraint(new D_TextAlignCenter(textBox, new D_TextFill(this.textBox,0,0)));
+        this.addEventListener(D_GuiResizeEvent.class, event -> this.style.notifyObservers());
     }
 
     @Override
