@@ -23,7 +23,7 @@ public class D_GuiQuad extends D_Component {
     public void setText(String text, Color color) {
         if(text == null) return;
         if(textBox == null)
-            textBox = new D_TextBox(text,60,style.getWidth(),style.getHeight(), true);
+            textBox = new D_TextBox(text,60,style.getWidth(),style.getHeight(), false);
         else
             textBox.setText(text);
         textBox.setTextColor(color);
