@@ -19,7 +19,18 @@ public class D_TextAlignCenter extends D_Constraint {
      * @param source     the text that should be aligned
      */
     public D_TextAlignCenter(D_TextBox source) {
-        this(source, true, true, null);
+        this(source, null);
+    }
+
+    /**
+     * @param source     the text that should be aligned
+     * @param constraint any other constraints of type <code>D_Constraint</code>.
+     *                   If this constraint modifies x position of the text,
+     *                   then this constrain overwrites the current constraint. Similarly, if this
+     *                   constraint modifies y position, then it overwrites current constraint.
+     */
+    public D_TextAlignCenter(D_TextBox source, D_Constraint constraint) {
+        this(source, true, true, constraint);
     }
 
     /**
