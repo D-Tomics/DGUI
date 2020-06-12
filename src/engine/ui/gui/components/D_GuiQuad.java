@@ -36,6 +36,7 @@ public class D_GuiQuad extends D_Component {
 
     private void init(float width, float height, String text, Color textColor) {
         this.style.setSize(width,height);
+        this.style.setMargin(0);
         this.setText(text,textColor);
         this.addConstraint(new D_TextAlignCenter(textBox, new D_TextFill(this.textBox,0,0)));
         this.addEventListener(D_GuiResizeEvent.class, event -> this.style.notifyObservers());
