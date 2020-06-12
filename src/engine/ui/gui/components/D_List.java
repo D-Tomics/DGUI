@@ -1,6 +1,7 @@
 package engine.ui.gui.components;
 
 import engine.ui.IO.Window;
+import engine.ui.gui.manager.constraints.gui_constraints.Fill;
 import engine.ui.gui.manager.events.*;
 import engine.ui.utils.D_Event;
 import engine.ui.utils.abstractions.Listener;
@@ -16,9 +17,6 @@ import static org.lwjgl.glfw.GLFW.*;
  */
 public class D_List<T> extends D_Component{
 
-    private static final float CELL_WIDTH = 100;
-    private static final float CELL_HEIGHT = 30f;
-
     private final Listener ON_CELL_SELECT = e -> onSelect((D_GuiQuad) e.getSource());
 
     private HashMap<String, T> items;
@@ -32,10 +30,11 @@ public class D_List<T> extends D_Component{
 
     public D_List(T...items) {
         this.setScrollable(true);
-        this.style.setBounds(0,0,CELL_WIDTH,CELL_HEIGHT, false);
-        this.container = new D_GuiQuad(CELL_WIDTH,CELL_HEIGHT * Math.min(items.length, windowSize));
+        this.style.setBounds(0,0,100,30, false);
+        this.container = new D_GuiQuad(this.getStyle().getWidth(),this.style.getHeight() * Math.min(items.length, windowSize));
         this.container.setVisible(false);
         this.container.setHoverable(false);
+        this.container.addConstraint(new Fill(this, true, false));
         this.addQuad(container);
         this.setSelectable(true);
         addItem(items);
@@ -67,7 +66,8 @@ public class D_List<T> extends D_Component{
         if(items.containsKey(item.toString())) return this;
         items.put(text,item);
 
-        D_GuiQuad quad = new D_GuiQuad(CELL_WIDTH - 2, CELL_HEIGHT - 2, text);
+        D_GuiQuad quad = new D_GuiQuad(this.getStyle().getWidth() - 2, this.style.getHeight() - 2, text);
+        quad.addConstraint(new Fill(this, true, true, 2, 2));
         quad.addEventListener(D_GuiMousePressEvent.class, ON_CELL_SELECT);
         quad.style.setBorderWidth(0);
         quad.setVisible(false);
@@ -79,14 +79,14 @@ public class D_List<T> extends D_Component{
             selected.style.setBorderWidth(0);
             selected.style.setCenter(style.getCenter());
         }
-        this.container.getStyle().setHeight(CELL_HEIGHT * Math.min(items.size(), windowSize));
+        this.container.getStyle().setHeight(this.style.getHeight() * Math.min(items.size(), windowSize));
         return this;
     }
 
     @Override
     public void onStateChange(Observable o) {
         if(this.getQuads() != null) {
-            container.style.setPosition(style.getX(), style.getY() - CELL_HEIGHT);
+            container.style.setPosition(style.getX(), style.getY() - this.style.getHeight());
             if(container.style.getY() - container.style.getHeight() <= -Window.INSTANCE.getHeight() / 2.0f) {
                 float dy = container.style.getY() - container.style.getHeight() + Window.INSTANCE.getHeight() / 2.0f;
                 container.style.setPosition(style.getX(), style.getY() - dy);
@@ -97,12 +97,12 @@ public class D_List<T> extends D_Component{
                 container.style.setPosition(style.getX(), style.getY() - dy);
             }
 
-            float y = container.style.getY() - CELL_HEIGHT / 2.0f;
-            for(int i = 1; i <= items.size(); i++) {
+            float y = container.style.getY() - this.style.getHeight() / 2.0f;
+            for(int i = 1; items !=null && i <= items.size(); i++) {
                 D_GuiQuad cell = getQuads().get(i);
                 if(i >= windowStart && i <= windowStop) {
                     cell.style.setCenter(this.style.getCenterX(), y);
-                    y -= CELL_HEIGHT;
+                    y -= this.style.getHeight();
                     cell.setVisible(this.isSelected());
                 } else {
                     cell.setVisible(false);
