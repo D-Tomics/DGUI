@@ -40,7 +40,7 @@ public class GridConstraint extends D_LayoutConstraint {
     public GridConstraint gridY(int gridY) { return setPos(x,gridY); }
     public GridConstraint gridWidth(int gridW) { return setSize(gridW,0); }
     public GridConstraint gridHeight(int gridH) { return setSize(0,gridH); }
-    public GridConstraint girdAlign(Alignment align) { return set(x,y,w,h,alignment); }
+    public GridConstraint girdAlign(Alignment align) { return set(x,y,w,h,align); }
 
     public GridConstraint setPos(int gridX, int gridY) { return set(gridX, gridY, 0, 0); }
 
