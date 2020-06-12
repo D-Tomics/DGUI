@@ -1,6 +1,7 @@
 package engine.ui.gui.components;
 
 import engine.ui.IO.Window;
+import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextAlignCenter;
 import engine.ui.gui.manager.constraints.guiTextConstraints.D_TextAlignTop;
 import engine.ui.gui.text.D_TextBox;
 import engine.ui.utils.observers.Observable;
@@ -33,7 +34,7 @@ public class D_Label extends D_Component{
         style.setHeight(this.text.getMaxTextHeight());
         style.setAlpha(0);
         style.setBorderWidth(0);
-        this.addConstraint(new D_TextAlignTop( this.text,-2));
+        this.addConstraint(new D_TextAlignCenter(this.text));
     }
 
     public String getText() { return text.getText(); }
@@ -60,7 +61,5 @@ public class D_Label extends D_Component{
     }
 
     @Override
-    public void onStateChange(Observable o) {
-        text.setPosition(style.getX(),style.getY());
-    }
+    public void onStateChange(Observable o) { }
 }
