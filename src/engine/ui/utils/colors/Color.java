@@ -73,6 +73,22 @@ public final class Color {
                 (color.r() == r() && color.g() == g() && color.b() == b() && color.a() == a());
     }
 
+    public static Color hsv(float h, float s, float v, Color dest) {
+        if(h > 360 || h < 0) return dest.set(0);
+        float c = v * s;
+        float x = c * (1 - Math.abs((h / 60) % 2 - 1));
+        float m = v - c;
+        Color temp = new Color();
+        if(h < 60) temp.set(c, x, 0);
+        else if(h < 120) temp.set(x, c, 0);
+        else if(h < 180) temp.set(0, c, x);
+        else if(h < 240) temp.set(0, x, c);
+        else if(h < 300) temp.set(x, 0, c);
+        else if(h < 360) temp.set(c, 0, x);
+
+        return dest.set(temp.r + m, temp.g + m, temp.b + m);
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
