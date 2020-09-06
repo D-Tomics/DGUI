@@ -78,6 +78,10 @@ public final class Window {
     }
 
     public Window(int width, int height, String title, boolean fullScreen) {
+        this(width, height, title, fullScreen, true);
+    }
+
+    public Window(int width, int height, String title, boolean fullScreen,boolean load) {
         this.width = width;
         this.height = height;
         this.title = title;
@@ -87,7 +91,8 @@ public final class Window {
         this.loader = new Loader(this);
         this.renderer = new MasterRenderer(this);
         initGLFW();
-        DGUI.load(this);
+        if(load)
+            DGUI.load(this);
         if(INSTANCE == null) INSTANCE = this;
     }
 
