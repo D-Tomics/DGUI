@@ -124,12 +124,11 @@ public final class Window {
         INSTANCE = this;
     }
 
-    @Deprecated
     public void update() {
         update(true,true);
     }
 
-    void update(boolean update, boolean poll) {
+    public void update(boolean update, boolean poll) {
         Mouse.update();
         guiEventManager.update(this.guiList);
         if(updatables != null ) updatables.forEach(Updatable::update);
