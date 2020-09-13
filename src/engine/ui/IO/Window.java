@@ -113,6 +113,14 @@ public final class Window {
         if(createContext) GL.createCapabilities();
         glViewport(0,0,width, height);
 
+        GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        if(vidMode != null) {
+            setPosition((vidMode.width() - this.width) / 2, (vidMode.height() - this.height) / 2);
+            Window.monitorWidth = vidMode.width();
+            Window.monitorHeight = vidMode.height();
+            Window.monitorAspectRatio = (float) monitorWidth / (float) monitorHeight;
+        }
+
         initializeComponents();
 
         INSTANCE = this;
@@ -330,17 +338,8 @@ public final class Window {
         guiEventManager.init(this);
 
         D_TextMaster.init(this);
-        initialiseMonitorParams();
 
         setUpCallbacks();
-    }
-
-    private void initialiseMonitorParams() {
-        GLFWVidMode primaryMonitor = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        if(primaryMonitor == null) return;
-        Window.monitorWidth = primaryMonitor.width();
-        Window.monitorHeight = primaryMonitor.height();
-        Window.monitorAspectRatio = (float)monitorWidth / (float)monitorHeight;
     }
 
     private void invokeEventListeners(GLFWEvent event) {
