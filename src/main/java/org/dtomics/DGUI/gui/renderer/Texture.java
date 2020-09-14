@@ -41,6 +41,7 @@ public class Texture {
         GL11.glDeleteTextures(id);
     }
 
+    public int getId() { return id; }
     public int getWidth() { return width; }
     public int getHeight() { return height; }
 
