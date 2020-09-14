@@ -1,6 +1,7 @@
 package org.dtomics.DGUI.gui.components;
 
 import org.dtomics.DGUI.IO.Mouse;
+import org.dtomics.DGUI.IO.Window;
 import org.dtomics.DGUI.gui.animation.D_GuiAnimation;
 import org.dtomics.DGUI.gui.manager.Style;
 import org.dtomics.DGUI.gui.manager.constraints.D_Constraint;
@@ -8,15 +9,13 @@ import org.dtomics.DGUI.gui.manager.events.D_GuiEvent;
 import org.dtomics.DGUI.gui.manager.events.D_GuiEventListener;
 import org.dtomics.DGUI.gui.manager.events.D_GuiMousePressEvent;
 import org.dtomics.DGUI.gui.text.D_TextBox;
+import org.dtomics.DGUI.gui.text.D_TextMaster;
 import org.dtomics.DGUI.gui.text.font.Font;
 import org.dtomics.DGUI.utils.abstractions.Listener;
 import org.dtomics.DGUI.utils.observers.Observable;
 import org.dtomics.DGUI.utils.observers.Observer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**This is an abstract representation of a gui. Every gui in this API extends this class.
  * This class is responsible for managing, assigning, updating  events, animations, texts, and its states.
@@ -58,7 +57,6 @@ public abstract class D_Gui implements Observer {
     private ArrayList<D_Constraint> constraints;
     private ArrayList<D_GuiAnimation> animations;
 
-    private HashMap<Font,ArrayList<D_TextBox>> textMap;
     private HashMap<Class<?>, ArrayList<D_GuiEventListener>> eventListeners;
 
     public D_Gui() {
@@ -234,7 +232,8 @@ public abstract class D_Gui implements Observer {
             for(D_GuiQuad quad : quads) quad.setVisible(visible);
         if(this.icons != null)
             for(D_Icon icon : icons) icon.setVisible(visible);
-        if(this.textMap != null){
+        if(getTextMap() != null){
+            Map<Font, List<D_TextBox>> textMap = getTextMap();
             Set<Font> fonts = textMap.keySet();
             for(Font font : fonts) for(D_TextBox textBox : textMap.get(font)) textBox.setVisible(visible);
         }
@@ -268,7 +267,7 @@ public abstract class D_Gui implements Observer {
     public D_Gui getParent() { return parent; }
     public ArrayList<D_Icon> getIcons() { return icons; }
     public ArrayList<D_GuiQuad> getQuads() { return quads; }
-    public HashMap<Font, ArrayList<D_TextBox>> getTextMap() { return textMap; }
+    public Map<Font, List<D_TextBox>> getTextMap() { return D_TextMaster.getTextMap(Window.get(),this); }
 
     public D_Gui getRoot() {
         if(this.parent != null)
@@ -297,18 +296,12 @@ public abstract class D_Gui implements Observer {
     }
 
     protected void addText(D_TextBox textBox) {
-        if(textBox == null) return;
-        if(textMap == null) textMap = new HashMap<>();
-        ArrayList<D_TextBox> texts = textMap.computeIfAbsent(textBox.getFont(), k -> new ArrayList<>());
-        if(texts.contains(textBox)) return;
-        texts.add(textBox);
+        D_TextMaster.load(Window.get(), this, textBox);
         style.notifyObservers();
     }
 
     protected void removeText(D_TextBox textBox) {
-        if(textMap == null) return;
-        if(textBox == null) return;
-        textMap.get(textBox.getFont()).remove(textBox);
+        D_TextMaster.remove(Window.get(), this, textBox);
     }
 
 }

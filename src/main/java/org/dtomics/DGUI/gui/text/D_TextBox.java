@@ -87,7 +87,6 @@ public class D_TextBox {
         this.boxHeight = boxHeight;
 
         this.meshData = TextMeshCreator.createTextMesh(window,this);
-        D_TextMaster.load(window, this);
     }
 
     public boolean isCentered() { return centered; }
@@ -197,9 +196,8 @@ public class D_TextBox {
     public void setFont(Font font) {
         if(this.font == font ) return;
 
-        D_TextMaster.remove(this);
+        D_TextMaster.update(window,this.font, font, this);
         this.font = font;
-        D_TextMaster.load(window,this);
 
         requestUpdate();
     }

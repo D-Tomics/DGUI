@@ -1,0 +1,43 @@
+Manifest-Version: 1.0
+Main-Class: 
+Class-Path: lwjgl.jar lwjgl-egl.jar lwjgl-lz4.jar lwjgl-nfd.jar lwjgl-ov
+ r.jar lwjgl-par.jar lwjgl-sse.jar lwjgl-stb.jar lwjgl-bgfx.jar lwjgl-gl
+ fw.jar lwjgl-jawt.jar lwjgl-lmdb.jar lwjgl-odbc.jar lwjgl-yoga.jar lwjg
+ l-zstd.jar lwjgl-assimp.jar lwjgl-nanovg.jar lwjgl-openal.jar lwjgl-ope
+ ncl.jar lwjgl-opengl.jar lwjgl-openvr.jar lwjgl-tinyfd.jar lwjgl-tootle
+ .jar lwjgl-vulkan.jar lwjgl-xxhash.jar lwjgl-javadoc.jar lwjgl-nuklear.
+ jar lwjgl-sources.jar lwjgl-tinyexr.jar lwjgl-jemalloc.jar lwjgl-opengl
+ es.jar lwjgl-remotery.jar lwjgl-rpmalloc.jar lwjgl-egl-javadoc.jar lwjg
+ l-egl-sources.jar lwjgl-lz4-javadoc.jar lwjgl-lz4-sources.jar lwjgl-nfd
+ -javadoc.jar lwjgl-nfd-sources.jar lwjgl-ovr-javadoc.jar lwjgl-ovr-sour
+ ces.jar lwjgl-par-javadoc.jar lwjgl-par-sources.jar lwjgl-sse-javadoc.j
+ ar lwjgl-sse-sources.jar lwjgl-stb-javadoc.jar lwjgl-stb-sources.jar lw
+ jgl-bgfx-javadoc.jar lwjgl-bgfx-sources.jar lwjgl-glfw-javadoc.jar lwjg
+ l-glfw-sources.jar lwjgl-jawt-javadoc.jar lwjgl-jawt-sources.jar lwjgl-
+ lmdb-javadoc.jar lwjgl-lmdb-sources.jar lwjgl-odbc-javadoc.jar lwjgl-od
+ bc-sources.jar lwjgl-yoga-javadoc.jar lwjgl-yoga-sources.jar lwjgl-zstd
+ -javadoc.jar lwjgl-zstd-sources.jar lwjgl-assimp-javadoc.jar lwjgl-assi
+ mp-sources.jar lwjgl-nanovg-javadoc.jar lwjgl-nanovg-sources.jar lwjgl-
+ openal-javadoc.jar lwjgl-openal-sources.jar lwjgl-opencl-javadoc.jar lw
+ jgl-opencl-sources.jar lwjgl-opengl-javadoc.jar lwjgl-opengl-sources.ja
+ r lwjgl-openvr-javadoc.jar lwjgl-openvr-sources.jar lwjgl-tinyfd-javado
+ c.jar lwjgl-tinyfd-sources.jar lwjgl-tootle-javadoc.jar lwjgl-tootle-so
+ urces.jar lwjgl-vulkan-javadoc.jar lwjgl-vulkan-sources.jar lwjgl-xxhas
+ h-javadoc.jar lwjgl-xxhash-sources.jar lwjgl-natives-windows.jar lwjgl-
+ nuklear-javadoc.jar lwjgl-nuklear-sources.jar lwjgl-tinyexr-javadoc.jar
+  lwjgl-tinyexr-sources.jar lwjgl-jemalloc-javadoc.jar lwjgl-jemalloc-so
+ urces.jar lwjgl-opengles-javadoc.jar lwjgl-opengles-sources.jar lwjgl-r
+ emotery-javadoc.jar lwjgl-remotery-sources.jar lwjgl-rpmalloc-javadoc.j
+ ar lwjgl-rpmalloc-sources.jar lwjgl-lz4-natives-windows.jar lwjgl-nfd-n
+ atives-windows.jar lwjgl-ovr-natives-windows.jar lwjgl-par-natives-wind
+ ows.jar lwjgl-sse-natives-windows.jar lwjgl-stb-natives-windows.jar lwj
+ gl-bgfx-natives-windows.jar lwjgl-glfw-natives-windows.jar lwjgl-lmdb-n
+ atives-windows.jar lwjgl-yoga-natives-windows.jar lwjgl-zstd-natives-wi
+ ndows.jar lwjgl-assimp-natives-windows.jar lwjgl-nanovg-natives-windows
+ .jar lwjgl-openal-natives-windows.jar lwjgl-opengl-natives-windows.jar 
+ lwjgl-openvr-natives-windows.jar lwjgl-tinyfd-natives-windows.jar lwjgl
+ -tootle-natives-windows.jar lwjgl-xxhash-natives-windows.jar lwjgl-nukl
+ ear-natives-windows.jar lwjgl-tinyexr-natives-windows.jar lwjgl-jemallo
+ c-natives-windows.jar lwjgl-opengles-natives-windows.jar lwjgl-remotery
+ -natives-windows.jar lwjgl-rpmalloc-natives-windows.jar joml-1.9.14.jar
+
