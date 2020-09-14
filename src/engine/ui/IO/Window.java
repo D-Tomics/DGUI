@@ -16,7 +16,9 @@ import org.joml.Vector2f;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.system.MemoryStack;
 
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -113,9 +115,22 @@ public final class Window {
         if(createContext) GL.createCapabilities();
         glViewport(0,0,width, height);
 
-        GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        long monitor = glfwGetPrimaryMonitor();
+        GLFWVidMode vidMode = glfwGetVideoMode(monitor);
         if(vidMode != null) {
-            setPosition((vidMode.width() - this.width) / 2, (vidMode.height() - this.height) / 2);
+
+            try (MemoryStack stack = MemoryStack.stackPush()) {
+                IntBuffer
+                        x = stack.mallocInt(1),
+                        y = stack.mallocInt(1),
+                        w = stack.mallocInt(1),
+                        h = stack.mallocInt(1);
+                glfwGetMonitorPos(window_ptr, x, y);
+                glfwGetWindowSize(window_ptr, w, h);
+
+                setPosition(x.get() + (vidMode.width() - w.get()) / 2, y.get() + (vidMode.height() - h.get()) / 2);
+            }
+
             Window.monitorWidth = vidMode.width();
             Window.monitorHeight = vidMode.height();
             Window.monitorAspectRatio = (float) monitorWidth / (float) monitorHeight;
