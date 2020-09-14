@@ -3,6 +3,8 @@ package org.dtomics.DGUI.gui.renderer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
+import static org.lwjgl.opengl.GL11.glIsTexture;
+
 /**The instance if this class represents a texture.
  * Instance of this class is created via <code>Loader</code> class
  *
@@ -14,14 +16,16 @@ public class Texture {
     private int id;
     private int width;
     private int height;
-
     /**This constructor is only called in the loader class when <code>Loader.loadTexture</code> method is called
      *
      * @param id       an opengl object id for the texture
      * @param width    width of the texture
      * @param height   height of the texture
      */
-    protected Texture(int id, int width, int height) {
+    public Texture(int id, int width, int height) {
+        if(!glIsTexture(id))
+            throw new IllegalArgumentException("invalid texture");
+
         this.id = id;
         this.width = width;
         this.height = height;
