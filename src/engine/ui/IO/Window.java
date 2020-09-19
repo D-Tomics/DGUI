@@ -29,15 +29,32 @@ import static org.lwjgl.opengl.GL11.glViewport;
 
 public final class Window {
 
-    private static Delay oneSecDelay = new Delay(1000);
+    private static int monitorWidth;
+    private static int monitorHeight;
+    private static float monitorAspectRatio;
+
+    private volatile static Window INSTANCE;
+    private volatile static Window current;
+    private synchronized void setThisCurrent() { current = this; }
+    private synchronized void setThisInstance() { INSTANCE = this; }
+
+    public static Window get() { return INSTANCE; }
 
     private static boolean init;
-    public static void initGLFW() {
+    public synchronized static void initGLFW() {
         if(init) return;
+        GLFWErrorCallback.createPrint(System.err);
         init = glfwInit();
         if(!init) throw  new IllegalStateException("could'nt initialize glfw");
         OpenAL.create();
         Time.init();
+
+        GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        if(vidMode != null) {
+            monitorWidth = vidMode.width();
+            monitorHeight = vidMode.height();
+            monitorAspectRatio = (float) monitorWidth / (float) monitorHeight;
+        }
     }
 
     public static void terminate() {
@@ -58,15 +75,6 @@ public final class Window {
 
     private String title;
 
-    private static int monitorWidth;
-    private static int monitorHeight;
-    private static float monitorAspectRatio;
-
-    private static Window INSTANCE;
-    private static Window current;
-    private synchronized void setInstanceCurrent() { INSTANCE = this; }
-    public static Window get() { return INSTANCE; }
-
     private Loader loader;
     private MasterRenderer renderer;
     private D_GuiEventManager guiEventManager;
@@ -76,6 +84,8 @@ public final class Window {
     private ArrayList<Updatable> updatables;
 
     private HashMap<Class<?>, List<GLFWListener>> listenerMap;
+
+    private final Delay oneSecDelay = new Delay(1000);
 
     public Window() {
         this(1,1,"",false);
@@ -97,13 +107,13 @@ public final class Window {
         initGLFW();
         if(load)
             DGUI.load(this);
-        if(INSTANCE == null) setInstanceCurrent();
+        if(INSTANCE == null) setThisInstance();
     }
 
     public void makeCurrent() {
         if(this.didExit()) return;
         if(current == this) return;
-        current = this;
+        setThisCurrent();
         glfwMakeContextCurrent(window_ptr);
     }
 
@@ -118,35 +128,27 @@ public final class Window {
         glViewport(0,0,width, height);
 
         long monitor = glfwGetPrimaryMonitor();
-        GLFWVidMode vidMode = glfwGetVideoMode(monitor);
-        if(vidMode != null) {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            IntBuffer
+                    x = stack.mallocInt(1),
+                    y = stack.mallocInt(1),
+                    w = stack.mallocInt(1),
+                    h = stack.mallocInt(1);
+            glfwGetMonitorPos(monitor, x, y);
+            glfwGetWindowSize(window_ptr, w, h);
 
-            try (MemoryStack stack = MemoryStack.stackPush()) {
-                IntBuffer
-                        x = stack.mallocInt(1),
-                        y = stack.mallocInt(1),
-                        w = stack.mallocInt(1),
-                        h = stack.mallocInt(1);
-                glfwGetMonitorPos(window_ptr, x, y);
-                glfwGetWindowSize(window_ptr, w, h);
-
-                setPosition(x.get() + (vidMode.width() - w.get()) / 2, y.get() + (vidMode.height() - h.get()) / 2);
-            }
-
-            Window.monitorWidth = vidMode.width();
-            Window.monitorHeight = vidMode.height();
-            Window.monitorAspectRatio = (float) monitorWidth / (float) monitorHeight;
+            setPosition(x.get() + (monitorWidth - w.get()) / 2, y.get() + (monitorHeight - h.get()) / 2);
         }
 
         initializeComponents();
 
-        setInstanceCurrent();
+        setThisInstance();
     }
 
     public void show() {
         glfwShowWindow(window_ptr);
         focused = true;
-        setInstanceCurrent();
+        setThisInstance();
     }
 
     public void update() {
@@ -258,7 +260,7 @@ public final class Window {
     public void focus() {
         glfwFocusWindow(window_ptr);
         focused = true;
-        setInstanceCurrent();
+        setThisInstance();
     }
 
     //getters
@@ -407,7 +409,7 @@ public final class Window {
             public void invoke(long window, boolean focused) {
                 if(focused) {
                     getThis().focused = true;
-                    setInstanceCurrent();
+                    setThisInstance();
                     invokeEventListeners(new GLFWWindowFocusGainEvent(getThis()));
                 } else {
                     getThis().focused = false;
