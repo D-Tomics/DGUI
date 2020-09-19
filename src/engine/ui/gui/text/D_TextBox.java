@@ -54,11 +54,11 @@ public class D_TextBox {
     private float charBorderEdge;
 
     public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight) {
-        this(text, fontSize, boxWidth, boxHeight, DEFAULT.getFont(Window.INSTANCE.getLoader()), false);
+        this(text, fontSize, boxWidth, boxHeight, DEFAULT.getFont(Window.get().getLoader()), false);
     }
 
     public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight, boolean centered) {
-        this(text, fontSize, boxWidth, boxHeight, DEFAULT.getFont(Window.INSTANCE.getLoader()), centered);
+        this(text, fontSize, boxWidth, boxHeight, DEFAULT.getFont(Window.get().getLoader()), centered);
     }
 
 
@@ -78,7 +78,7 @@ public class D_TextBox {
         this.charWidth = 0.45f;
         this.charEdge = 0.19f;
         this.wrapText = false;
-        this.window = Window.INSTANCE;
+        this.window = Window.get();
 
         this.font = font;
         this.centered = centered;

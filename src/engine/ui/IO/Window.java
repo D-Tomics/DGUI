@@ -62,8 +62,10 @@ public final class Window {
     private static int monitorHeight;
     private static float monitorAspectRatio;
 
-    public static Window INSTANCE;
+    private static Window INSTANCE;
     private static Window current;
+    private synchronized void setInstanceCurrent() { INSTANCE = this; }
+    public static Window get() { return INSTANCE; }
 
     private Loader loader;
     private MasterRenderer renderer;
@@ -95,7 +97,7 @@ public final class Window {
         initGLFW();
         if(load)
             DGUI.load(this);
-        if(INSTANCE == null) INSTANCE = this;
+        if(INSTANCE == null) setInstanceCurrent();
     }
 
     public void makeCurrent() {
@@ -138,13 +140,13 @@ public final class Window {
 
         initializeComponents();
 
-        INSTANCE = this;
+        setInstanceCurrent();
     }
 
     public void show() {
         glfwShowWindow(window_ptr);
         focused = true;
-        INSTANCE = this;
+        setInstanceCurrent();
     }
 
     public void update() {
@@ -256,7 +258,7 @@ public final class Window {
     public void focus() {
         glfwFocusWindow(window_ptr);
         focused = true;
-        INSTANCE = this;
+        setInstanceCurrent();
     }
 
     //getters
@@ -405,7 +407,7 @@ public final class Window {
             public void invoke(long window, boolean focused) {
                 if(focused) {
                     getThis().focused = true;
-                    INSTANCE = getThis();
+                    setInstanceCurrent();
                     invokeEventListeners(new GLFWWindowFocusGainEvent(getThis()));
                 } else {
                     getThis().focused = false;

@@ -87,13 +87,13 @@ public class D_List<T> extends D_Component{
     public void onStateChange(Observable o) {
         if(this.getQuads() != null) {
             container.style.setPosition(style.getX(), style.getY() - this.style.getHeight());
-            if(container.style.getY() - container.style.getHeight() <= -Window.INSTANCE.getHeight() / 2.0f) {
-                float dy = container.style.getY() - container.style.getHeight() + Window.INSTANCE.getHeight() / 2.0f;
+            if(container.style.getY() - container.style.getHeight() <= -Window.get().getHeight() / 2.0f) {
+                float dy = container.style.getY() - container.style.getHeight() + Window.get().getHeight() / 2.0f;
                 container.style.setPosition(style.getX(), style.getY() - dy);
             }
 
-            if(container.style.getY() >= Window.INSTANCE.getHeight() / 2.0f) {
-                float dy = container.style.getY() - Window.INSTANCE.getHeight() / 2.0f;
+            if(container.style.getY() >= Window.get().getHeight() / 2.0f) {
+                float dy = container.style.getY() - Window.get().getHeight() / 2.0f;
                 container.style.setPosition(style.getX(), style.getY() - dy);
             }
 
