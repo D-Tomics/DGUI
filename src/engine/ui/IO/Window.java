@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.glViewport;
 
@@ -43,7 +44,7 @@ public final class Window {
     private static boolean init;
     public synchronized static void initGLFW() {
         if(init) return;
-        GLFWErrorCallback.createPrint(System.err);
+        GLFWErrorCallback.createPrint(System.err).set();
         init = glfwInit();
         if(!init) throw  new IllegalStateException("could'nt initialize glfw");
         OpenAL.create();
@@ -59,6 +60,7 @@ public final class Window {
 
     public static void terminate() {
         glfwTerminate();
+        glfwSetErrorCallback(null).free();
         OpenAL.close();
     }
 
@@ -185,6 +187,7 @@ public final class Window {
         loader.cleanUp();
         renderer.cleanUp();
         guiEventManager.destroy();
+        glfwFreeCallbacks(window_ptr);
         glfwDestroyWindow(window_ptr);
         exited = true;
     }
