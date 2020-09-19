@@ -26,7 +26,7 @@ public class DGUI {
 
     protected static ArrayList<Window> windowsList;
 
-    static void load(Window window) {
+    static synchronized void load(Window window) {
         if(window == null) return;
         if(windowsList == null) windowsList = new ArrayList<>();
         if(windowsList.contains(window)) return;
