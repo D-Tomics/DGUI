@@ -1,6 +1,7 @@
 package engine.ui.IO;
 
 import engine.ui.IO.events.*;
+import engine.ui.IO.sound.SoundManager;
 import engine.ui.gui.components.D_Container;
 import engine.ui.gui.components.D_Gui;
 import engine.ui.gui.manager.D_GuiEventManager;
@@ -47,7 +48,7 @@ public final class Window {
         GLFWErrorCallback.createPrint(System.err).set();
         init = glfwInit();
         if(!init) throw  new IllegalStateException("could'nt initialize glfw");
-        OpenAL.create();
+        SoundManager.get().init();
         Time.init();
 
         GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -61,7 +62,7 @@ public final class Window {
     public static void terminate() {
         glfwTerminate();
         glfwSetErrorCallback(null).free();
-        OpenAL.close();
+        SoundManager.get().destroy();
     }
 
     private int fps;
