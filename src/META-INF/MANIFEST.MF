@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Class-Path: joml-1.9.14.jar lwjgl-glfw-natives-windows.jar lwjgl-glfw.ja
- r lwjgl-natives-windows.jar lwjgl-openal-natives-windows.jar lwjgl-open
- al.jar lwjgl-opencl.jar lwjgl-opengl-natives-windows.jar lwjgl-opengl.j
- ar lwjgl-stb-natives-windows.jar lwjgl-stb.jar lwjgl.jar
-
