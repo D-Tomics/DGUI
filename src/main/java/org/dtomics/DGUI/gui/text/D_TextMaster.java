@@ -1,11 +1,10 @@
 package org.dtomics.DGUI.gui.text;
 
 import org.dtomics.DGUI.IO.Window;
-import org.dtomics.DGUI.IO.events.GLFWEvent;
-import org.dtomics.DGUI.IO.events.GLFWListener;
 import org.dtomics.DGUI.IO.events.GLFWWindowSizeEvent;
 import org.dtomics.DGUI.gui.components.D_Gui;
 import org.dtomics.DGUI.gui.text.font.Font;
+import org.dtomics.DGUI.utils.D_Event;
 
 import java.util.*;
 
@@ -17,27 +16,8 @@ public final class D_TextMaster {
 
     private static Map<Window, Map<D_Gui, Map<Font, List<D_TextBox>>>> guiTextMap;
 
-    private static GLFWListener sizeChangeListener = new GLFWListener(GLFWWindowSizeEvent.class) {
-        @Override
-        public void invoke(GLFWEvent event) {
-            if(guiTextMap == null || guiTextMap.get(event.getSource()) == null)
-                return;
-            Collection<Map<Font, List<D_TextBox>>> textMaps = guiTextMap.get(event.getSource()).values();
-            for(Map<Font,List<D_TextBox>> textMap : textMaps) {
-                Set<Font> keys = textMap.keySet();
-                for(Font font : keys) {
-                    List<D_TextBox> textBoxes = textMap.get(font);
-                    for(D_TextBox textBox : textBoxes) {
-                        textBox.requestUpdate();
-                        textBox.update(event.getSource().getLoader());
-                    }
-                }
-            }
-        }
-    };
-
     public static void init(Window window) {
-        window.addListener(sizeChangeListener);
+        window.addListener(GLFWWindowSizeEvent.class, D_TextMaster::onSizeChange);
     }
 
     public static void load(Window window, D_Gui gui, D_TextBox text) {
@@ -77,6 +57,23 @@ public final class D_TextMaster {
                 texts.remove(textBox);
                 List<D_TextBox> texts2 = map.computeIfAbsent(newFont, m -> new ArrayList<>());
                 texts2.add(textBox);
+            }
+        }
+    }
+
+    private static void onSizeChange(D_Event<Window> e) {
+        GLFWWindowSizeEvent event = (GLFWWindowSizeEvent) e;
+        if(guiTextMap == null || guiTextMap.get(event.getSource()) == null)
+            return;
+        Collection<Map<Font, List<D_TextBox>>> textMaps = guiTextMap.get(event.getSource()).values();
+        for(Map<Font,List<D_TextBox>> textMap : textMaps) {
+            Set<Font> keys = textMap.keySet();
+            for(Font font : keys) {
+                List<D_TextBox> textBoxes = textMap.get(font);
+                for(D_TextBox textBox : textBoxes) {
+                    textBox.requestUpdate();
+                    textBox.update(event.getSource().getLoader());
+                }
             }
         }
     }
