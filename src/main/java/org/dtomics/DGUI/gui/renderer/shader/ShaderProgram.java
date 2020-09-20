@@ -21,7 +21,7 @@ import java.util.Map;
 public abstract class ShaderProgram {
 
     private static final int MAX_SHADERS_PER_PROGRAM = 2;
-    private static final String LOCATION = "/org/dtomics/DGUI/gui/renderer/shader/";
+    private static final String LOCATION = "/shaders/";
 
     private String location;
     private int program;

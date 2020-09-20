@@ -15,7 +15,7 @@ public class D_GuiShader extends ShaderProgram{
 
     private Window window;
     public D_GuiShader(Window window) {
-        super("dGuiShader.glsl");
+        super("shaders/dGuiShader.glsl");
         super.start();
         super.loadInt("bgTexture",0);
         super.stop();

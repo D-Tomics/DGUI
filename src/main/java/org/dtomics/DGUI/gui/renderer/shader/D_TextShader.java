@@ -13,7 +13,7 @@ public final class D_TextShader extends ShaderProgram {
 
     private Window window;
     public D_TextShader(Window window) {
-        super("dTextShader.glsl");
+        super("shaders/dTextShader.glsl");
         this.window = window;
         loadLocations(
                 "texAtlas",
