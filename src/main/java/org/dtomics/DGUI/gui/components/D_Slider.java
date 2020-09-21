@@ -26,6 +26,7 @@ public class D_Slider extends D_Component{
 
     private D_TextBox valueText;
     private D_GuiQuad bar;
+    private float increment = 0.1f;
     private float xRelativeToValue = 0;
 
     public D_Slider() {
@@ -76,14 +77,15 @@ public class D_Slider extends D_Component{
                 mouseX = style.getX() + style.getWidth();
 
             xRelativeToValue = (mouseX - left); // range (0 - width)
-            value = (xRelativeToValue/style.getWidth()) * (maxValue - minValue)   + minValue;
+            float val = (xRelativeToValue/style.getWidth()) * (maxValue - minValue)   + minValue;
+            this.setValue((float) (Math.floor(val / increment) * increment));
             this.valueText.setText(value+"");
             style.notifyObservers();
             this.stackEvent(new D_GuiValueChangeEvent<>(this, prevVal, value));
         }
 
         if(this.isFocused()) {
-            float incrementValue = 0.1f;
+            float incrementValue = increment;
             if(Keyboard.isKeyPressed(GLFW_KEY_LEFT_SHIFT))
                 incrementValue = 0.01f;
             else if(Keyboard.isKeyPressed(GLFW_KEY_LEFT_CONTROL))
@@ -121,6 +123,10 @@ public class D_Slider extends D_Component{
         if(this.value > maxValue)
             this.value = maxValue;
         this.maxValue = maxValue;
+    }
+
+    public void setIncrement(float value) {
+        this.increment = value;
     }
 
     private void setValue(float value) {
