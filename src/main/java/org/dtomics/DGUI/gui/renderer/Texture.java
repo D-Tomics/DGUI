@@ -25,7 +25,6 @@ public class Texture {
     public Texture(int id, int width, int height) {
         if(!glIsTexture(id))
             throw new IllegalArgumentException("invalid texture");
-
         this.id = id;
         this.width = width;
         this.height = height;
