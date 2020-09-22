@@ -1,6 +1,7 @@
 package org.dtomics.DGUI.gui.manager.constraints.layout_constraints;
 
 import org.dtomics.DGUI.gui.layouts.Alignment;
+import org.dtomics.DGUI.gui.layouts.Fill;
 import org.dtomics.DGUI.gui.manager.constraints.D_LayoutConstraint;
 
 /**
@@ -18,29 +19,34 @@ public class GridConstraint extends D_LayoutConstraint {
     private int w;
     private int h;
     private Alignment alignment;
+    private Fill fill;
 
-    public GridConstraint()                           { this(0,0,0,0,Alignment.CENTER); }
-    public GridConstraint(int x, int y, int w, int h) { this(x, y, w, h, Alignment.CENTER); }
+    public GridConstraint()                                                { this(0,0,0,0,Alignment.CENTER); }
+    public GridConstraint(int x, int y, int w, int h)                      { this(x, y, w, h, Alignment.CENTER); }
+    public GridConstraint(int x, int y, int w, int h, Alignment alignment) { this(x, y, w, h, alignment, Fill.NO_FILL); }
 
-    public GridConstraint(int x, int y, int w, int h, Alignment alignment) {
+    public GridConstraint(int x, int y, int w, int h, Alignment alignment, Fill fill) {
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
         this.alignment = alignment;
+        this.fill = fill;
     }
 
     public int x() { return x; }
     public int y() { return y; }
     public int w() { return w; }
     public int h() { return h; }
+    public Fill fill() { return fill; }
     public Alignment alignment() { return alignment; }
 
     public GridConstraint gridX(int gridX) { return setPos(gridX,y); }
     public GridConstraint gridY(int gridY) { return setPos(x,gridY); }
     public GridConstraint gridWidth(int gridW) { return setSize(gridW,0); }
     public GridConstraint gridHeight(int gridH) { return setSize(0,gridH); }
-    public GridConstraint girdAlign(Alignment align) { return set(x,y,w,h,align); }
+    public GridConstraint girdAlign(Alignment align) { return set(x,y,w,h,align, fill); }
+    public GridConstraint gridFill(Fill fill) { return set(x, y, w, h, alignment, fill); }
 
     public GridConstraint setPos(int gridX, int gridY) { return set(gridX, gridY, 0, 0); }
 
@@ -48,11 +54,14 @@ public class GridConstraint extends D_LayoutConstraint {
 
     public GridConstraint set( int gridX, int gridY, int gridWidth, int gridHeight) { return set(gridX, gridY, gridWidth, gridHeight, alignment); }
 
-    public GridConstraint set(int gridX, int gridY, int gridWidth, int gridHeight, Alignment alignment) {
+    public GridConstraint set(int gridX, int gridY, int gridWidth, int gridHeight, Alignment alignment) { return set(gridX, gridY, gridWidth, gridHeight, alignment, fill); }
+
+    public GridConstraint set(int gridX, int gridY, int gridWidth, int gridHeight, Alignment alignment, Fill fill) {
         x = gridX;
         y = gridY;
         w = gridWidth;
         h = gridHeight;
+        this.fill = fill;
         this.alignment = alignment;
         return this;
     }

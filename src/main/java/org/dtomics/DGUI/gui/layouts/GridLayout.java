@@ -4,10 +4,15 @@ import org.dtomics.DGUI.gui.components.D_Container;
 import org.dtomics.DGUI.gui.components.D_Gui;
 import org.dtomics.DGUI.gui.manager.constraints.D_LayoutConstraint;
 import org.dtomics.DGUI.gui.manager.constraints.layout_constraints.GridConstraint;
+import org.dtomics.DGUI.utils.colors.Color;
+import org.dtomics.opengl.opengl.OpenGL;
+import org.dtomics.opengl.opengl.primitives.Rect;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
+
+import static org.lwjgl.opengl.GL11.GL_LINE;
 
 /**
  * This layout adds the children in a grid fashion on the parent.
@@ -68,13 +73,14 @@ public class GridLayout extends Layout {
                 }
             }
 
-            constraint.alignment().setComponentPosition(
-                    parent.getStyle().getX() + parent.getStyle().getPaddingLeft() + getWidthUptoCol(cIndex),
-                    parent.getStyle().getY() - parent.getStyle().getPaddingTop() - getHeightUptoRow(rIndex),
-                    getWidthFromTo(cIndex,cIndex + constraint.w()),
-                    getHeightFromTo(rIndex, rIndex + constraint.h()),
-                    child, true
-            );
+            float cellX = parent.getStyle().getX() + parent.getStyle().getPaddingLeft() + getWidthUptoCol(cIndex);
+            float cellY = parent.getStyle().getY() - parent.getStyle().getPaddingTop() - getHeightUptoRow(rIndex);
+            float cellWidth = getWidthFromTo(cIndex, cIndex + constraint.w());
+            float cellHeight = getHeightFromTo(rIndex, rIndex + constraint.h());
+
+            constraint.fill().setComponentSize(cellWidth - parent.getStyle().getPaddingWidth(), cellHeight - parent.getStyle().getPaddingHeight(), child, true);
+            constraint.alignment().setComponentPosition(cellX, cellY, cellWidth, cellHeight, child, true);
+
             for(int j = rIndex; j < rows && j <= rIndex + constraint.h(); j++)
                 for(int i = cIndex; i < columns && i <= cIndex + constraint.w(); i++)
                     occupied[j][i] = true;
