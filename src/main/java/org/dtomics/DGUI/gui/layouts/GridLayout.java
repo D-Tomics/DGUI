@@ -4,15 +4,10 @@ import org.dtomics.DGUI.gui.components.D_Container;
 import org.dtomics.DGUI.gui.components.D_Gui;
 import org.dtomics.DGUI.gui.manager.constraints.D_LayoutConstraint;
 import org.dtomics.DGUI.gui.manager.constraints.layout_constraints.GridConstraint;
-import org.dtomics.DGUI.utils.colors.Color;
-import org.dtomics.opengl.opengl.OpenGL;
-import org.dtomics.opengl.opengl.primitives.Rect;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
-
-import static org.lwjgl.opengl.GL11.GL_LINE;
 
 /**
  * This layout adds the children in a grid fashion on the parent.
@@ -129,17 +124,17 @@ public class GridLayout extends Layout {
                 }
             }
 
-            if(child.getStyle().getWidth() / (constraint.w() + 1) + child.getStyle().getMarginWidth() > getCellWidth(cIndex)) {
-                for(int i = cIndex; i < columns && i <= cIndex + constraint.w(); i++) {
+            if ((child.getStyle().getWidth() + child.getStyle().getMarginWidth()) / (constraint.w() + 1) > getCellWidth(cIndex)) {
+                for (int i = cIndex; i < columns && i <= cIndex + constraint.w(); i++) {
                     float prevW = cellWidths[i];
-                    cellWidths[i] = child.getStyle().getWidth() / (constraint.w() + 1) + child.getStyle().getMarginWidth();
+                    cellWidths[i] = (child.getStyle().getWidth() + child.getStyle().getMarginWidth()) / (constraint.w() + 1);
                     parent.getStyle().setWidth(parent.getStyle().getWidth() - prevW + cellWidths[i], false);
                 }
             }
-            if(child.getStyle().getHeight() / (constraint.h() + 1) + child.getStyle().getMarginHeight()> getCellHeight(rIndex)) {
-                for(int i = rIndex; i < rows && i <= rIndex + constraint.h(); i++) {
+            if ((child.getStyle().getHeight() + child.getStyle().getMarginHeight()) / (constraint.h() + 1) > getCellHeight(rIndex)) {
+                for (int i = rIndex; i < rows && i <= rIndex + constraint.h(); i++) {
                     float prewH = cellHeights[i];
-                    cellHeights[i] = child.getStyle().getHeight() / (constraint.h() + 1) + child.getStyle().getMarginHeight();
+                    cellHeights[i] = (child.getStyle().getHeight() + child.getStyle().getMarginHeight()) / (constraint.h() + 1);
                     parent.getStyle().setHeight(parent.getStyle().getHeight() - prewH + cellHeights[i], false);
                 }
 
