@@ -3,7 +3,7 @@ package org.dtomics.DGUI.gui.layouts;
 import org.dtomics.DGUI.gui.components.D_Gui;
 import org.dtomics.DGUI.gui.manager.Style;
 
-public enum Fill {
+public enum CellFill {
 
     FILL, HORIZONTAL,VERTICAL, NO_FILL;
 
