@@ -76,4 +76,32 @@ public class GridConstraint extends D_LayoutConstraint {
         this.cellSize  = size;
         return this;
     }
+
+
+    public static GridConstraintBuilder builder() {
+        return new GridConstraintBuilder();
+    }
+
+    public static final class GridConstraintBuilder {
+        private int x;
+        private int y;
+        private int w;
+        private int h;
+        private Alignment alignment = Alignment.CENTER;
+        private CellFill fill = CellFill.NO_FILL;
+        private CellSize cellSize = CellSize.DEFAULT;
+
+        public GridConstraintBuilder x(int x) { this.x = x; return this; }
+        public GridConstraintBuilder y(int y) { this.y = y; return this; }
+        public GridConstraintBuilder w(int w) { this.w = w; return this; }
+        public GridConstraintBuilder h(int h) { this.h = h; return this; }
+
+        public GridConstraintBuilder alignment(Alignment alignment) { this.alignment = alignment; return this; }
+        public GridConstraintBuilder fill(CellFill fill) { this.fill = fill; return this; }
+        public GridConstraintBuilder cellSize(CellSize cellSize) { this.cellSize = cellSize; return this; }
+
+        public GridConstraint build() {
+            return new GridConstraint(this.x, this.y, this.w, this.h, this.alignment, this.fill, this.cellSize);
+        }
+    }
 }
