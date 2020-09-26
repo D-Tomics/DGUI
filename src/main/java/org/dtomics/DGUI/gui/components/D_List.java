@@ -78,6 +78,7 @@ public class D_List<T> extends D_Component{
             selected.setVisible(true);
             selected.style.setBorderWidth(0);
             selected.style.setCenter(style.getCenter());
+            System.out.println("selected : "+selected.getText());
         }
         this.container.getStyle().setHeight(this.style.getHeight() * Math.min(items.size(), windowSize));
         return this;
@@ -112,13 +113,13 @@ public class D_List<T> extends D_Component{
 
         if(selected != null) {
             if(!this.isSelected()) {
-                selected.setVisible(true);
+                selected.setVisible(this.isVisible());
                 selected.style.setCenter(style.getCenter());
                 selected.setHoverable(false);
                 container.setVisible(false);
             } else {
-                container.setVisible(true);
-                selected.setHoverable(true);
+                container.setVisible(this.isVisible());
+                selected.setHoverable(this.isVisible());
             }
         }
     }
