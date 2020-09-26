@@ -129,7 +129,7 @@ public class D_Slider extends D_Component{
         this.increment = value;
     }
 
-    private void setValue(float value) {
+    public void setValue(float value) {
         if(value <= minValue)
             value = minValue;
         else if(value > maxValue) value = maxValue;
