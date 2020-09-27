@@ -1,7 +1,9 @@
 package org.dtomics.DGUI.gui.components;
 
 import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignCenter;
+import org.dtomics.DGUI.gui.manager.events.D_GuiResizeEvent;
 import org.dtomics.DGUI.gui.text.D_TextBox;
+import org.dtomics.DGUI.utils.D_Event;
 import org.dtomics.DGUI.utils.colors.Color;
 import org.dtomics.DGUI.utils.observers.Observable;
 
@@ -21,6 +23,7 @@ public class D_Button extends D_Component{
         this.name.setTextColor(Color.BLACK);
         this.addText(this.name);
         this.addConstraint(new D_TextAlignCenter(this.name));
+        this.addEventListener(D_GuiResizeEvent.class, this::onSizeChange);
 
         style.setBounds(0,0,WIDTH,HEIGHT);
     }
@@ -42,4 +45,10 @@ public class D_Button extends D_Component{
 
     @Override
     public void onStateChange(Observable o) { }
+
+    private void onSizeChange(D_Event<D_Gui> event) {
+        D_GuiResizeEvent e = (D_GuiResizeEvent) event;
+        this.name.setBoxSize(e.getCurrentWidth(), e.getCurrentHeight());
+    }
+
 }
