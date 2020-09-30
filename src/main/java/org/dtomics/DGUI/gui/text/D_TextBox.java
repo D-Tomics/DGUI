@@ -52,6 +52,7 @@ public class D_TextBox {
     @Setter private boolean visible = true;
 
     private float fontSize;
+    private float lineSpacing;
     @Setter private float charWidth;
     @Setter private float charEdge;
     @Setter private float charBorderWidth;
@@ -89,6 +90,7 @@ public class D_TextBox {
 
         this.boxWidth = boxWidth;
         this.boxHeight = boxHeight;
+        this.lineSpacing = 5;
 
         this.meshData = TextMeshCreator.createTextMesh(window,this);
     }
@@ -141,6 +143,12 @@ public class D_TextBox {
     public void setFontSize(float fontSize) {
         if(this.fontSize == fontSize) return;
         this.fontSize = fontSize;
+        requestUpdate();
+    }
+
+    public void setLineSpacing(float lineSpacing) {
+        if(this.lineSpacing == lineSpacing) return;
+        this.lineSpacing = lineSpacing;
         requestUpdate();
     }
 
