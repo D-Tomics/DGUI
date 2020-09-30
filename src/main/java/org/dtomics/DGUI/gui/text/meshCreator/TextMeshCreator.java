@@ -48,7 +48,7 @@ public final class TextMeshCreator {
         // stretching
         float relativeFontSize = text.getFontSize() * window.getAspectRatio();
 
-        List<Line> lines = createStructure(window,text,hps,relativeFontSize);
+        List<Line> lines = createStructure(window, text, hps, vps, relativeFontSize);
 
         float cursorX;
         float cursorY = 0;
@@ -101,7 +101,7 @@ public final class TextMeshCreator {
         );
     }
 
-    private static List<Line> createStructure(Window window, D_TextBox textBox, float hps, float relativeFontSize) {
+    private static List<Line> createStructure(Window window, D_TextBox textBox, float hps, float vps, float relativeFontSize) {
         List<Line> lines = textBox.getLines() == null ? new ArrayList<>() : textBox.getLines();
         lines.clear();
         char[] characterArray = textBox.getText().toCharArray();
@@ -110,10 +110,10 @@ public final class TextMeshCreator {
         lines.add(currentLine);
         for(char character : characterArray) {
             FontChar fontCharacter = textBox.getFont().getFontFile().getFontChar(character);
-            boolean added = currentLine.addCharToLine(fontCharacter, textBox.isWrapped(), hps);
+            boolean added = currentLine.addCharToLine(fontCharacter, textBox.isWrapped(), hps,vps);
             if(!added) {
                 currentLine = new Line(textBox.getBoxWidth(), relativeFontSize);
-                currentLine.addCharToLine(fontCharacter,textBox.isWrapped(),hps);
+                currentLine.addCharToLine(fontCharacter,textBox.isWrapped(),hps,vps);
                 lines.add(currentLine);
             }
         }
