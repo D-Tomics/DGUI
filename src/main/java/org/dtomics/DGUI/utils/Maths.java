@@ -54,6 +54,11 @@ public class Maths {
         return ((val - min1) / (max1 - min1)) * (max2 - min2) + min2;
     }
 
+    public static int fastFloor(double x) {
+        int xi = (int) x;
+        return x < xi ? xi - 1 : xi;
+    }
+
     public static float clamp(float val, float min, float max) {
         return Math.max(min, Math.min(max,val));
     }
