@@ -2,9 +2,12 @@ package org.dtomics.DGUI.gui.components;
 
 import org.dtomics.DGUI.IO.Keyboard;
 import org.dtomics.DGUI.IO.Mouse;
+import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignRight;
+import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignTop;
+import org.dtomics.DGUI.gui.manager.events.D_GuiKeyEvent;
 import org.dtomics.DGUI.gui.manager.events.D_GuiValueChangeEvent;
 import org.dtomics.DGUI.gui.text.D_TextBox;
-import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.*;
+import org.dtomics.DGUI.utils.D_Event;
 import org.dtomics.DGUI.utils.colors.Color;
 import org.dtomics.DGUI.utils.observers.Observable;
 
@@ -54,6 +57,7 @@ public class D_Slider extends D_Component{
         this.valueText.setBoxSize(SLIDER_WIDTH,SLIDER_HEIGHT);
         this.valueText.setCentered(false);
 
+        this.addEventListener(D_GuiKeyEvent.class, this::onKeyPress);
         this.addConstraints(new D_TextAlignTop(valueText,0));
         this.addConstraints(new D_TextAlignRight(valueText,5));
     }
@@ -82,20 +86,6 @@ public class D_Slider extends D_Component{
             this.valueText.setText(value+"");
             style.notifyObservers();
             this.stackEvent(new D_GuiValueChangeEvent<>(this, prevVal, value));
-        }
-
-        if(this.isFocused()) {
-            float incrementValue = increment;
-            if(Keyboard.isKeyPressed(GLFW_KEY_LEFT_SHIFT))
-                incrementValue = 0.01f;
-            else if(Keyboard.isKeyPressed(GLFW_KEY_LEFT_CONTROL))
-                incrementValue = 1f;
-
-            if(Keyboard.isKeyRepeating(GLFW_KEY_LEFT)) {
-                setValue(this.value - incrementValue);
-            } else if(Keyboard.isKeyRepeating(GLFW_KEY_RIGHT)) {
-                setValue(this.value + incrementValue);
-            }
         }
     }
 
@@ -141,5 +131,22 @@ public class D_Slider extends D_Component{
         this.style.notifyObservers();
     }
 
+    private void onKeyPress(D_Event<D_Gui> event) {
+        D_GuiKeyEvent e = (D_GuiKeyEvent) event;
+        if(e.getAction() == GLFW_PRESS) {
+            float incrementValue = increment;
+            if(e.getKey() == GLFW_KEY_LEFT_SHIFT)
+                incrementValue = 0.01f;
+            else if(e.getKey() == GLFW_KEY_LEFT_CONTROL)
+                incrementValue = 1f;
+
+            switch (e.getKey()) {
+                case GLFW_KEY_LEFT: setValue(value - incrementValue); break;
+                case GLFW_KEY_RIGHT: setValue(value + incrementValue); break;
+                case GLFW_KEY_UP: setValue(maxValue); break;
+                case GLFW_KEY_DOWN: setValue(minValue); break;
+            }
+        }
+    }
 
 }
