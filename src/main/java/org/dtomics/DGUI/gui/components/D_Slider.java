@@ -1,17 +1,22 @@
 package org.dtomics.DGUI.gui.components;
 
+import org.dtomics.DGUI.IO.DGUI;
 import org.dtomics.DGUI.IO.Keyboard;
 import org.dtomics.DGUI.IO.Mouse;
+import org.dtomics.DGUI.IO.Window;
 import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignRight;
 import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignTop;
 import org.dtomics.DGUI.gui.manager.events.D_GuiKeyEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiResizeEvent;
 import org.dtomics.DGUI.gui.manager.events.D_GuiValueChangeEvent;
 import org.dtomics.DGUI.gui.text.D_TextBox;
 import org.dtomics.DGUI.utils.D_Event;
 import org.dtomics.DGUI.utils.colors.Color;
 import org.dtomics.DGUI.utils.observers.Observable;
+import org.dtomics.opengl.opengl.OpenGL;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
 
 /**This class lets the user graphically select a value by sliding
  * a bar within a bounded interval.
@@ -57,9 +62,10 @@ public class D_Slider extends D_Component{
         this.valueText.setBoxSize(SLIDER_WIDTH,SLIDER_HEIGHT);
         this.valueText.setCentered(false);
 
+        this.addEventListener(D_GuiResizeEvent.class, this::onSizeChange);
         this.addEventListener(D_GuiKeyEvent.class, this::onKeyPress);
         this.addConstraints(new D_TextAlignTop(valueText,0));
-        this.addConstraints(new D_TextAlignRight(valueText,5));
+        this.addConstraints(new D_TextAlignRight(valueText,0));
     }
 
     public D_Slider(float minValue, float maxValue, float value) {
@@ -126,8 +132,22 @@ public class D_Slider extends D_Component{
         float prevVal = this.value;
         this.stackEvent(new D_GuiValueChangeEvent<>(this, prevVal, value));
         this.value = value;
-        this.xRelativeToValue = ((value - minValue)/(maxValue - minValue)) * style.getWidth();
-        this.valueText.setText(this.value+"");
+        updateBarWidth();
+        this.valueText.setText(String.format("%s", this.value));
+        this.style.notifyObservers();
+    }
+
+    private void onSizeChange(D_Event<D_Gui> event) {
+        D_GuiResizeEvent e = (D_GuiResizeEvent) event;
+        this.bar.style.setHeight(this.style.getHeight());
+
+        float fontSize = valueText.getFontSize();
+        float fontToHeightRatio = fontSize / e.getPreviousHeight();
+
+        this.valueText.setBoxSize(this.style.getWidth(), this.style.getHeight());
+        this.valueText.setFontSize(fontToHeightRatio * e.getCurrentHeight());
+        updateBarWidth();
+
         this.style.notifyObservers();
     }
 
@@ -147,6 +167,10 @@ public class D_Slider extends D_Component{
                 case GLFW_KEY_DOWN: setValue(minValue); break;
             }
         }
+    }
+
+    private void updateBarWidth() {
+        xRelativeToValue = ((value - minValue)/(maxValue - minValue)) * style.getWidth();
     }
 
 }
