@@ -1,22 +1,19 @@
 package org.dtomics.DGUI.gui.components;
 
-import org.dtomics.DGUI.IO.DGUI;
-import org.dtomics.DGUI.IO.Keyboard;
 import org.dtomics.DGUI.IO.Mouse;
-import org.dtomics.DGUI.IO.Window;
 import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignRight;
 import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignTop;
 import org.dtomics.DGUI.gui.manager.events.D_GuiKeyEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiMouseDragEvent;
 import org.dtomics.DGUI.gui.manager.events.D_GuiResizeEvent;
 import org.dtomics.DGUI.gui.manager.events.D_GuiValueChangeEvent;
 import org.dtomics.DGUI.gui.text.D_TextBox;
 import org.dtomics.DGUI.utils.D_Event;
+import org.dtomics.DGUI.utils.Maths;
 import org.dtomics.DGUI.utils.colors.Color;
 import org.dtomics.DGUI.utils.observers.Observable;
-import org.dtomics.opengl.opengl.OpenGL;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
 
 /**This class lets the user graphically select a value by sliding
  * a bar within a bounded interval.
@@ -64,6 +61,8 @@ public class D_Slider extends D_Component{
 
         this.addEventListener(D_GuiResizeEvent.class, this::onSizeChange);
         this.addEventListener(D_GuiKeyEvent.class, this::onKeyPress);
+        this.addEventListener(D_GuiMouseDragEvent.class, this::onMousePress);
+
         this.addConstraints(new D_TextAlignTop(valueText,0));
         this.addConstraints(new D_TextAlignRight(valueText,0));
     }
@@ -75,24 +74,6 @@ public class D_Slider extends D_Component{
 
     @Override
     public void onUpdate() {
-
-        if (this.isPressed()) {
-            float prevVal = this.value;
-            float left = style.getX();
-
-            float mouseX = Mouse.getX();
-            if(mouseX <= style.getX())
-                mouseX = style.getX();
-            else if(mouseX >= style.getX() + style.getWidth())
-                mouseX = style.getX() + style.getWidth();
-
-            xRelativeToValue = (mouseX - left); // range (0 - width)
-            float val = (xRelativeToValue/style.getWidth()) * (maxValue - minValue)   + minValue;
-            this.setValue((float) (Math.floor(val / increment) * increment));
-            this.valueText.setText(value+"");
-            style.notifyObservers();
-            this.stackEvent(new D_GuiValueChangeEvent<>(this, prevVal, value));
-        }
     }
 
     @Override
@@ -167,6 +148,27 @@ public class D_Slider extends D_Component{
                 case GLFW_KEY_DOWN: setValue(minValue); break;
             }
         }
+    }
+
+    private void onMousePress(D_Event<D_Gui> event) {
+        D_GuiMouseDragEvent e = (D_GuiMouseDragEvent) event;
+        if (e.getButton() != (GLFW_MOUSE_BUTTON_LEFT)) {
+            return;
+        }
+
+        float prevVal = this.value;
+        float left = style.getX();
+
+        float mouseX = Mouse.getX();
+        if(mouseX <= left)
+            mouseX = left;
+        else if(mouseX >= left + style.getWidth())
+            mouseX = left + style.getWidth();
+
+        xRelativeToValue = (mouseX - left); // range (0 - width)
+        this.setValue(Maths.fastFloor(Maths.map(xRelativeToValue, 0, style.getWidth(), minValue, maxValue) / increment) * increment);
+        style.notifyObservers();
+        this.stackEvent(new D_GuiValueChangeEvent<>(this, prevVal, value));
     }
 
     private void updateBarWidth() {
