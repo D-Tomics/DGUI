@@ -38,8 +38,7 @@ public class D_TextAlignBottom extends D_Constraint {
     public void update(D_Gui gui) {
         if(source == null) return;
         if(gui == null) return;
-        float textHeight = Math.min(source.getBoxHeight(), source.getMaxTextHeight());
-        source.getPosition().y = gui.getStyle().getY() - gui.getStyle().getHeight() + gui.getStyle().getPaddingBottom() + textHeight + padding;
+        source.getPosition().y = gui.getStyle().getY() - gui.getStyle().getHeight() + gui.getStyle().getPaddingBottom() + source.getBoxHeight() + padding;
         if(constraint != null)
             constraint.run(gui);
     }
