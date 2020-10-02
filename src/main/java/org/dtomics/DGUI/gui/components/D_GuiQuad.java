@@ -4,6 +4,7 @@ import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignCe
 import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextFill;
 import org.dtomics.DGUI.gui.manager.events.D_GuiResizeEvent;
 import org.dtomics.DGUI.gui.text.D_TextBox;
+import org.dtomics.DGUI.gui.text.meshCreator.TextAlignment;
 import org.dtomics.DGUI.utils.colors.Color;
 import org.dtomics.DGUI.utils.observers.Observable;
 
@@ -24,7 +25,7 @@ public class D_GuiQuad extends D_Component {
     public void setText(String text, Color color) {
         if(text == null) return;
         if(textBox == null)
-            textBox = new D_TextBox(text,60,style.getWidth(),style.getHeight(), false);
+            textBox = new D_TextBox(text,60,style.getWidth(),style.getHeight(), TextAlignment.CENTER);
         else
             textBox.setText(text);
         textBox.setTextColor(color);

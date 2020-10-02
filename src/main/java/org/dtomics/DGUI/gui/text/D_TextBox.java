@@ -8,6 +8,7 @@ import org.dtomics.DGUI.gui.renderer.Loader;
 import org.dtomics.DGUI.gui.text.font.Font;
 import org.dtomics.DGUI.gui.text.font.Fonts;
 import org.dtomics.DGUI.gui.text.meshCreator.Line;
+import org.dtomics.DGUI.gui.text.meshCreator.TextAlignment;
 import org.dtomics.DGUI.gui.text.meshCreator.TextMesh;
 import org.dtomics.DGUI.gui.text.meshCreator.TextMeshCreator;
 import org.dtomics.DGUI.gui.text.meshCreator.TextMeshData;
@@ -40,6 +41,8 @@ public class D_TextBox {
     private String text;
     private TextMesh mesh;
     private TextMeshData meshData;
+    private TextAlignment textAlignment;
+
     private final Vector2f position;
     private final Vector2f offset;
 
@@ -48,7 +51,6 @@ public class D_TextBox {
 
     private boolean wrapped;
     private boolean update;
-    private boolean centered;
     @Setter private boolean visible = true;
 
     private float fontSize;
@@ -59,11 +61,11 @@ public class D_TextBox {
     @Setter private float charBorderEdge;
 
     public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight) {
-        this(text, fontSize, boxWidth, boxHeight, DEFAULT.getFont(Window.get().getLoader()), false);
+        this(text, fontSize, boxWidth, boxHeight, DEFAULT.getFont(Window.get().getLoader()), TextAlignment.TOP_LEFT);
     }
 
-    public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight, boolean centered) {
-        this(text, fontSize, boxWidth, boxHeight, DEFAULT.getFont(Window.get().getLoader()), centered);
+    public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight,TextAlignment alignment) {
+        this(text, fontSize, boxWidth, boxHeight, DEFAULT.getFont(Window.get().getLoader()), alignment);
     }
 
 
@@ -73,9 +75,9 @@ public class D_TextBox {
      * @param boxWidth  width of the box in which the text needs to be displayed, beyond this width the text will not be rendered
      * @param boxHeight height of the box in which the text needs to be displayed, beyond this height the text will not be rendered
      * @param font      font type of the text
-     * @param centered  this represents whether the text need to be centered in the box horizontally
+     * @param alignment this represents how the text mesh should be aligned w.r.t the text box
      */
-    public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight, Font font, boolean centered) {
+    public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight, Font font, TextAlignment alignment) {
         this.text = text;
         this.position = new Vector2f(0);
         this.offset = new Vector2f(0);
@@ -86,12 +88,12 @@ public class D_TextBox {
         this.window = Window.get();
 
         this.font = font;
-        this.centered = centered;
 
         this.boxWidth = boxWidth;
         this.boxHeight = boxHeight;
         this.lineSpacing = 5;
 
+        this.textAlignment = alignment;
         this.meshData = TextMeshCreator.createTextMesh(window,this);
     }
 
@@ -152,9 +154,9 @@ public class D_TextBox {
         requestUpdate();
     }
 
-    public void setCentered(boolean centered) {
-        if(this.centered == centered) return;
-        this.centered = centered;
+    public void setTextAlignment(TextAlignment textAlignment) {
+        if(this.textAlignment == textAlignment) return;
+        this.textAlignment = textAlignment;
         requestUpdate();
     }
 

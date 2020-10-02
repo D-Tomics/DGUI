@@ -37,7 +37,7 @@ public class D_TextAlignRight extends D_Constraint {
     @Override
     public void update(D_Gui gui) {
         if(source == null) return;
-        source.getPosition().x = gui.getStyle().getX() + gui.getStyle().getWidth() - gui.getStyle().getPaddingRight() - source.getMaxTextWidth() - padding;
+        source.getPosition().x = gui.getStyle().getX() + gui.getStyle().getWidth() - gui.getStyle().getPaddingRight() - source.getBoxWidth() - padding;
         if(constraint != null)
             constraint.run(gui);
     }

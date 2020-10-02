@@ -1,19 +1,27 @@
 package org.dtomics.DGUI.gui.components;
 
 import org.dtomics.DGUI.IO.Mouse;
+import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignCenter;
 import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignRight;
-import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignTop;
 import org.dtomics.DGUI.gui.manager.events.D_GuiKeyEvent;
 import org.dtomics.DGUI.gui.manager.events.D_GuiMouseDragEvent;
 import org.dtomics.DGUI.gui.manager.events.D_GuiResizeEvent;
 import org.dtomics.DGUI.gui.manager.events.D_GuiValueChangeEvent;
 import org.dtomics.DGUI.gui.text.D_TextBox;
+import org.dtomics.DGUI.gui.text.meshCreator.TextAlignment;
 import org.dtomics.DGUI.utils.D_Event;
 import org.dtomics.DGUI.utils.Maths;
 import org.dtomics.DGUI.utils.colors.Color;
 import org.dtomics.DGUI.utils.observers.Observable;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_CONTROL;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
+import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 
 /**This class lets the user graphically select a value by sliding
  * a bar within a bounded interval.
@@ -28,11 +36,11 @@ public class D_Slider extends D_Component{
     private float value = 0;
     private float minValue;
     private float maxValue;
-
-    private D_TextBox valueText;
-    private D_GuiQuad bar;
     private float increment = 0.1f;
     private float xRelativeToValue = 0;
+
+    private final D_TextBox valueText;
+    private final D_GuiQuad bar;
 
     public D_Slider() {
         this(0,1);
@@ -56,15 +64,14 @@ public class D_Slider extends D_Component{
         bar.setText(minValue+"", Color.BLACK);
         this.valueText = bar.getTextBox();
         this.valueText.setFontSize(70);
+        this.valueText.setTextAlignment(TextAlignment.RIGHT);
         this.valueText.setBoxSize(SLIDER_WIDTH,SLIDER_HEIGHT);
-        this.valueText.setCentered(false);
 
         this.addEventListener(D_GuiResizeEvent.class, this::onSizeChange);
         this.addEventListener(D_GuiKeyEvent.class, this::onKeyPress);
         this.addEventListener(D_GuiMouseDragEvent.class, this::onMousePress);
 
-        this.addConstraints(new D_TextAlignTop(valueText,0));
-        this.addConstraints(new D_TextAlignRight(valueText,0));
+        this.addConstraint(new D_TextAlignCenter(this.valueText, new D_TextAlignRight(valueText, 5)));
     }
 
     public D_Slider(float minValue, float maxValue, float value) {

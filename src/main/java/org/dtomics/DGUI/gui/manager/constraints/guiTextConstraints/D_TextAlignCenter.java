@@ -4,7 +4,7 @@ import org.dtomics.DGUI.gui.components.D_Gui;
 import org.dtomics.DGUI.gui.manager.constraints.D_Constraint;
 import org.dtomics.DGUI.gui.text.D_TextBox;
 
-/**This class aligns a text on the center of a gui
+/**This class aligns a text box to the center of a gui
  *
  * @author Abdul Kareem
  */
@@ -62,8 +62,8 @@ public class D_TextAlignCenter extends D_Constraint {
     public void update(D_Gui gui) {
         if(source == null) return;
 
-        if(xCenter) source.getPosition().x = gui.getStyle().getCenterX() - Math.min(source.getBoxWidth(), source.getMaxTextWidth()) / 2.0f;
-        if(yCenter) source.getPosition().y = gui.getStyle().getCenterY() + Math.min(source.getBoxHeight(), source.getMaxTextHeight()) / 2.0f;
+        if(xCenter) source.getPosition().x = gui.getStyle().getCenterX() - source.getBoxWidth() * 0.5f;
+        if(yCenter) source.getPosition().y = gui.getStyle().getCenterY() + source.getBoxHeight() * 0.5f;
 
         if(constraint != null)
             constraint.run(gui);
