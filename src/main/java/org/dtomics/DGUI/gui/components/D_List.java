@@ -78,7 +78,6 @@ public class D_List<T> extends D_Component{
             selected.setVisible(true);
             selected.style.setBorderWidth(0);
             selected.style.setCenter(style.getCenter());
-            System.out.println("selected : "+selected.getText());
         }
         this.container.getStyle().setHeight(this.style.getHeight() * Math.min(items.size(), windowSize));
         return this;
