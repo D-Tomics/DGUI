@@ -2,6 +2,8 @@ package org.dtomics.DGUI.gui.components;
 
 import org.dtomics.DGUI.IO.Window;
 import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignCenter;
+import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignLeft;
+import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignTop;
 import org.dtomics.DGUI.gui.text.D_TextBox;
 import org.dtomics.DGUI.utils.observers.Observable;
 
@@ -33,7 +35,7 @@ public class D_Label extends D_Component{
         style.setHeight(this.text.getMaxTextHeight());
         style.setAlpha(0);
         style.setBorderWidth(0);
-        this.addConstraint(new D_TextAlignCenter(this.text));
+        this.addConstraint(new D_TextAlignLeft(this.text, 0, new D_TextAlignTop(this.text, 0)));
     }
 
     public String getText() { return text.getText(); }

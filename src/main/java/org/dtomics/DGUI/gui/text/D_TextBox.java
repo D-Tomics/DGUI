@@ -1,10 +1,14 @@
 package org.dtomics.DGUI.gui.text;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.dtomics.DGUI.IO.Window;
 import org.dtomics.DGUI.gui.renderer.Loader;
 import org.dtomics.DGUI.gui.text.font.Font;
 import org.dtomics.DGUI.gui.text.font.Fonts;
 import org.dtomics.DGUI.gui.text.meshCreator.Line;
+import org.dtomics.DGUI.gui.text.meshCreator.TextAlignment;
 import org.dtomics.DGUI.gui.text.meshCreator.TextMesh;
 import org.dtomics.DGUI.gui.text.meshCreator.TextMeshCreator;
 import org.dtomics.DGUI.gui.text.meshCreator.TextMeshData;
@@ -22,11 +26,11 @@ import java.util.List;
  *
  * @author Abdul Kareem
  */
+@Getter
+@ToString
 public class D_TextBox {
 
     private static final Fonts DEFAULT = Fonts.Agency_FB;
-
-    private boolean wrapText;
 
     private float boxWidth;
     private float boxHeight;
@@ -37,28 +41,31 @@ public class D_TextBox {
     private String text;
     private TextMesh mesh;
     private TextMeshData meshData;
-    private Vector2f position;
-    private Vector2f offset;
+    private TextAlignment textAlignment;
 
-    private Color textColor = new Color(Color.WHITE);
-    private Color borderColor = new Color(Color.BLACK);
+    private final Vector2f position;
+    private final Vector2f offset;
 
+    private final Color textColor = new Color(Color.WHITE);
+    private final Color borderColor = new Color(Color.BLACK);
+
+    private boolean wrapped;
     private boolean update;
-    private boolean centered;
-    private boolean visible = true;
+    @Setter private boolean visible = true;
 
     private float fontSize;
-    private float charWidth;
-    private float charEdge;
-    private float charBorderWidth;
-    private float charBorderEdge;
+    private float lineSpacing;
+    @Setter private float charWidth;
+    @Setter private float charEdge;
+    @Setter private float charBorderWidth;
+    @Setter private float charBorderEdge;
 
     public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight) {
-        this(text, fontSize, boxWidth, boxHeight, DEFAULT.getFont(Window.get().getLoader()), false);
+        this(text, fontSize, boxWidth, boxHeight, DEFAULT.getFont(Window.get().getLoader()), TextAlignment.TOP_LEFT);
     }
 
-    public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight, boolean centered) {
-        this(text, fontSize, boxWidth, boxHeight, DEFAULT.getFont(Window.get().getLoader()), centered);
+    public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight,TextAlignment alignment) {
+        this(text, fontSize, boxWidth, boxHeight, DEFAULT.getFont(Window.get().getLoader()), alignment);
     }
 
 
@@ -68,66 +75,45 @@ public class D_TextBox {
      * @param boxWidth  width of the box in which the text needs to be displayed, beyond this width the text will not be rendered
      * @param boxHeight height of the box in which the text needs to be displayed, beyond this height the text will not be rendered
      * @param font      font type of the text
-     * @param centered  this represents whether the text need to be centered in the box horizontally
+     * @param alignment this represents how the text mesh should be aligned w.r.t the text box
      */
-    public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight, Font font, boolean centered) {
+    public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight, Font font, TextAlignment alignment) {
         this.text = text;
         this.position = new Vector2f(0);
         this.offset = new Vector2f(0);
         this.fontSize = fontSize;
         this.charWidth = 0.45f;
         this.charEdge = 0.19f;
-        this.wrapText = false;
+        this.wrapped = false;
         this.window = Window.get();
 
         this.font = font;
-        this.centered = centered;
 
         this.boxWidth = boxWidth;
         this.boxHeight = boxHeight;
+        this.lineSpacing = 5;
 
+        this.textAlignment = alignment;
         this.meshData = TextMeshCreator.createTextMesh(window,this);
     }
 
-    public boolean isCentered() { return centered; }
-    public boolean isVisible() { return  visible; }
-    public boolean isWrapped() { return wrapText; }
-
-    public String getText() { return text; }
-    public Font getFont() { return font; }
-    public TextMesh getMesh() { return mesh; }
-    public TextMeshData getMeshData() { return meshData; }
-
     public float getMaxTextWidth() { return meshData.getMaxTextWidth(); }
     public float getMaxTextHeight() { return meshData.getMaxTextHeight(); }
-    public float getBoxWidth() { return boxWidth; }
-    public float getBoxHeight() { return boxHeight; }
-    public float getFontSize() { return fontSize; }
 
-    public float getCharWidth() { return charWidth; }
-    public float getCharEdge() { return charEdge; }
-    public float getCharBorderWidth() { return charBorderWidth; }
-    public float getCharBorderEdge() { return charBorderEdge; }
-
-    public Color getBorderColor() { return borderColor; }
-    public Color getTextColor() { return textColor; }
-    public Vector2f getPosition() { return position; }
-    public Vector2f getOffset() { return offset; }
-
-    public int getNumOfLines() { return getLines().size(); }
+    public int getNumOfLines()            { return getLines().size();                                        }
     public int getLineLength(int lineNum) { return getLine(lineNum) != null ? getLine(lineNum).length() : 0; }
-    public float getLineHeight() { return meshData != null ? meshData.getLineHeight() : 0; }
-    public Line getLine(int lineNum) { return meshData != null ? meshData.getLine(lineNum) : null; }
-    public List<Line> getLines() { return meshData != null ? meshData.getLines() : null; }
+    public float getLineHeight()          { return meshData != null ? meshData.getLineHeight() : 0;          }
+    public Line getLine(int lineNum)      { return meshData != null ? meshData.getLine(lineNum) : null;      }
+    public List<Line> getLines()          { return meshData != null ? meshData.getLines() : null;            }
 
     /** this method makes the text wrap inside the box.
      * i.e it places the texts beyond the box width in a new line.
      *
-     * @param wrapText whether to place text beyond box width in a new line.
+     * @param wrapped whether to place text beyond box width in a new line.
      */
-    public void setWrapText(boolean wrapText) {
-        if(this.wrapText == wrapText) return;
-        this.wrapText = wrapText;
+    public void setWrapped(boolean wrapped) {
+        if(this.wrapped == wrapped) return;
+        this.wrapped = wrapped;
         requestUpdate();
     }
 
@@ -157,39 +143,20 @@ public class D_TextBox {
     }
 
     public void setFontSize(float fontSize) {
+        if(this.fontSize == fontSize) return;
         this.fontSize = fontSize;
         requestUpdate();
     }
 
-    public void setCharWidth(float charWidth) { this.charWidth = charWidth; }
-    public void setCharEdge(float charEdge) { this.charEdge = charEdge; }
-    public void setCharBorderWidth(float width) { this.charBorderWidth = width; }
-    public void setCharBorderEdge(float edge) { this.charBorderEdge = edge; }
+    public void setLineSpacing(float lineSpacing) {
+        if(this.lineSpacing == lineSpacing) return;
+        this.lineSpacing = lineSpacing;
+        requestUpdate();
+    }
 
-    public void setAlpha(float alpha) { this.textColor.a(alpha); }
-
-    public void setTextColor(Color textColor) { this.textColor.set(textColor); }
-    public void setTextColor(float r, float g, float b) { this.textColor.set(r,g,b); }
-
-    public void setBorderColor(Color borderColor) { this.borderColor.set(borderColor); }
-    public void setBorderColor(float r, float g, float b) { this.borderColor.set(r,g,b); }
-
-    public void setOffset(Vector2f offset) { this.offset.set(offset); }
-
-    /** This method sets the offset from the box position that the text gets rendered
-     *
-     * @param x x offset position from the box position the text gets rendered
-     * @param y y offset position from the box position the text gets rendered
-     */
-    public void setOffset(float x, float y) { this.offset.set(x,y); }
-
-    public void setPosition(Vector2f position) { this.position.set(position); }
-    public void setPosition(float x, float y) { position.set(x, y); }
-
-    public void setVisible(boolean visible) { this.visible = visible; }
-    public void setCentered(boolean centered) {
-        if(this.centered == centered) return;
-        this.centered = centered;
+    public void setTextAlignment(TextAlignment textAlignment) {
+        if(this.textAlignment == textAlignment) return;
+        this.textAlignment = textAlignment;
         requestUpdate();
     }
 
@@ -201,6 +168,25 @@ public class D_TextBox {
 
         requestUpdate();
     }
+
+    public void setTextColor(Color textColor)                    { this.textColor.set(textColor);  }
+    public void setTextColor(float r, float g, float b)          { this.textColor.set(r,g,b);      }
+    public void setTextColor(float r, float g, float b, float a) { this.textColor.set(r, g, b, a); }
+
+    public void setBorderColor(Color borderColor)                  { this.borderColor.set(borderColor); }
+    public void setBorderColor(float r, float g, float b)          { this.borderColor.set(r,g,b);       }
+    public void setBorderColor(float r, float g, float b, float a) { this.borderColor.set(r, g, b, a);  }
+
+    /** This method sets the offset from the box position that the text gets rendered
+     *
+     * @param x x offset position from the box position the text gets rendered
+     * @param y y offset position from the box position the text gets rendered
+     */
+    public void setOffset(float x, float y) { this.offset.set(x,y);    }
+    public void setOffset(Vector2f offset)  { this.offset.set(offset); }
+
+    public void setPosition(Vector2f position) { this.position.set(position); }
+    public void setPosition(float x, float y)  { this.position.set(x, y);     }
 
     void requestUpdate() {
         meshData = TextMeshCreator.createTextMesh(window,this);
@@ -214,20 +200,5 @@ public class D_TextBox {
             mesh.updateData(meshData,loader);
             update = false;
         }
-    }
-
-    @Override
-    public String toString() {
-        String str = "";
-        for(char c : text.toCharArray())
-        {
-            if(c == '\n')
-            {
-                str += "\\n";
-                continue;
-            }
-            str += c;
-        }
-        return str;
     }
 }
