@@ -14,6 +14,7 @@ public class Line {
     private float fontSize;
     private float curWidth;
     private float maxWidth;
+    private float maxHeight;
 
     private StringBuilder text;
     private List<Float> widths;
@@ -27,18 +28,25 @@ public class Line {
         this.text = new StringBuilder();
     }
 
-    boolean addCharToLine(FontChar fontChar, boolean wrapText, float hps) {
+    boolean addCharToLine(FontChar fontChar, boolean wrapText, float hps, float vps) {
         if (fontChar.getId() == '\n') {
             text.append('\n');
             return false;
         }
         if(wrapText && (curWidth + fontChar.getXAdvance() * hps) * fontSize / 2.0f > maxWidth) return false;
 
+        if(fontChar.getSizeY() * vps > maxHeight)
+            maxHeight = fontChar.getSizeY() * vps;
+
         text.append((char)fontChar.getId());
         curWidth += fontChar.getXAdvance() * hps;
         charList.add(fontChar);
         widths.add(curWidth);
         return true;
+    }
+
+    public float getMaxHeight() {
+        return maxHeight;
     }
 
     public boolean contains(String s) {

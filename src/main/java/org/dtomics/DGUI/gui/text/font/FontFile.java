@@ -37,6 +37,9 @@ public class FontFile {
         return characterMap.get(id);
     }
 
+    public float getDesiredPadding() {
+        return desiredPadding;
+    }
 
     public float getLineHeight() {
         return lineHeight;

@@ -31,6 +31,14 @@ public class D_GuiResizeEvent extends D_GuiEvent{
         this.currentHeight = currentHeight;
     }
 
+    public float newAr() {
+        return currentWidth / currentHeight;
+    }
+
+    public float oldAr() {
+        return previousWidth / previousHeight;
+    }
+
     public float getPreviousWidth() {
         return previousWidth;
     }

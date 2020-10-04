@@ -51,7 +51,12 @@ public class Maths {
     }
 
     public static float map(float val, float min1, float max1, float min2, float max2) {
-        return ((val - min1)/(max1 - min1)) * (max2 - min2);
+        return ((val - min1) / (max1 - min1)) * (max2 - min2) + min2;
+    }
+
+    public static int fastFloor(double x) {
+        int xi = (int) x;
+        return x < xi ? xi - 1 : xi;
     }
 
     public static float clamp(float val, float min, float max) {
