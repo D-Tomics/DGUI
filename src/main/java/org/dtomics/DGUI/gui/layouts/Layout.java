@@ -10,6 +10,9 @@ import org.dtomics.DGUI.gui.manager.constraints.D_LayoutConstraint;
  * @author Abdul Kareem
  */
 public abstract class Layout {
+    private float maxWidth;
+    private float maxHeight;
+
     /**
      * This method update the state of layout or the position of children in a container.
      *
@@ -20,7 +23,7 @@ public abstract class Layout {
     /**
      * sub classes should implement this method if the layout requires some constraints.
      *
-     * @param gui the gui to which this constraint is applied
+     * @param gui        the gui to which this constraint is applied
      * @param constraint the constraint that is be applied
      */
     abstract void setConstraint(D_Gui gui, D_LayoutConstraint constraint);
@@ -30,10 +33,8 @@ public abstract class Layout {
      *
      * @param gui the gui from which the constraint is to be removed
      */
-    void removeConstraint(D_Gui gui) { }
-
-    private float maxWidth;
-    private float maxHeight;
+    void removeConstraint(D_Gui gui) {
+    }
 
     /**
      * This method gets max width occupied by children on the parent
@@ -42,6 +43,10 @@ public abstract class Layout {
      */
     public float getMaxWidth() {
         return maxWidth;
+    }
+
+    protected void setMaxWidth(float maxWidth) {
+        this.maxWidth = maxWidth;
     }
 
     /**
@@ -53,21 +58,18 @@ public abstract class Layout {
         return maxHeight;
     }
 
-    protected void setMaxWidth(float maxWidth) {
-        this.maxWidth = maxWidth;
-    }
-
     protected void setMaxHeight(float maxHeight) {
         this.maxHeight = maxHeight;
     }
 
     /**
      * this method adds a constraint to a child
-     * @param gui the child to which the constraint should be applied
+     *
+     * @param gui        the child to which the constraint should be applied
      * @param constraint the constraint
      */
     public void addLayoutItem(D_Gui gui, D_LayoutConstraint constraint) {
-        setConstraint(gui,constraint);
+        setConstraint(gui, constraint);
     }
 
     /**

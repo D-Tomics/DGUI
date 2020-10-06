@@ -28,21 +28,23 @@ public class D_TextArea extends D_TextComponent {
 
         this.maxNumOfLines = (int) (style.getHeight() / textBox.getMeshData().getLineHeight());
 
-        this.addConstraint(new D_TextAlignTop(this.textBox,0,new D_TextAlignLeft(this.textBox,5, new D_TextFill(this.textBox,10,0))));
+        this.addConstraint(new D_TextAlignTop(this.textBox, 0, new D_TextAlignLeft(this.textBox, 5, new D_TextFill(this.textBox, 10, 0))));
 
         this.addEventListener(D_GuiScrollEvent.class, this::onScrollEvent);
         this.addEventListener(D_GuiResizeEvent.class, this::onResize);
     }
 
     @Override
-    protected void onUpdate() { }
+    protected void onUpdate() {
+    }
 
     @Override
-    protected void onStateChange(Observable o) { }
+    protected void onStateChange(Observable o) {
+    }
 
     @Override
     protected void onMousePress(int button) {
-        if(button == MOUSE_BUTTON_LEFT)
+        if (button == MOUSE_BUTTON_LEFT)
             cursor.setRow(
                     (int) Math.min(
                             textBox.getNumOfLines() - 1,
@@ -67,16 +69,17 @@ public class D_TextArea extends D_TextComponent {
     }
 
     private void onResize(D_Event e) {
-        this.maxNumOfLines = (int)(style.getHeight() / textBox.getMeshData().getLineHeight());
+        this.maxNumOfLines = (int) (style.getHeight() / textBox.getMeshData().getLineHeight());
         style.notifyObservers();
     }
 
     private void onScrollEvent(D_Event event) {
-        D_GuiScrollEvent e = (D_GuiScrollEvent)event;
-        if(textBox.getMaxTextHeight() > getStyle().getHeight()) {
+        D_GuiScrollEvent e = (D_GuiScrollEvent) event;
+        if (textBox.getMaxTextHeight() > getStyle().getHeight()) {
             float offset = textBox.getMeshData().getLineHeight() * (float) e.getYoffset();
 
-            if(textBox.getOffset().y - offset < 0 || textBox.getOffset().y - offset >= textBox.getMaxTextHeight()) offset = 0;
+            if (textBox.getOffset().y - offset < 0 || textBox.getOffset().y - offset >= textBox.getMaxTextHeight())
+                offset = 0;
             else verticalWindowStart -= e.getYoffset();
 
             textBox.setOffset(textBox.getOffset().x, textBox.getOffset().y - offset);
@@ -85,7 +88,7 @@ public class D_TextArea extends D_TextComponent {
     }
 
     private void updateVerticalScrolling() {
-        if(cursor.getRow() < verticalWindowStart) {
+        if (cursor.getRow() < verticalWindowStart) {
             int drow = verticalWindowStart - cursor.getRow();
             verticalWindowStart -= drow; // window start - row would give offset rows with windowStart as a reference
             textBox.getOffset().sub(0, drow * textBox.getMeshData().getLineHeight());

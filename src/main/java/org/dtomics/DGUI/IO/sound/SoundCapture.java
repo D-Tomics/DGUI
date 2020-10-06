@@ -12,10 +12,10 @@ public class SoundCapture {
 
     public static final int CAPTURE_IDLE = 0, CAPTURE_RECORDING = 1;
 
-    private int frequency;
-    private int bitsPerSample;
-    private int channels;
-    private int format;
+    private final int frequency;
+    private final int bitsPerSample;
+    private final int channels;
+    private final int format;
 
     private int state = CAPTURE_IDLE;
     private long captureDevice;
@@ -32,8 +32,8 @@ public class SoundCapture {
 
     //records synchronously
     public synchronized SoundBuffer record(int timeInSec) {
-        if(timeInSec < 0)
-            throw new IllegalStateException("invalid time : "+timeInSec);
+        if (timeInSec < 0)
+            throw new IllegalStateException("invalid time : " + timeInSec);
         Delay delay = new Delay(timeInSec * 1000);
         start(timeInSec);
         while (!delay.over()) ;
@@ -55,7 +55,7 @@ public class SoundCapture {
         state = CAPTURE_RECORDING;
     }
 
-    public SoundBuffer stop( int timeInSec) {
+    public SoundBuffer stop(int timeInSec) {
         ALC11.alcCaptureStop(captureDevice);
         state = CAPTURE_IDLE;
 

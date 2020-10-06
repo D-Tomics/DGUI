@@ -4,19 +4,20 @@ import org.dtomics.DGUI.gui.components.D_Gui;
 import org.dtomics.DGUI.gui.manager.constraints.D_Constraint;
 import org.dtomics.DGUI.gui.text.D_TextBox;
 
-/** This class aligns text in relation to the bottom of a gui
+/**
+ * This class aligns text in relation to the bottom of a gui
  *
  * @author Abdul Kareem
  */
 public class D_TextAlignBottom extends D_Constraint {
 
-    private D_TextBox source;
-    private float padding;
-    private D_Constraint constraint;
+    private final D_TextBox source;
+    private final float padding;
+    private final D_Constraint constraint;
 
     /**
-     * @param source     the text that should be aligned
-     * @param padding    the offset from top of the gui from which the text is aligned
+     * @param source  the text that should be aligned
+     * @param padding the offset from top of the gui from which the text is aligned
      */
     public D_TextAlignBottom(D_TextBox source, float padding) {
         this(source, padding, null);
@@ -36,10 +37,10 @@ public class D_TextAlignBottom extends D_Constraint {
 
     @Override
     public void update(D_Gui gui) {
-        if(source == null) return;
-        if(gui == null) return;
+        if (source == null) return;
+        if (gui == null) return;
         source.getPosition().y = gui.getStyle().getY() - gui.getStyle().getHeight() + gui.getStyle().getPaddingBottom() + source.getBoxHeight() + padding;
-        if(constraint != null)
+        if (constraint != null)
             constraint.run(gui);
     }
 }

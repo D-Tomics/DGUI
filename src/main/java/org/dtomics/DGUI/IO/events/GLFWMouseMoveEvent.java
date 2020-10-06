@@ -4,8 +4,8 @@ import org.dtomics.DGUI.IO.Window;
 
 public class GLFWMouseMoveEvent extends GLFWEvent {
 
-    private double xpos;
-    private double ypos;
+    private final double xpos;
+    private final double ypos;
 
     public GLFWMouseMoveEvent(Window source, double xpos, double ypos) {
         super(source);

@@ -3,9 +3,39 @@ package org.dtomics.DGUI.gui.manager;
 import org.dtomics.DGUI.IO.GLFWCursor;
 import org.dtomics.DGUI.IO.Mouse;
 import org.dtomics.DGUI.IO.Window;
-import org.dtomics.DGUI.IO.events.*;
-import org.dtomics.DGUI.gui.components.*;
-import org.dtomics.DGUI.gui.manager.events.*;
+import org.dtomics.DGUI.IO.events.GLFWCharEvent;
+import org.dtomics.DGUI.IO.events.GLFWEvent;
+import org.dtomics.DGUI.IO.events.GLFWKeyEvent;
+import org.dtomics.DGUI.IO.events.GLFWListener;
+import org.dtomics.DGUI.IO.events.GLFWScrollEvent;
+import org.dtomics.DGUI.IO.events.GLFWWindowFocusLooseEvent;
+import org.dtomics.DGUI.gui.components.D_Button;
+import org.dtomics.DGUI.gui.components.D_CheckBox;
+import org.dtomics.DGUI.gui.components.D_Container;
+import org.dtomics.DGUI.gui.components.D_Gui;
+import org.dtomics.DGUI.gui.components.D_GuiQuad;
+import org.dtomics.DGUI.gui.components.D_Icon;
+import org.dtomics.DGUI.gui.components.D_Label;
+import org.dtomics.DGUI.gui.components.D_List;
+import org.dtomics.DGUI.gui.components.D_Slider;
+import org.dtomics.DGUI.gui.components.D_TextComponent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiCharEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiDeSelectedEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiFocusGainEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiFocusLooseEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiKeyEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiKeyPressEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiKeyReleaseEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiMouseButtonEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiMouseDragEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiMouseEnterEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiMouseExitEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiMouseHoverEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiMouseMoveEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiMousePressEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiMouseReleaseEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiScrollEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiSelectedEvent;
 import org.dtomics.DGUI.utils.Maths;
 
 import java.util.ArrayList;
@@ -36,13 +66,13 @@ public final class D_GuiEventManager {
         this.keyListener = new GLFWListener(GLFWKeyEvent.class) {
             @Override
             public void invoke(GLFWEvent event) {
-                GLFWKeyEvent e = (GLFWKeyEvent)event;
-                if(focusedGui != null) {
-                    focusedGui.stackEvent(new D_GuiKeyEvent(focusedGui,e.getKey(),e.getCodePoint(),e.getMod(),e.getAction()));
-                    if(e.getAction() == GLFW_PRESS)
-                        focusedGui.stackEvent(new D_GuiKeyPressEvent(focusedGui,e.getKey(),e.getCodePoint(),e.getMod()));
-                    else if(e.getAction() == GLFW_RELEASE)
-                        focusedGui.stackEvent(new D_GuiKeyReleaseEvent(focusedGui,e.getKey(),e.getCodePoint(),e.getMod()));
+                GLFWKeyEvent e = (GLFWKeyEvent) event;
+                if (focusedGui != null) {
+                    focusedGui.stackEvent(new D_GuiKeyEvent(focusedGui, e.getKey(), e.getCodePoint(), e.getMod(), e.getAction()));
+                    if (e.getAction() == GLFW_PRESS)
+                        focusedGui.stackEvent(new D_GuiKeyPressEvent(focusedGui, e.getKey(), e.getCodePoint(), e.getMod()));
+                    else if (e.getAction() == GLFW_RELEASE)
+                        focusedGui.stackEvent(new D_GuiKeyReleaseEvent(focusedGui, e.getKey(), e.getCodePoint(), e.getMod()));
                 }
             }
         };
@@ -50,16 +80,16 @@ public final class D_GuiEventManager {
         this.charListener = new GLFWListener(GLFWCharEvent.class) {
             @Override
             public void invoke(GLFWEvent event) {
-                if(focusedGui != null) {
-                    focusedGui.stackEvent(new D_GuiCharEvent(focusedGui,((GLFWCharEvent)event).getCodePoint()));
+                if (focusedGui != null) {
+                    focusedGui.stackEvent(new D_GuiCharEvent(focusedGui, ((GLFWCharEvent) event).getCodePoint()));
                 }
             }
         };
 
         this.scrollListener = new GLFWListener(GLFWScrollEvent.class) {
             public void invoke(GLFWEvent event) {
-                if(focusedGui != null && focusedGui.isScrollable())
-                    focusedGui.stackEvent(new D_GuiScrollEvent(focusedGui, ((GLFWScrollEvent)event).getXoffset(), ((GLFWScrollEvent)event).getYoffset()));
+                if (focusedGui != null && focusedGui.isScrollable())
+                    focusedGui.stackEvent(new D_GuiScrollEvent(focusedGui, ((GLFWScrollEvent) event).getXoffset(), ((GLFWScrollEvent) event).getYoffset()));
             }
         };
 
@@ -86,116 +116,121 @@ public final class D_GuiEventManager {
 
     public void update(ArrayList<D_Gui> guis) {
         boolean topFound = false;
-        if(guis == null) return;
-        if(topGui != null) {
-            if(!topGui.isVisible())
-                topFound = update(topGui,topFound);
+        if (guis == null) return;
+        if (topGui != null) {
+            if (!topGui.isVisible())
+                topFound = update(topGui, topFound);
         }
-        for(int i = 0; i < guis.size(); i++) {
+        for (int i = 0; i < guis.size(); i++) {
             D_Gui gui = guis.get(i);
-            if(gui instanceof D_Container && ((D_Container) gui).getChildList() != null) {
+            if (gui instanceof D_Container && ((D_Container) gui).getChildList() != null) {
                 update(((D_Container) gui).getChildList());
             }
 
-            if(gui.getQuads() != null)
-                for(D_Gui quad : gui.getQuads())
-                    topFound = update(quad,topFound);
-            if(gui.getIcons() != null)
-                for(D_Icon icon : gui.getIcons())
+            if (gui.getQuads() != null)
+                for (D_Gui quad : gui.getQuads())
+                    topFound = update(quad, topFound);
+            if (gui.getIcons() != null)
+                for (D_Icon icon : gui.getIcons())
                     icon.update();
-            topFound = update(gui,topFound);
-            if(window.isFocused())
+            topFound = update(gui, topFound);
+            if (window.isFocused())
                 updateCursor();
         }
     }
 
+    public D_Gui getTopGui() {
+        return topGui;
+    }
+
+    public D_Gui getFocusedGui() {
+        return focusedGui;
+    }
+
     public void setFocusedGui(D_Gui gui) {
-        if(gui instanceof D_GuiQuad)
+        if (gui instanceof D_GuiQuad)
             gui = gui.getParent();
 
-        if(focusedGui == gui) return;
-        if(focusedGui != null) {
+        if (focusedGui == gui) return;
+        if (focusedGui != null) {
             focusedGui.focus(false);
             focusedGui.stackEvent(new D_GuiFocusLooseEvent(focusedGui));
         }
 
         focusedGui = gui;
-        if(focusedGui != null) {
+        if (focusedGui != null) {
             focusedGui.focus(true);
             focusedGui.stackEvent(new D_GuiFocusGainEvent(focusedGui));
         }
     }
 
-    public D_Gui getTopGui()     { return topGui;     }
-    public D_Gui getFocusedGui() { return focusedGui; }
-
     private boolean checkHover(D_Gui gui) {
         float cx = gui.getStyle().getCenterX();
         float cy = gui.getStyle().getCenterY();
-        return Maths.checkPointCollision(Mouse.getX(),Mouse.getY(),cx,cy,gui.getStyle().getWidth(),gui.getStyle().getHeight()) && window.isFocused();
+        return Maths.checkPointCollision(Mouse.getX(), Mouse.getY(), cx, cy, gui.getStyle().getWidth(), gui.getStyle().getHeight()) && window.isFocused();
     }
 
 
     private boolean update(D_Gui gui, boolean topFound) {
         gui.update();
-        if(gui.requestedFocus()) {
+        if (gui.requestedFocus()) {
             setFocusedGui(gui);
             gui.requestFocus(false);
-        } else if(gui.requestedLooseFocus()) {
-            if(gui == focusedGui)
+        } else if (gui.requestedLooseFocus()) {
+            if (gui == focusedGui)
                 setFocusedGui(null);
             gui.requestLooseFocus(false);
         }
 
-        if(topGui != null ) {
+        if (topGui != null) {
             topFound = topGui != gui;
-            if(gui.getLevel() >= topGui.getLevel() && !topGui.isPressed()) topFound = false;
+            if (gui.getLevel() >= topGui.getLevel() && !topGui.isPressed()) topFound = false;
         }
 
-        if(gui.isHoverable() && gui.isVisible() && checkHover(gui)) {
-            if(!topFound) {
+        if (gui.isHoverable() && gui.isVisible() && checkHover(gui)) {
+            if (!topFound) {
                 topGui = gui;
                 topFound = true;
 
-                if(!topGui.isHovered()) {
+                if (!topGui.isHovered()) {
                     topGui.setHovered(true);
                     topGui.stackEvent(new D_GuiMouseEnterEvent(topGui));
                 }
                 topGui.stackEvent(new D_GuiMouseHoverEvent(topGui));
 
-                if(Mouse.isMoving()) {
-                    topGui.stackEvent(new D_GuiMouseMoveEvent(topGui,Mouse.getX(), Mouse.getY()));
-                    if(Mouse.pressed()) {
+                if (Mouse.isMoving()) {
+                    topGui.stackEvent(new D_GuiMouseMoveEvent(topGui, Mouse.getX(), Mouse.getY()));
+                    if (Mouse.pressed()) {
                         topGui.stackEvent(new D_GuiMouseDragEvent(topGui, Mouse.pressedButton()));
                     }
                 }
 
-                if(!topGui.isPressed() && Mouse.pressed()) {
+                if (!topGui.isPressed() && Mouse.pressed()) {
                     topGui.setPressed(true);
-                    topGui.stackEvent(new D_GuiMousePressEvent(topGui,Mouse.pressedButton(),Mouse.getMods()));
-                    topGui.stackEvent(new D_GuiMouseButtonEvent(topGui,Mouse.pressedButton(), GLFW_PRESS, Mouse.getMods()));
-                    if(topGui.isSelectable()) {
+                    topGui.stackEvent(new D_GuiMousePressEvent(topGui, Mouse.pressedButton(), Mouse.getMods()));
+                    topGui.stackEvent(new D_GuiMouseButtonEvent(topGui, Mouse.pressedButton(), GLFW_PRESS, Mouse.getMods()));
+                    if (topGui.isSelectable()) {
                         topGui.setSelected(!topGui.isSelected());
                         topGui.stackEvent(topGui.isSelected() ? new D_GuiSelectedEvent(topGui) : new D_GuiDeSelectedEvent(topGui));
                     }
-                } else if(topGui.isPressed() && !Mouse.pressed()) {
+                } else if (topGui.isPressed() && !Mouse.pressed()) {
                     topGui.setPressed(false);
-                    topGui.stackEvent(new D_GuiMouseReleaseEvent(topGui,Mouse.pressedButton(),Mouse.getMods()));
-                    topGui.stackEvent(new D_GuiMouseButtonEvent(topGui,Mouse.pressedButton(),GLFW_RELEASE, Mouse.getMods()));
+                    topGui.stackEvent(new D_GuiMouseReleaseEvent(topGui, Mouse.pressedButton(), Mouse.getMods()));
+                    topGui.stackEvent(new D_GuiMouseButtonEvent(topGui, Mouse.pressedButton(), GLFW_RELEASE, Mouse.getMods()));
                 }
             }
         } else {
-            if(gui.isHovered()) {
+            if (gui.isHovered()) {
                 gui.setHovered(false);
                 gui.stackEvent(new D_GuiMouseExitEvent(gui));
             }
 
-            if(topGui == gui && !gui.isPressed()) {
+            if (topGui == gui && !gui.isPressed()) {
                 topFound = false;
                 topGui = null;
             }
 
-            if(gui.isPressed() && !Mouse.pressed()) {
+            if (gui.isPressed() && !Mouse.pressed()) {
                 gui.setPressed(false);
                 gui.stackEvent(new D_GuiMouseReleaseEvent(gui, Mouse.pressedButton(), Mouse.getMods()));
                 gui.stackEvent(new D_GuiMouseButtonEvent(gui, Mouse.pressedButton(), GLFW_RELEASE, Mouse.getMods()));
@@ -206,18 +241,18 @@ public final class D_GuiEventManager {
     }
 
     private void updateCursor() {
-        if(
-            topGui instanceof D_Button ||
-            topGui instanceof D_CheckBox ||
-            topGui instanceof D_List<?> ||
-            topGui instanceof D_Slider
-        ) GLFWCursor.setCursor(window,GLFWCursor.standardCursors.HAND);
-        else if(
+        if (
+                topGui instanceof D_Button ||
+                        topGui instanceof D_CheckBox ||
+                        topGui instanceof D_List<?> ||
+                        topGui instanceof D_Slider
+        ) GLFWCursor.setCursor(window, GLFWCursor.standardCursors.HAND);
+        else if (
                 topGui instanceof D_Label ||
-                topGui instanceof D_TextComponent
-        ) GLFWCursor.setCursor(window,GLFWCursor.standardCursors.I_BEAM);
+                        topGui instanceof D_TextComponent
+        ) GLFWCursor.setCursor(window, GLFWCursor.standardCursors.I_BEAM);
         else
-            GLFWCursor.setCursor(window,GLFWCursor.standardCursors.ARROW);
+            GLFWCursor.setCursor(window, GLFWCursor.standardCursors.ARROW);
     }
 
 }

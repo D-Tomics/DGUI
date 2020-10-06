@@ -2,15 +2,16 @@ package org.dtomics.DGUI.gui.manager.events;
 
 import org.dtomics.DGUI.gui.components.D_Gui;
 
-/**This event is fired on the focused gui when keyboard keys are pressed
+/**
+ * This event is fired on the focused gui when keyboard keys are pressed
  *
  * @author Abdul Kareem
  */
 public class D_GuiKeyPressEvent extends D_GuiEvent {
 
-    private int key;
-    private int scanCode;
-    private int mods;
+    private final int key;
+    private final int scanCode;
+    private final int mods;
 
     /**
      * Will be called when a key is pressed

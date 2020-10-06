@@ -1,33 +1,32 @@
 package org.dtomics.DGUI.gui.components;
 
 import org.dtomics.DGUI.IO.Window;
-import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignCenter;
 import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignLeft;
 import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignTop;
 import org.dtomics.DGUI.gui.text.D_TextBox;
 import org.dtomics.DGUI.utils.observers.Observable;
 
-/**This class represents a text in a gui system.
+/**
+ * This class represents a text in a gui system.
  * If a text is required it is added via this class.
  *
  * @author Abdul Kareem
- *
  */
-public class D_Label extends D_Component{
+public class D_Label extends D_Component {
 
-    private D_TextBox text;
+    private final D_TextBox text;
 
     public D_Label() {
         this("");
     }
 
     public D_Label(String text) {
-        this(0,0,text);
+        this(0, 0, text);
     }
 
     public D_Label(float x, float y, String text) {
-        this.text = new D_TextBox(text,50, Window.getMonitorWidth(), Window.getMonitorHeight());
-        this.text.setPosition(x,y);
+        this.text = new D_TextBox(text, 50, Window.getMonitorWidth(), Window.getMonitorHeight());
+        this.text.setPosition(x, y);
         this.addText(this.text);
 
         style.setX(x).setY(y);
@@ -38,11 +37,8 @@ public class D_Label extends D_Component{
         this.addConstraint(new D_TextAlignLeft(this.text, 0, new D_TextAlignTop(this.text, 0)));
     }
 
-    public String getText() { return text.getText(); }
-    public D_TextBox getTextObject() { return text; }
-
-    public void setFontSize(float fontSize) {
-        text.setFontSize(fontSize);
+    public String getText() {
+        return text.getText();
     }
 
     public void setText(String text) {
@@ -53,8 +49,16 @@ public class D_Label extends D_Component{
         }
     }
 
+    public D_TextBox getTextObject() {
+        return text;
+    }
+
+    public void setFontSize(float fontSize) {
+        text.setFontSize(fontSize);
+    }
+
     public void setTextColor(float r, float g, float b) {
-        this.text.setTextColor(r,g,b);
+        this.text.setTextColor(r, g, b);
     }
 
     @Override
@@ -62,5 +66,6 @@ public class D_Label extends D_Component{
     }
 
     @Override
-    public void onStateChange(Observable o) { }
+    public void onStateChange(Observable o) {
+    }
 }

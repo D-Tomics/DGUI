@@ -10,12 +10,12 @@ import org.dtomics.DGUI.gui.manager.constraints.D_Constraint;
  */
 public class Fill extends D_Constraint {
 
-    private D_Gui gui;
-    private boolean fillXAxis;
-    private boolean fillYAxis;
-    private float marginWidth;
-    private float marginHeight;
-    private D_Constraint constraint;
+    private final D_Gui gui;
+    private final boolean fillXAxis;
+    private final boolean fillYAxis;
+    private final float marginWidth;
+    private final float marginHeight;
+    private final D_Constraint constraint;
 
     /**
      * @param gui the gui to which another gui is filled
@@ -77,14 +77,14 @@ public class Fill extends D_Constraint {
 
     @Override
     protected void update(D_Gui gui) {
-        if(this.gui == null) return;
+        if (this.gui == null) return;
 
-        if(fillXAxis)
+        if (fillXAxis)
             gui.getStyle().setWidth(this.gui.getStyle().getWidth() - gui.getStyle().getMarginWidth() - this.gui.getStyle().getPaddingWidth() - marginWidth, false);
-        if(fillYAxis)
+        if (fillYAxis)
             gui.getStyle().setHeight(this.gui.getStyle().getHeight() - gui.getStyle().getMarginHeight() - this.gui.getStyle().getPaddingHeight() - marginHeight, false);
 
-        if(constraint != null)
+        if (constraint != null)
             constraint.run(gui);
     }
 }

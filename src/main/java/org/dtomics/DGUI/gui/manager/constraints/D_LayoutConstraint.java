@@ -5,8 +5,8 @@ package org.dtomics.DGUI.gui.manager.constraints;
  *
  * @author Abdul Kareem
  */
-public abstract class D_LayoutConstraint implements Cloneable{
-    public Object clone()  {
+public abstract class D_LayoutConstraint implements Cloneable {
+    public Object clone() {
         try {
             return super.clone();
         } catch (CloneNotSupportedException e) {

@@ -16,9 +16,9 @@ public class Observable {
     }
 
     public void notifyObservers() {
-        if(observers == null) return;
-        for(Observer observer : observers) {
-            if(observer == null) continue;
+        if (observers == null) return;
+        for (Observer observer : observers) {
+            if (observer == null) continue;
             observer.updateStates(this);
         }
     }

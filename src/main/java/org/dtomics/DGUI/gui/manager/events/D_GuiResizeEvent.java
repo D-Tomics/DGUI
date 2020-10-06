@@ -7,21 +7,22 @@ import org.dtomics.DGUI.gui.components.D_Gui;
  *
  * @author Abdul Kareem
  */
-public class D_GuiResizeEvent extends D_GuiEvent{
+public class D_GuiResizeEvent extends D_GuiEvent {
 
-    private float previousWidth;
-    private float previousHeight;
+    private final float previousWidth;
+    private final float previousHeight;
 
-    private float currentWidth;
-    private float currentHeight;
+    private final float currentWidth;
+    private final float currentHeight;
 
-    /** Will be called when resizing a gui
+    /**
+     * Will be called when resizing a gui
      *
-     * @param gui               the gui that received the event
-     * @param previousWidth     width of gui before the change
-     * @param previousHeight    height of gui before the change
-     * @param currentWidth      new width of gui
-     * @param currentHeight     new height of gui
+     * @param gui            the gui that received the event
+     * @param previousWidth  width of gui before the change
+     * @param previousHeight height of gui before the change
+     * @param currentWidth   new width of gui
+     * @param currentHeight  new height of gui
      */
     public D_GuiResizeEvent(D_Gui gui, float previousWidth, float previousHeight, float currentWidth, float currentHeight) {
         super(gui);

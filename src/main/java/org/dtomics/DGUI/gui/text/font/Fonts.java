@@ -17,13 +17,14 @@ public enum Fonts {
     Segoe_UI(5);
 
     private Font font;
-    private float desiredPadding ;
-    private Fonts(float desiredPadding) {
+    private final float desiredPadding;
+
+    Fonts(float desiredPadding) {
         this.desiredPadding = desiredPadding;
     }
 
     public Font getFont(Loader loader) {
-        if(this.font == null)
+        if (this.font == null)
             this.font = new Font("/text/" + this.name(), desiredPadding, loader);
         return font;
     }

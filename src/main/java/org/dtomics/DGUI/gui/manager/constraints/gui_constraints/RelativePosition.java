@@ -12,25 +12,25 @@ import org.dtomics.DGUI.gui.manager.constraints.D_Constraint;
  */
 public class RelativePosition extends D_Constraint {
 
-    private float relativeX;
-    private float relativeY;
-    private Window window;
+    private final float relativeX;
+    private final float relativeY;
+    private final Window window;
 
     /**
-     * @param window the window on which the position is set
+     * @param window   the window on which the position is set
      * @param xPercent x position in percentage (0 - 100)
      * @param yPercent y position in percentage (0 - 100)
      */
     public RelativePosition(Window window, String xPercent, String yPercent) {
-        this(window,Float.parseFloat(xPercent) / 100.0f, Float.parseFloat(yPercent) / 100.0f);
+        this(window, Float.parseFloat(xPercent) / 100.0f, Float.parseFloat(yPercent) / 100.0f);
     }
 
     /**
-     * @param window the window on which the position is set
+     * @param window   the window on which the position is set
      * @param xPercent x position (0 - 1)
      * @param yPercent y position (0 - 1)
      */
-    public RelativePosition(Window window,float relativeX, float relativeY) {
+    public RelativePosition(Window window, float relativeX, float relativeY) {
         this.window = window;
         this.relativeX = relativeX - 0.5f;
         this.relativeY = 0.5f - relativeY;

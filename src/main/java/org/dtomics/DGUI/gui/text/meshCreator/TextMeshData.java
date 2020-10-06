@@ -9,16 +9,17 @@ import java.util.List;
  */
 public class TextMeshData {
 
-    private float[] data;
-    private int vertexCount;
+    private final float[] data;
+    private final int vertexCount;
 
-    private float lineHeight;
-    private float maxTextWidth;
-    private float maxTextHeight;
+    private final float lineHeight;
+    private final float maxTextWidth;
+    private final float maxTextHeight;
 
-    private List<Line> lines;
+    private final List<Line> lines;
 
-    /**This constructor is only called in the text mesh creator
+    /**
+     * This constructor is only called in the text mesh creator
      *
      * @param data        The vertex data of the mesh
      * @param vertexCount The number of vertices in the mesh
@@ -26,7 +27,7 @@ public class TextMeshData {
      * @param width       This is the max width occupied by the mesh in the window
      * @param height      This is the max height occupied by the mesh in the window
      */
-    TextMeshData( float[] data, int vertexCount, List<Line> lines, float width, float height) {
+    TextMeshData(float[] data, int vertexCount, List<Line> lines, float width, float height) {
         this.data = data;
         this.vertexCount = vertexCount;
         this.lines = lines;
@@ -43,14 +44,23 @@ public class TextMeshData {
         return vertexCount;
     }
 
-    public float getLineHeight() { return lineHeight; }
+    public float getLineHeight() {
+        return lineHeight;
+    }
+
     public float getMaxTextWidth() {
         return maxTextWidth;
     }
+
     public float getMaxTextHeight() {
         return maxTextHeight;
     }
 
-    public Line getLine(int index) { return index >= lines.size() || index < 0 ? null : lines.get(index); }
-    public List<Line> getLines() { return lines; }
+    public Line getLine(int index) {
+        return index >= lines.size() || index < 0 ? null : lines.get(index);
+    }
+
+    public List<Line> getLines() {
+        return lines;
+    }
 }

@@ -2,7 +2,8 @@ package org.dtomics.DGUI.gui.manager.events;
 
 import org.dtomics.DGUI.gui.components.D_Gui;
 
-/**This event is fired when the gui gains focus.
+/**
+ * This event is fired when the gui gains focus.
  *
  * @author Abdul Kareem
  */

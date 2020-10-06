@@ -18,55 +18,56 @@ import static org.lwjgl.glfw.GLFW.glfwWaitEvents;
  *         DGUI.update(true);
  *     }
  * </pre>
- *
+ * <p>
  * This loop should be in the same thread that initialised DGUI.
- *
  */
 public class DGUI {
 
     protected static ArrayList<Window> windowsList;
 
     static synchronized void load(Window window) {
-        if(window == null) return;
-        if(windowsList == null) windowsList = new ArrayList<>();
-        if(windowsList.contains(window)) return;
+        if (window == null) return;
+        if (windowsList == null) windowsList = new ArrayList<>();
+        if (windowsList.contains(window)) return;
         windowsList.add(window);
     }
 
-    public static void init() { Window.initGLFW(); }
+    public static void init() {
+        Window.initGLFW();
+    }
 
     public static boolean exitRequested() {
         boolean exitRequested = true;
-        for(Window window : windowsList)
+        for (Window window : windowsList)
             exitRequested &= window.isExitRequested();
         return exitRequested;
     }
 
     public static void update(boolean poll) {
-        for(int i = 0; i < windowsList.size(); i++) {
+        for (int i = 0; i < windowsList.size(); i++) {
             Window window = windowsList.get(i);
-            if(window.didExit())  {
+            if (window.didExit()) {
                 windowsList.remove(window);
                 continue;
             }
-            if(!window.isExitRequested()) {
+            if (!window.isExitRequested()) {
                 window.makeCurrent();
-                window.update(false,poll);
+                window.update(false, poll);
             } else {
                 window.destroy();
                 windowsList.remove(window);
             }
         }
         Time.update();
-        if(poll)
+        if (poll)
             glfwPollEvents();
         else
             glfwWaitEvents();
     }
 
     public static void terminate() {
-        for(Window window : windowsList)
-            if(!window.didExit())
+        for (Window window : windowsList)
+            if (!window.didExit())
                 window.destroy();
         Window.terminate();
     }

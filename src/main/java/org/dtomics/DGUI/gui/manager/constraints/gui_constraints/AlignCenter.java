@@ -10,12 +10,12 @@ import org.dtomics.DGUI.gui.manager.constraints.D_Constraint;
  */
 public class AlignCenter extends D_Constraint {
 
-    private D_Gui gui;
-    private boolean xCenter, yCenter;
-    private D_Constraint constraint;
+    private final D_Gui gui;
+    private final boolean xCenter;
+    private final boolean yCenter;
+    private final D_Constraint constraint;
 
     /**
-     *
      * @param gui     the gui in relation to which another gui is aligned
      * @param xCenter whether or not to align on x axis
      * @param yCenter whether or not to align on y axis
@@ -25,10 +25,9 @@ public class AlignCenter extends D_Constraint {
     }
 
     /**
-     *
      * @param gui        the gui in relation to which another gui is aligned
-     * @param xCenter          whether or not to align on x axis
-     * @param yCenter          whether or not to align on y axis
+     * @param xCenter    whether or not to align on x axis
+     * @param yCenter    whether or not to align on y axis
      * @param constraint any other constraints of type <code>D_Constraint</code>.
      *                   If it xCenter is enabled and this constraint modifies x value of the gui to be aligned,
      *                   then this constrain overwrites the current constraint. Similarly, if yCenter is enabled and this
@@ -43,13 +42,13 @@ public class AlignCenter extends D_Constraint {
 
     @Override
     protected void update(D_Gui gui) {
-        if(gui == null) return;
-        if(this.gui == null) return;
+        if (gui == null) return;
+        if (this.gui == null) return;
 
-        if(xCenter) gui.getStyle().setCenterX(this.gui.getStyle().getCenterX(), false);
-        if(yCenter) gui.getStyle().setCenterY(this.gui.getStyle().getCenterY(), false);
+        if (xCenter) gui.getStyle().setCenterX(this.gui.getStyle().getCenterX(), false);
+        if (yCenter) gui.getStyle().setCenterY(this.gui.getStyle().getCenterY(), false);
 
-        if(constraint != null)
+        if (constraint != null)
             constraint.run(gui);
     }
 }

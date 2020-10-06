@@ -4,19 +4,20 @@ import org.dtomics.DGUI.gui.components.D_Gui;
 import org.dtomics.DGUI.gui.manager.constraints.D_Constraint;
 import org.dtomics.DGUI.gui.text.D_TextBox;
 
-/**This class aligns a text box to the center of a gui
+/**
+ * This class aligns a text box to the center of a gui
  *
  * @author Abdul Kareem
  */
 public class D_TextAlignCenter extends D_Constraint {
 
-    private D_TextBox source;
-    private boolean xCenter;
-    private boolean yCenter;
-    private D_Constraint constraint;
+    private final D_TextBox source;
+    private final boolean xCenter;
+    private final boolean yCenter;
+    private final D_Constraint constraint;
 
     /**
-     * @param source     the text that should be aligned
+     * @param source the text that should be aligned
      */
     public D_TextAlignCenter(D_TextBox source) {
         this(source, null);
@@ -34,9 +35,9 @@ public class D_TextAlignCenter extends D_Constraint {
     }
 
     /**
-     * @param source     the text that should be aligned
-     * @param xCenter    whether or not to align on x axis
-     * @param yCenter    whether or not to align on y axis
+     * @param source  the text that should be aligned
+     * @param xCenter whether or not to align on x axis
+     * @param yCenter whether or not to align on y axis
      */
     public D_TextAlignCenter(D_TextBox source, boolean xCenter, boolean yCenter) {
         this(source, xCenter, yCenter, null);
@@ -60,12 +61,12 @@ public class D_TextAlignCenter extends D_Constraint {
 
     @Override
     public void update(D_Gui gui) {
-        if(source == null) return;
+        if (source == null) return;
 
-        if(xCenter) source.getPosition().x = gui.getStyle().getCenterX() - source.getBoxWidth() * 0.5f;
-        if(yCenter) source.getPosition().y = gui.getStyle().getCenterY() + source.getBoxHeight() * 0.5f;
+        if (xCenter) source.getPosition().x = gui.getStyle().getCenterX() - source.getBoxWidth() * 0.5f;
+        if (yCenter) source.getPosition().y = gui.getStyle().getCenterY() + source.getBoxHeight() * 0.5f;
 
-        if(constraint != null)
+        if (constraint != null)
             constraint.run(gui);
     }
 }

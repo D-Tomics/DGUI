@@ -4,24 +4,25 @@ package org.dtomics.DGUI.gui.text.font;
  * This Java Bean holds the meta data of a character in a font.
  * This data is loaded via the meta file <Code>FontFile</Code>
  *
- * @see FontFile
  * @author Abdul Kareem
+ * @see FontFile
  */
 public class FontChar {
 
-    private int id;
-    private float xTexCoord;
-    private float yTexCoord;
-    private float xMaxTextureCoord;
-    private float yMaxTextureCoord;
-    private float xOffset;
-    private float yOffset;
-    private float xAdvance;
-    private float sizeX;
-    private float sizeY;
+    private final int id;
+    private final float xTexCoord;
+    private final float yTexCoord;
+    private final float xMaxTextureCoord;
+    private final float yMaxTextureCoord;
+    private final float xOffset;
+    private final float yOffset;
+    private final float xAdvance;
+    private final float sizeX;
+    private final float sizeY;
 
     /**
      * This creates a character of a font file with specific ascii value
+     *
      * @param id        the ascii value of the character
      * @param x         x texture coordinate of the character in the texture atlas that it was loaded from.
      * @param y         y texture coordinate of the character in the texture atlas that it was loaded from.
@@ -87,11 +88,11 @@ public class FontChar {
     }
 
     public String toString() {
-        return ""+((char)id);
+        return "" + ((char) id);
     }
 
     public boolean equals(char c) {
-        return id == (int)c;
+        return id == (int) c;
     }
 
 }

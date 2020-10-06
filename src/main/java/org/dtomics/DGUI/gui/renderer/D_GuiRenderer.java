@@ -12,7 +12,8 @@ import java.util.ArrayList;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLE_STRIP;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 
-/**The instance of this class renders the gui's given to it in order on to the window that owns it.
+/**
+ * The instance of this class renders the gui's given to it in order on to the window that owns it.
  * There will be one instance of this class per window.
  * If one of the gui's are focused then it'll be rendered last.
  *
@@ -20,10 +21,10 @@ import static org.lwjgl.opengl.GL11.glDrawArrays;
  */
 public class D_GuiRenderer {
 
-    private int vao;
-    private Window window;
-    private D_GuiShader shader;
     private final Texture WHITE_TEXTURE;
+    private final int vao;
+    private final Window window;
+    private final D_GuiShader shader;
 
     D_GuiRenderer(Window window) {
         this.window = window;
@@ -38,7 +39,7 @@ public class D_GuiRenderer {
         D_Gui focused = null;
         WHITE_TEXTURE.bind(0);
         for (D_Gui component : components) {
-            if(component.isFocused()) {
+            if (component.isFocused()) {
                 focused = component;
                 continue;
             }
@@ -62,13 +63,13 @@ public class D_GuiRenderer {
     private void draw(D_Gui gui) {
         if (gui == null || !gui.isVisible()) return;
 
-        if(gui.getStyle().getBgTexture() != null)
+        if (gui.getStyle().getBgTexture() != null)
             gui.getStyle().getBgTexture().bind(0);
 
         shader.loadComponent(gui);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
-        if(gui.getStyle().getBgTexture() != null)
+        if (gui.getStyle().getBgTexture() != null)
             WHITE_TEXTURE.bind(0);
     }
 

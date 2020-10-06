@@ -12,16 +12,20 @@ import org.dtomics.DGUI.gui.renderer.Texture;
  */
 public class Font {
 
-    private FontFile fontFile;
-    private Texture fontTexture;
+    private final FontFile fontFile;
+    private final Texture fontTexture;
 
-    public Font(String path , float padding, Loader loader) {
-        this.fontFile = new FontFile(path + ".fnt", padding );
+    public Font(String path, float padding, Loader loader) {
+        this.fontFile = new FontFile(path + ".fnt", padding);
         this.fontTexture = loader.loadTexture(path + ".png", false);
     }
 
-    public FontFile getFontFile() { return fontFile; }
+    public FontFile getFontFile() {
+        return fontFile;
+    }
 
-    public Texture getFontTexture() { return fontTexture; }
+    public Texture getFontTexture() {
+        return fontTexture;
+    }
 
 }

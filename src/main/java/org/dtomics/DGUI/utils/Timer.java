@@ -5,11 +5,15 @@ public final class Timer {
     private double time;
     private boolean started;
 
-    public Timer() { }
-    public Timer(boolean start) { if(start) start(); }
+    public Timer() {
+    }
+
+    public Timer(boolean start) {
+        if (start) start();
+    }
 
     public void start() {
-        if(started) return;
+        if (started) return;
         started = true;
         time = 0;
     }
@@ -20,7 +24,7 @@ public final class Timer {
     }
 
     public void update() {
-        if(!started) return;
+        if (!started) return;
         time += Time.getDeltaInSec();
     }
 
@@ -33,7 +37,12 @@ public final class Timer {
         return time;
     }
 
-    public boolean isStarted() { return started; }
-    public boolean isStopped() { return !started; }
+    public boolean isStarted() {
+        return started;
+    }
+
+    public boolean isStopped() {
+        return !started;
+    }
 
 }

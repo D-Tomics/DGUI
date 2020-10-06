@@ -10,13 +10,13 @@ import org.dtomics.DGUI.gui.manager.constraints.D_Constraint;
  */
 public class AlignTop extends D_Constraint {
 
-    private D_Gui gui;
-    private float padding;
-    private D_Constraint constraint;
+    private final D_Gui gui;
+    private final float padding;
+    private final D_Constraint constraint;
 
     /**
-     * @param gui        the gui in relation to which another gui is aligned
-     * @param padding    the offset from Top of the gui from which another gui is aligned
+     * @param gui     the gui in relation to which another gui is aligned
+     * @param padding the offset from Top of the gui from which another gui is aligned
      */
     public AlignTop(D_Gui gui, float padding) {
         this(gui, padding, null);

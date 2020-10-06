@@ -14,9 +14,9 @@ import static org.lwjgl.opengl.GL11.glDisable;
  * This class renders them based on the layers they occupy in.
  * There will be one instance of this class per Window.
  *
+ * @author Abdul Kareem
  * @see Layer
  * @see LayerStack
- * @author Abdul Kareem
  */
 public class MasterRenderer {
 
@@ -24,7 +24,7 @@ public class MasterRenderer {
     private D_GuiRenderer guiRenderer;
     private D_TextRenderer DTextRenderer;
 
-    private Window window;
+    private final Window window;
 
     public MasterRenderer(Window window) {
         this.window = window;
@@ -59,11 +59,10 @@ public class MasterRenderer {
             Layer layer = layerStack.get(gui.getLevel());
             if (layer == null) layerStack.push(layer = new Layer());
             layer.push(gui);
-            if(gui.getIcons() != null) setUpLayers(gui.getIcons());
-            if(gui.isFocused()) {
-                if(gui.getQuads() != null) gui.getQuads().forEach(layerStack.getOverLay(1)::push);
-            } else
-                if(gui.getQuads() != null) setUpLayers(gui.getQuads());
+            if (gui.getIcons() != null) setUpLayers(gui.getIcons());
+            if (gui.isFocused()) {
+                if (gui.getQuads() != null) gui.getQuads().forEach(layerStack.getOverLay(1)::push);
+            } else if (gui.getQuads() != null) setUpLayers(gui.getQuads());
             if (gui instanceof D_Container) setUpLayers(((D_Container) gui).getChildList());
         }
     }

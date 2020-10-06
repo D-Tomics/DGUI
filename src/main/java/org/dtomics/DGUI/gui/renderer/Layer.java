@@ -18,8 +18,8 @@ import java.util.Set;
  */
 public class Layer {
 
-    private ArrayList<D_Gui> guis;
-    private HashMap<Font, List<D_TextBox>> textMap;
+    private final ArrayList<D_Gui> guis;
+    private final HashMap<Font, List<D_TextBox>> textMap;
 
     protected Layer() {
         this.guis = new ArrayList<>();
@@ -28,10 +28,10 @@ public class Layer {
 
     protected void push(D_Gui gui) {
         guis.add(gui);
-        if(gui.getTextMap() != null) {
+        if (gui.getTextMap() != null) {
             Set<Font> fonts = gui.getTextMap().keySet();
-            for(Font font : fonts) {
-                List<D_TextBox> texts = textMap.computeIfAbsent(font,e ->new ArrayList<>());
+            for (Font font : fonts) {
+                List<D_TextBox> texts = textMap.computeIfAbsent(font, e -> new ArrayList<>());
                 texts.addAll(gui.getTextMap().get(font));
             }
         }
@@ -46,7 +46,7 @@ public class Layer {
         return guis;
     }
 
-    protected HashMap<Font,List<D_TextBox>> getTextMap() {
+    protected HashMap<Font, List<D_TextBox>> getTextMap() {
         return textMap;
     }
 

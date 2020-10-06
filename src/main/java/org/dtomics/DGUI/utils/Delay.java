@@ -2,7 +2,7 @@ package org.dtomics.DGUI.utils;
 
 public class Delay {
 
-    private long length;
+    private final long length;
     private long endTime;
 
     private boolean start;
@@ -12,7 +12,7 @@ public class Delay {
     }
 
     public void start() {
-        if(start)
+        if (start)
             return;
         start = true;
         endTime = Time.getTime() + length;
@@ -20,7 +20,7 @@ public class Delay {
 
     public boolean over() {
         start();
-        if(Time.getTime() <= endTime) return false;
+        if (Time.getTime() <= endTime) return false;
         reset();
         return true;
     }

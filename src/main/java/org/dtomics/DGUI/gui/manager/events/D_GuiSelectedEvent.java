@@ -7,7 +7,7 @@ import org.dtomics.DGUI.gui.components.D_Gui;
  *
  * @author Abdul Kareem
  */
-public class D_GuiSelectedEvent extends D_GuiEvent{
+public class D_GuiSelectedEvent extends D_GuiEvent {
     public D_GuiSelectedEvent(D_Gui gui) {
         super(gui);
     }

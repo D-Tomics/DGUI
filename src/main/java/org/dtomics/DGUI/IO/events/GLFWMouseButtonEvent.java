@@ -2,11 +2,11 @@ package org.dtomics.DGUI.IO.events;
 
 import org.dtomics.DGUI.IO.Window;
 
-public class GLFWMouseButtonEvent extends GLFWEvent{
+public class GLFWMouseButtonEvent extends GLFWEvent {
 
-    private int button;
-    private int action;
-    private int mods;
+    private final int button;
+    private final int action;
+    private final int mods;
 
     public GLFWMouseButtonEvent(Window source, int button, int action, int mods) {
         super(source);
