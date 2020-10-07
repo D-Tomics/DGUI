@@ -9,17 +9,19 @@ public final class SoundManager {
     private final static List<SoundBuffer> soundBuffers = new ArrayList<>();
 
     private static SoundManager instance;
+    private boolean initialised;
+    private OpenAL openAL;
+
+    private SoundManager() {
+    }
+
     public static SoundManager get() {
-        if(instance == null) instance = new SoundManager();
+        if (instance == null) instance = new SoundManager();
         return instance;
     }
 
-    private SoundManager() {}
-
-    private boolean initialised;
-    private OpenAL openAL;
     public void init() {
-        if(initialised) return;
+        if (initialised) return;
         initialised = true;
         openAL = new OpenAL();
     }

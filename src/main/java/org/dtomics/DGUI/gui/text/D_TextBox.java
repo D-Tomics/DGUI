@@ -21,7 +21,7 @@ import java.util.List;
  * This class represents a text in the application.
  * This creates a text inside a box. The box size and position can specified externally.
  * Beyond this box the text wont be rendered or discarded in the shader.
- *
+ * <p>
  * If {@code wrapText} is enabled then the text beyond the box width is placed on a new line.
  *
  * @author Abdul Kareem
@@ -31,40 +31,39 @@ import java.util.List;
 public class D_TextBox {
 
     private static final Fonts DEFAULT = Fonts.Agency_FB;
-
+    private final Vector2f position;
+    private final Vector2f offset;
+    private final Color textColor = new Color(Color.WHITE);
+    private final Color borderColor = new Color(Color.BLACK);
     private float boxWidth;
     private float boxHeight;
-
-    private Window window;
-
+    private final Window window;
     private Font font;
     private String text;
     private TextMesh mesh;
     private TextMeshData meshData;
     private TextAlignment textAlignment;
-
-    private final Vector2f position;
-    private final Vector2f offset;
-
-    private final Color textColor = new Color(Color.WHITE);
-    private final Color borderColor = new Color(Color.BLACK);
-
     private boolean wrapped;
     private boolean update;
-    @Setter private boolean visible = true;
+    @Setter
+    private boolean visible = true;
 
     private float fontSize;
     private float lineSpacing;
-    @Setter private float charWidth;
-    @Setter private float charEdge;
-    @Setter private float charBorderWidth;
-    @Setter private float charBorderEdge;
+    @Setter
+    private float charWidth;
+    @Setter
+    private float charEdge;
+    @Setter
+    private float charBorderWidth;
+    @Setter
+    private float charBorderEdge;
 
     public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight) {
         this(text, fontSize, boxWidth, boxHeight, DEFAULT.getFont(Window.get().getLoader()), TextAlignment.TOP_LEFT);
     }
 
-    public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight,TextAlignment alignment) {
+    public D_TextBox(String text, float fontSize, float boxWidth, float boxHeight, TextAlignment alignment) {
         this(text, fontSize, boxWidth, boxHeight, DEFAULT.getFont(Window.get().getLoader()), alignment);
     }
 
@@ -94,110 +93,157 @@ public class D_TextBox {
         this.lineSpacing = 5;
 
         this.textAlignment = alignment;
-        this.meshData = TextMeshCreator.createTextMesh(window,this);
+        this.meshData = TextMeshCreator.createTextMesh(window, this);
     }
 
-    public float getMaxTextWidth() { return meshData.getMaxTextWidth(); }
-    public float getMaxTextHeight() { return meshData.getMaxTextHeight(); }
+    public float getMaxTextWidth() {
+        return meshData.getMaxTextWidth();
+    }
 
-    public int getNumOfLines()            { return getLines().size();                                        }
-    public int getLineLength(int lineNum) { return getLine(lineNum) != null ? getLine(lineNum).length() : 0; }
-    public float getLineHeight()          { return meshData != null ? meshData.getLineHeight() : 0;          }
-    public Line getLine(int lineNum)      { return meshData != null ? meshData.getLine(lineNum) : null;      }
-    public List<Line> getLines()          { return meshData != null ? meshData.getLines() : null;            }
+    public float getMaxTextHeight() {
+        return meshData.getMaxTextHeight();
+    }
 
-    /** this method makes the text wrap inside the box.
+    public int getNumOfLines() {
+        return getLines().size();
+    }
+
+    public int getLineLength(int lineNum) {
+        return getLine(lineNum) != null ? getLine(lineNum).length() : 0;
+    }
+
+    public float getLineHeight() {
+        return meshData != null ? meshData.getLineHeight() : 0;
+    }
+
+    public Line getLine(int lineNum) {
+        return meshData != null ? meshData.getLine(lineNum) : null;
+    }
+
+    public List<Line> getLines() {
+        return meshData != null ? meshData.getLines() : null;
+    }
+
+    /**
+     * this method makes the text wrap inside the box.
      * i.e it places the texts beyond the box width in a new line.
      *
      * @param wrapped whether to place text beyond box width in a new line.
      */
     public void setWrapped(boolean wrapped) {
-        if(this.wrapped == wrapped) return;
+        if (this.wrapped == wrapped) return;
         this.wrapped = wrapped;
         requestUpdate();
     }
 
     public void setText(String text) {
-        if(this.text.equals(text)) return;
+        if (this.text.equals(text)) return;
         this.text = text;
         requestUpdate();
     }
 
-    public void setBoxWidth(float boxWidth ) {
-        if(this.boxWidth == boxWidth) return;
+    public void setBoxWidth(float boxWidth) {
+        if (this.boxWidth == boxWidth) return;
         this.boxWidth = boxWidth;
         requestUpdate();
     }
 
     public void setBoxHeight(float boxHeight) {
-        if(this.boxHeight == boxHeight) return;
+        if (this.boxHeight == boxHeight) return;
         this.boxHeight = boxHeight;
         requestUpdate();
     }
 
     public void setBoxSize(float boxWidth, float boxHeight) {
-        if(this.boxWidth == boxWidth && this.boxHeight == boxHeight) return;
+        if (this.boxWidth == boxWidth && this.boxHeight == boxHeight) return;
         this.boxWidth = boxWidth;
         this.boxHeight = boxHeight;
         requestUpdate();
     }
 
     public void setFontSize(float fontSize) {
-        if(this.fontSize == fontSize) return;
+        if (this.fontSize == fontSize) return;
         this.fontSize = fontSize;
         requestUpdate();
     }
 
     public void setLineSpacing(float lineSpacing) {
-        if(this.lineSpacing == lineSpacing) return;
+        if (this.lineSpacing == lineSpacing) return;
         this.lineSpacing = lineSpacing;
         requestUpdate();
     }
 
     public void setTextAlignment(TextAlignment textAlignment) {
-        if(this.textAlignment == textAlignment) return;
+        if (this.textAlignment == textAlignment) return;
         this.textAlignment = textAlignment;
         requestUpdate();
     }
 
     public void setFont(Font font) {
-        if(this.font == font ) return;
+        if (this.font == font) return;
 
-        D_TextMaster.update(window,this.font, font, this);
+        D_TextMaster.update(window, this.font, font, this);
         this.font = font;
 
         requestUpdate();
     }
 
-    public void setTextColor(Color textColor)                    { this.textColor.set(textColor);  }
-    public void setTextColor(float r, float g, float b)          { this.textColor.set(r,g,b);      }
-    public void setTextColor(float r, float g, float b, float a) { this.textColor.set(r, g, b, a); }
+    public void setTextColor(Color textColor) {
+        this.textColor.set(textColor);
+    }
 
-    public void setBorderColor(Color borderColor)                  { this.borderColor.set(borderColor); }
-    public void setBorderColor(float r, float g, float b)          { this.borderColor.set(r,g,b);       }
-    public void setBorderColor(float r, float g, float b, float a) { this.borderColor.set(r, g, b, a);  }
+    public void setTextColor(float r, float g, float b) {
+        this.textColor.set(r, g, b);
+    }
 
-    /** This method sets the offset from the box position that the text gets rendered
+    public void setTextColor(float r, float g, float b, float a) {
+        this.textColor.set(r, g, b, a);
+    }
+
+    public void setBorderColor(Color borderColor) {
+        this.borderColor.set(borderColor);
+    }
+
+    public void setBorderColor(float r, float g, float b) {
+        this.borderColor.set(r, g, b);
+    }
+
+    public void setBorderColor(float r, float g, float b, float a) {
+        this.borderColor.set(r, g, b, a);
+    }
+
+    /**
+     * This method sets the offset from the box position that the text gets rendered
      *
      * @param x x offset position from the box position the text gets rendered
      * @param y y offset position from the box position the text gets rendered
      */
-    public void setOffset(float x, float y) { this.offset.set(x,y);    }
-    public void setOffset(Vector2f offset)  { this.offset.set(offset); }
+    public void setOffset(float x, float y) {
+        this.offset.set(x, y);
+    }
 
-    public void setPosition(Vector2f position) { this.position.set(position); }
-    public void setPosition(float x, float y)  { this.position.set(x, y);     }
+    public void setOffset(Vector2f offset) {
+        this.offset.set(offset);
+    }
+
+    public void setPosition(Vector2f position) {
+        this.position.set(position);
+    }
+
+    public void setPosition(float x, float y) {
+        this.position.set(x, y);
+    }
 
     void requestUpdate() {
-        meshData = TextMeshCreator.createTextMesh(window,this);
+        meshData = TextMeshCreator.createTextMesh(window, this);
         update = true;
     }
 
     public void update(Loader loader) {
-        if(mesh == null)
-            mesh = loader.loadText(meshData,Loader.STREAM);
-        if(update) {
-            mesh.updateData(meshData,loader);
+        if (mesh == null)
+            mesh = loader.loadText(meshData, Loader.STREAM);
+        if (update) {
+            mesh.updateData(meshData, loader);
             update = false;
         }
     }

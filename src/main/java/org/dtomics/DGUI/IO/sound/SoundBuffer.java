@@ -2,7 +2,13 @@ package org.dtomics.DGUI.IO.sound;
 
 import java.nio.ByteBuffer;
 
-import static org.lwjgl.openal.AL10.*;
+import static org.lwjgl.openal.AL10.AL_FORMAT_MONO16;
+import static org.lwjgl.openal.AL10.AL_FORMAT_MONO8;
+import static org.lwjgl.openal.AL10.AL_FORMAT_STEREO16;
+import static org.lwjgl.openal.AL10.AL_FORMAT_STEREO8;
+import static org.lwjgl.openal.AL10.alBufferData;
+import static org.lwjgl.openal.AL10.alDeleteBuffers;
+import static org.lwjgl.openal.AL10.alGenBuffers;
 
 public final class SoundBuffer {
 
@@ -18,7 +24,7 @@ public final class SoundBuffer {
 
     public SoundBuffer(String file) {
         WavData wavData = WavData.create(file);
-        if(wavData == null)
+        if (wavData == null)
             throw new IllegalStateException("null Wav data");
 
         bufferId = alGenBuffers();

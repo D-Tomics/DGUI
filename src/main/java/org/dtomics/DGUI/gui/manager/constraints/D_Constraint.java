@@ -10,7 +10,10 @@ import org.dtomics.DGUI.gui.components.D_Gui;
 public abstract class D_Constraint {
 
     private boolean init;
-    protected void init(D_Gui gui) { }
+
+    protected void init(D_Gui gui) {
+    }
+
     protected abstract void update(D_Gui gui);
 
     /**
@@ -19,7 +22,7 @@ public abstract class D_Constraint {
      * @param gui gui to which this constraint is applied
      */
     public void run(D_Gui gui) {
-        if(!init) {
+        if (!init) {
             init(gui);
             init = true;
         }

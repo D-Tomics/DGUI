@@ -2,7 +2,8 @@ package org.dtomics.DGUI.gui.manager.events;
 
 import org.dtomics.DGUI.gui.components.D_Gui;
 
-/**This event is fired when Mouse enters a gui
+/**
+ * This event is fired when Mouse enters a gui
  *
  * @author Abdul Kareem
  */

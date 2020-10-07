@@ -4,8 +4,8 @@ import org.dtomics.DGUI.IO.Window;
 
 public class GLFWMouseButtonReleaseEvent extends GLFWEvent {
 
-    private int button;
-    private int mods;
+    private final int button;
+    private final int mods;
 
     public GLFWMouseButtonReleaseEvent(Window source, int button, int mods) {
         super(source);

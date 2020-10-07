@@ -8,8 +8,8 @@ final class Cursor extends D_GuiQuad {
 
     private int row;
     private int col;
-    private Delay blinkDelay;
-    private D_TextBox textBox;
+    private final Delay blinkDelay;
+    private final D_TextBox textBox;
 
     Cursor(D_TextBox textBox) {
         this.textBox = textBox;
@@ -24,26 +24,36 @@ final class Cursor extends D_GuiQuad {
 
     @Override
     protected void onUpdate() {
-        if(this.getParent().isFocused()) {
+        if (this.getParent().isFocused()) {
             float cursorX = textBox.getPosition().x + (textBox.getLine(row) != null ? textBox.getLine(row).getWidth(col - 1) : 0);
             float cursorY = textBox.getPosition().y - row * textBox.getMeshData().getLineHeight();
 
             this.getStyle().setPosition(cursorX + textBox.getOffset().x, cursorY + textBox.getOffset().y, false);
 
-            if(blinkDelay.over()) this.setVisible(!this.isVisible());
+            if (blinkDelay.over()) this.setVisible(!this.isVisible());
         } else
             this.setVisible(false);
     }
 
-    int getCol() { return col; }
-    int getRow() { return row; }
+    int getCol() {
+        return col;
+    }
 
-    void setCol(int col) { this.col = col; }
-    void setRow(int row) { this.row = row; }
+    void setCol(int col) {
+        this.col = col;
+    }
+
+    int getRow() {
+        return row;
+    }
+
+    void setRow(int row) {
+        this.row = row;
+    }
 
     void moveLeft(int offset) {
         int rTemp = row;
-        row = col - 1 < 0 ? Math.max(0,row - 1) : row;
+        row = col - 1 < 0 ? Math.max(0, row - 1) : row;
         col = rTemp != row ? textBox.getLineLength(row) + offset : Math.max(col - 1, 0);
     }
 

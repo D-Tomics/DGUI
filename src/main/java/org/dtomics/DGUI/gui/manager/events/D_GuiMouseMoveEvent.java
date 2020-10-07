@@ -9,14 +9,15 @@ import org.dtomics.DGUI.gui.components.D_Gui;
  */
 public class D_GuiMouseMoveEvent extends D_GuiEvent {
 
-    private double xPos;
-    private double yPos;
+    private final double xPos;
+    private final double yPos;
 
-    /**Will be called when Mouse position changes
+    /**
+     * Will be called when Mouse position changes
      *
-     * @param gui   gui that received the event
-     * @param xPos  new x position of mouse
-     * @param yPos  new y position of mouse
+     * @param gui  gui that received the event
+     * @param xPos new x position of mouse
+     * @param yPos new y position of mouse
      */
     public D_GuiMouseMoveEvent(D_Gui gui, double xPos, double yPos) {
         super(gui);

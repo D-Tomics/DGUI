@@ -10,20 +10,19 @@ import org.dtomics.DGUI.gui.manager.constraints.D_Constraint;
  */
 public class AlignRight extends D_Constraint {
 
-    private D_Gui gui;
-    private float padding;
-    private D_Constraint constraint;
+    private final D_Gui gui;
+    private final float padding;
+    private final D_Constraint constraint;
 
     /**
-     * @param gui        the gui in relation to which another gui is aligned
-     * @param padding    the offset from right of the gui from which another gui is aligned
+     * @param gui     the gui in relation to which another gui is aligned
+     * @param padding the offset from right of the gui from which another gui is aligned
      */
     public AlignRight(D_Gui gui, float padding) {
         this(gui, padding, null);
     }
 
     /**
-     *
      * @param gui        the gui in relation to which another gui is aligned
      * @param padding    the offset from right of the gui from which another gui is aligned
      * @param constraint any other constraints of type <code>D_Constraint</code>. This param could be any other constraints,
@@ -37,12 +36,12 @@ public class AlignRight extends D_Constraint {
 
     @Override
     protected void update(D_Gui gui) {
-        if(gui == null) return;
-        if(this.gui == null) return;
+        if (gui == null) return;
+        if (this.gui == null) return;
 
         gui.getStyle().setX(this.gui.getStyle().getX() + this.gui.getStyle().getWidth() - this.gui.getStyle().getPaddingRight() - gui.getStyle().getMarginRight() - gui.getStyle().getWidth() - padding, false);
 
-        if(constraint != null)
+        if (constraint != null)
             constraint.run(gui);
     }
 }

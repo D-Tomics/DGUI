@@ -11,9 +11,10 @@ import org.dtomics.DGUI.gui.text.D_TextBox;
  */
 public class D_TextFill extends D_Constraint {
 
-    private D_TextBox source;
-    private float marginWidth, marginHeight;
-    private D_Constraint constraint;
+    private final D_TextBox source;
+    private final float marginWidth;
+    private final float marginHeight;
+    private final D_Constraint constraint;
 
     /**
      * @param source       the text box to be filled inside a gui
@@ -40,12 +41,12 @@ public class D_TextFill extends D_Constraint {
 
     @Override
     protected void update(D_Gui gui) {
-        if(source == null) return;
+        if (source == null) return;
         source.setBoxSize(
                 gui.getStyle().getWidth() - marginWidth,
                 gui.getStyle().getHeight() - marginHeight
         );
-        if(constraint != null)
+        if (constraint != null)
             constraint.run(gui);
     }
 }

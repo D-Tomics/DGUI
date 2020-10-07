@@ -3,10 +3,9 @@ package org.dtomics.DGUI.gui.layouts;
 import org.dtomics.DGUI.gui.components.D_Gui;
 
 /**
- *  This constants represent how an element is positioned in a cell
+ * This constants represent how an element is positioned in a cell
  *
  * @author kareem
- *
  */
 public enum Alignment {
 
@@ -16,17 +15,18 @@ public enum Alignment {
     /**
      * this method sets the position of a component on a cell based
      * on what type of alignment calls this method.
-     * @param cellX         represents x position of cell in the window
-     * @param cellY         represents y position of cell in the window
-     * @param cellWidth     represents width of the cell in which component is placed
-     * @param cellHeight    represents height of the cell in which component is placed
-     * @param component     represents the component which is to be positioned
-     * @param notify        represents whether or not to notify component's position changes
+     *
+     * @param cellX      represents x position of cell in the window
+     * @param cellY      represents y position of cell in the window
+     * @param cellWidth  represents width of the cell in which component is placed
+     * @param cellHeight represents height of the cell in which component is placed
+     * @param component  represents the component which is to be positioned
+     * @param notify     represents whether or not to notify component's position changes
      */
-    protected void setComponentPosition(float cellX, float cellY, float cellWidth, float cellHeight, D_Gui component, boolean notify){
+    protected void setComponentPosition(float cellX, float cellY, float cellWidth, float cellHeight, D_Gui component, boolean notify) {
         float x = cellX;
         float y = cellY;
-        switch(this) {
+        switch (this) {
             case CENTER:
                 x = cellX + component.getStyle().getMarginLeft() + (cellWidth - component.getStyle().getMarginWidth() - component.getStyle().getWidth()) / 2.0f;
                 y = cellY - component.getStyle().getMarginTop() - (cellHeight - component.getStyle().getMarginHeight() - component.getStyle().getHeight()) / 2.0f;
@@ -65,7 +65,7 @@ public enum Alignment {
                 break;
         }
 
-        component.getStyle().setPosition(x,y,notify);
+        component.getStyle().setPosition(x, y, notify);
     }
 
 }

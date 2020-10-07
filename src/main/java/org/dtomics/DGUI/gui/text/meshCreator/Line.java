@@ -5,20 +5,21 @@ import org.dtomics.DGUI.gui.text.font.FontChar;
 import java.util.ArrayList;
 import java.util.List;
 
-/**This class holds the characters that are present in a single line.
+/**
+ * This class holds the characters that are present in a single line.
  *
  * @author Abdul Kareem
  */
 public class Line {
 
-    private float fontSize;
+    private final float fontSize;
     private float curWidth;
-    private float maxWidth;
+    private final float maxWidth;
     private float maxHeight;
 
-    private StringBuilder text;
-    private List<Float> widths;
-    private List<FontChar> charList;
+    private final StringBuilder text;
+    private final List<Float> widths;
+    private final List<FontChar> charList;
 
     Line(float maxWidth, float fontSize) {
         this.maxWidth = maxWidth;
@@ -33,12 +34,12 @@ public class Line {
             text.append('\n');
             return false;
         }
-        if(wrapText && (curWidth + fontChar.getXAdvance() * hps) * fontSize / 2.0f > maxWidth) return false;
+        if (wrapText && (curWidth + fontChar.getXAdvance() * hps) * fontSize / 2.0f > maxWidth) return false;
 
-        if(fontChar.getSizeY() * vps > maxHeight)
+        if (fontChar.getSizeY() * vps > maxHeight)
             maxHeight = fontChar.getSizeY() * vps;
 
-        text.append((char)fontChar.getId());
+        text.append((char) fontChar.getId());
         curWidth += fontChar.getXAdvance() * hps;
         charList.add(fontChar);
         widths.add(curWidth);

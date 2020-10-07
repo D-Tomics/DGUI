@@ -1,6 +1,10 @@
 package org.dtomics.DGUI.IO.sound;
 
-import org.lwjgl.openal.*;
+import org.lwjgl.openal.AL;
+import org.lwjgl.openal.AL10;
+import org.lwjgl.openal.ALC;
+import org.lwjgl.openal.ALC10;
+import org.lwjgl.openal.ALCapabilities;
 
 public final class OpenAL {
 
@@ -14,23 +18,23 @@ public final class OpenAL {
     }
 
     private void create() {
-        if(initialised) return;
+        if (initialised) return;
         initialised = true;
-        String defaultdevice  = ALC10.alcGetString(0,ALC10.ALC_DEFAULT_DEVICE_SPECIFIER);
+        String defaultdevice = ALC10.alcGetString(0, ALC10.ALC_DEFAULT_DEVICE_SPECIFIER);
         device = ALC10.alcOpenDevice(defaultdevice);
-        if(ALC10.alcGetError(device) != ALC10.ALC_NO_ERROR)
-            System.err.println("Error in opening device "+ defaultdevice);
+        if (ALC10.alcGetError(device) != ALC10.ALC_NO_ERROR)
+            System.err.println("Error in opening device " + defaultdevice);
 
-        context = ALC10.alcCreateContext(device,new int[]{0});
-        if(ALC10.alcGetError(device) != ALC10.ALC_NO_ERROR)
+        context = ALC10.alcCreateContext(device, new int[]{0});
+        if (ALC10.alcGetError(device) != ALC10.ALC_NO_ERROR)
             System.err.println("Error in creating context");
 
         ALC10.alcMakeContextCurrent(context);
-        if(ALC10.alcGetError(device) != ALC10.ALC_NO_ERROR)
+        if (ALC10.alcGetError(device) != ALC10.ALC_NO_ERROR)
             System.err.println("Error in making audio context current");
 
         capabilities = AL.createCapabilities(ALC.createCapabilities(device));
-        if(AL10.alGetError() != AL10.AL_NO_ERROR)
+        if (AL10.alGetError() != AL10.AL_NO_ERROR)
             System.err.println("Error int creating capabilities");
     }
 

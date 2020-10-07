@@ -1,10 +1,25 @@
 package org.dtomics.DGUI.IO.sound;
 
-import static org.lwjgl.openal.AL10.*;
+import static org.lwjgl.openal.AL10.AL_BUFFER;
+import static org.lwjgl.openal.AL10.AL_FALSE;
+import static org.lwjgl.openal.AL10.AL_GAIN;
+import static org.lwjgl.openal.AL10.AL_LOOPING;
+import static org.lwjgl.openal.AL10.AL_PITCH;
+import static org.lwjgl.openal.AL10.AL_PLAYING;
+import static org.lwjgl.openal.AL10.AL_SOURCE_STATE;
+import static org.lwjgl.openal.AL10.AL_TRUE;
+import static org.lwjgl.openal.AL10.alDeleteSources;
+import static org.lwjgl.openal.AL10.alGenSources;
+import static org.lwjgl.openal.AL10.alGetSourcei;
+import static org.lwjgl.openal.AL10.alSourcePause;
+import static org.lwjgl.openal.AL10.alSourcePlay;
+import static org.lwjgl.openal.AL10.alSourceStop;
+import static org.lwjgl.openal.AL10.alSourcef;
+import static org.lwjgl.openal.AL10.alSourcei;
 
 public final class SoundSource {
 
-    private int sourceId;
+    private final int sourceId;
 
     public SoundSource() {
         sourceId = alGenSources();
@@ -47,6 +62,6 @@ public final class SoundSource {
     }
 
     public boolean isPlaying() {
-        return alGetSourcei(sourceId,AL_SOURCE_STATE) == AL_PLAYING;
+        return alGetSourcei(sourceId, AL_SOURCE_STATE) == AL_PLAYING;
     }
 }

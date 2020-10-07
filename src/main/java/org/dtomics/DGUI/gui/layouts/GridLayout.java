@@ -22,12 +22,12 @@ import java.util.Hashtable;
  */
 public class GridLayout extends Layout {
 
-    private boolean init;
     private final int rows;
     private final int columns;
     private final float[] cellWidths;
     private final float[] cellHeights;
     private final GridConstraint defaultConstraint = new GridConstraint(0, 0, 0, 0, Alignment.CENTER);
+    private boolean init;
     private Hashtable<D_Gui, D_LayoutConstraint> compTable;
 
     public GridLayout(int rows, int columns) {

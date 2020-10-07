@@ -8,19 +8,20 @@ import org.joml.Vector2f;
 
 public class Maths {
 
-    private static Matrix4f modelMatrix = new Matrix4f();
-    public static Matrix4f createModelMatrix(float x, float y, float sx, float sy)  {
+    private static final Matrix4f modelMatrix = new Matrix4f();
+
+    public static Matrix4f createModelMatrix(float x, float y, float sx, float sy) {
         modelMatrix.identity();
-        modelMatrix.translate(x,y,0);
-        modelMatrix.scale(sx,sy,0);
+        modelMatrix.translate(x, y, 0);
+        modelMatrix.scale(sx, sy, 0);
         return modelMatrix;
     }
 
     public static Matrix4f createModelMatrix(float x, float y, float sx, float sy, boolean normalize, Window window) {
-        if(normalize) {
-            return createModelMatrix(2 * x / window.getWidth(),2 * y / window.getHeight(), sx / window.getWidth(), sy / window.getHeight());
+        if (normalize) {
+            return createModelMatrix(2 * x / window.getWidth(), 2 * y / window.getHeight(), sx / window.getWidth(), sy / window.getHeight());
         }
-        return createModelMatrix( x, y, sx,sy);
+        return createModelMatrix(x, y, sx, sy);
     }
 
     public static Matrix4f createModeMatrix(Style properties, Window window) {
@@ -33,21 +34,21 @@ public class Maths {
     }
 
     public static boolean checkPointCollision(float pointX, float pointY, float x, float y, float width, float height) {
-        return Math.abs(pointX - x) < width/2.0f && Math.abs(pointY - y) < height/2.0f;
+        return Math.abs(pointX - x) < width / 2.0f && Math.abs(pointY - y) < height / 2.0f;
     }
 
     public static boolean checkPointCollision(float x, float y, D_Component component) {
         Style p = component.getStyle();
-        return Math.abs(x - p.getCenterX()) < p.getWidth()/2.0f && Math.abs(y - p.getCenterY()) < p.getHeight()/2.0f;
+        return Math.abs(x - p.getCenterX()) < p.getWidth() / 2.0f && Math.abs(y - p.getCenterY()) < p.getHeight() / 2.0f;
     }
 
     public static boolean checkPointCollision(Vector2f point, D_Component component) {
-        return checkPointCollision(point.x,point.y,component);
+        return checkPointCollision(point.x, point.y, component);
     }
 
-    public static float round(float val,int digits) {
-        int mult = (int) Math.pow(10,digits);
-        return (float) (Math.floor(val * mult)/ mult);
+    public static float round(float val, int digits) {
+        int mult = (int) Math.pow(10, digits);
+        return (float) (Math.floor(val * mult) / mult);
     }
 
     public static float map(float val, float min1, float max1, float min2, float max2) {
@@ -60,7 +61,7 @@ public class Maths {
     }
 
     public static float clamp(float val, float min, float max) {
-        return Math.max(min, Math.min(max,val));
+        return Math.max(min, Math.min(max, val));
     }
 
 }

@@ -17,8 +17,9 @@ public final class TextMeshCreator {
     public static final float LINE_HEIGHT = 1;
 
     private static List<Float> vertexData;
+
     public static TextMeshData createTextMesh(Window window, D_TextBox text) {
-        if(vertexData == null)
+        if (vertexData == null)
             vertexData = new ArrayList<>();
 
         float vps = LINE_HEIGHT / text.getFont().getFontFile().getLineHeight();
@@ -53,22 +54,22 @@ public final class TextMeshCreator {
         float lineSpace = text.getLineSpacing() * vps;
         float maxWidth = 0;
         float maxHeight = (lines.size() - 1) * lineSpace;
-        for(Line line : lines)
+        for (Line line : lines)
             maxHeight += line.getMaxHeight();
 
         float cursorX = 0;
-        float cursorY = align.cursorY(2 * text.getBoxHeight() / text.getFontSize(), maxHeight,  text.getFont().getFontFile().getDesiredPadding() * vps);
+        float cursorY = align.cursorY(2 * text.getBoxHeight() / text.getFontSize(), maxHeight, text.getFont().getFontFile().getDesiredPadding() * vps);
 
-        for(Line line : lines) {
+        for (Line line : lines) {
             // here box Width is divided by fontSize because
             // it is in the shader that we multiply fontSize with vertices
             // that we created here
             //box size in normalized screen space form is 2 * boxSize / WindowWidth;
             cursorX = align.cursorX(2 * text.getBoxWidth() / relativeFontSize, line.getMaxWidth());
 
-            if(line.getMaxWidth() > maxWidth)
+            if (line.getMaxWidth() > maxWidth)
                 maxWidth = line.getMaxWidth();
-            for(FontChar character : line.getCharacters()) {
+            for (FontChar character : line.getCharacters()) {
                 addCharacterDataToVertexData(vertexData, character, cursorX, cursorY, hps, vps);
                 cursorX += character.getXAdvance() * hps;
             }
@@ -110,12 +111,12 @@ public final class TextMeshCreator {
 
         Line currentLine = new Line(textBox.getBoxWidth(), relativeFontSize);
         lines.add(currentLine);
-        for(char character : characterArray) {
+        for (char character : characterArray) {
             FontChar fontCharacter = textBox.getFont().getFontFile().getFontChar(character);
-            boolean added = currentLine.addCharToLine(fontCharacter, textBox.isWrapped(), hps,vps);
-            if(!added) {
+            boolean added = currentLine.addCharToLine(fontCharacter, textBox.isWrapped(), hps, vps);
+            if (!added) {
                 currentLine = new Line(textBox.getBoxWidth(), relativeFontSize);
-                currentLine.addCharToLine(fontCharacter,textBox.isWrapped(),hps,vps);
+                currentLine.addCharToLine(fontCharacter, textBox.isWrapped(), hps, vps);
                 lines.add(currentLine);
             }
         }
@@ -132,15 +133,15 @@ public final class TextMeshCreator {
 
     private static void addCharDataToList(List<Float> data, float x, float y, float xMax, float yMax, float xTexCoord, float yTexCoord, float xMaxTexCoord, float yMaxTexCoord) {
         //vertex                                texCoords
-        addVertexToList(data,    x,    y,       xTexCoord,     yTexCoord);
-        addVertexToList(data,    x, yMax,       xTexCoord,  yMaxTexCoord);
-        addVertexToList(data, xMax, yMax,    xMaxTexCoord,  yMaxTexCoord);
-        addVertexToList(data, xMax, yMax,    xMaxTexCoord,  yMaxTexCoord);
-        addVertexToList(data, xMax,    y,    xMaxTexCoord,     yTexCoord);
-        addVertexToList(data,    x,    y,       xTexCoord,     yTexCoord);
+        addVertexToList(data, x, y, xTexCoord, yTexCoord);
+        addVertexToList(data, x, yMax, xTexCoord, yMaxTexCoord);
+        addVertexToList(data, xMax, yMax, xMaxTexCoord, yMaxTexCoord);
+        addVertexToList(data, xMax, yMax, xMaxTexCoord, yMaxTexCoord);
+        addVertexToList(data, xMax, y, xMaxTexCoord, yTexCoord);
+        addVertexToList(data, x, y, xTexCoord, yTexCoord);
     }
 
-    private static void addVertexToList(List<Float> list, float x, float y , float xTex, float yTex) {
+    private static void addVertexToList(List<Float> list, float x, float y, float xTex, float yTex) {
         list.add(x);
         list.add(y);
         list.add(xTex);

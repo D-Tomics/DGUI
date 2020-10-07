@@ -10,11 +10,12 @@ public enum TextAlignment {
 
 
     float cursorX(float boxWidth, float maxLineWidth) {
-        if(maxLineWidth > boxWidth) return 0;
+        if (maxLineWidth > boxWidth) return 0;
         switch (this) {
             case TOP:
             case BOTTOM:
-            case CENTER: return (boxWidth - maxLineWidth) * 0.5f;
+            case CENTER:
+                return (boxWidth - maxLineWidth) * 0.5f;
 
             case RIGHT:
             case BOTTOM_RIGHT:
@@ -29,7 +30,7 @@ public enum TextAlignment {
             case BOTTOM:
             case BOTTOM_RIGHT:
             case BOTTOM_LEFT:
-                return - boxHeight + maxHeight + padding;
+                return -boxHeight + maxHeight + padding;
 
             case LEFT:
             case RIGHT:

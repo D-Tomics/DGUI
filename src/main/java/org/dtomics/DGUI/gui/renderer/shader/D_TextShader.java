@@ -11,7 +11,8 @@ import org.dtomics.DGUI.utils.Maths;
  */
 public final class D_TextShader extends ShaderProgram {
 
-    private Window window;
+    private final Window window;
+
     public D_TextShader(Window window) {
         super("shaders/dTextShader.glsl");
         this.window = window;
@@ -32,12 +33,12 @@ public final class D_TextShader extends ShaderProgram {
 
     public void load(D_TextBox text) {
 
-        super.loadInt("texAtlas",0);
+        super.loadInt("texAtlas", 0);
         super.loadVec3f("textColor", text.getTextColor().r(), text.getTextColor().g(), text.getTextColor().b());
         super.loadFloat("alpha", text.getTextColor().a());
 
-        super.loadFloat("edge",text.getCharEdge());
-        super.loadFloat("width",text.getCharWidth());
+        super.loadFloat("edge", text.getCharEdge());
+        super.loadFloat("width", text.getCharWidth());
 
         super.loadVec3f("borderColor", text.getBorderColor().r(), text.getBorderColor().g(), text.getBorderColor().b());
         super.loadFloat("borderWidth", text.getCharBorderWidth());

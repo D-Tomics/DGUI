@@ -2,14 +2,15 @@ package org.dtomics.DGUI.gui.manager.events;
 
 import org.dtomics.DGUI.gui.components.D_Gui;
 
-/**This event is fired on focused gui when a scrolling device is used, such as a mouse wheel or scrolling area of a touchpad.
+/**
+ * This event is fired on focused gui when a scrolling device is used, such as a mouse wheel or scrolling area of a touchpad.
  *
  * @author Abdul Kareem
  */
 public class D_GuiScrollEvent extends D_GuiEvent {
 
-    private double xoffset;
-    private double yoffset;
+    private final double xoffset;
+    private final double yoffset;
 
     /**
      * Will be called when a scrolling device is used, such as a mouse wheel or scrolling area of a touchpad.

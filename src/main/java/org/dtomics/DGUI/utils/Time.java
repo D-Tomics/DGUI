@@ -6,20 +6,18 @@ public class Time {
     private static long lastFrameTime;
     private static double delta;
 
-    public static void init()
-    {
+    public static void init() {
         currentTime = getTime();
         lastFrameTime = getTime();
     }
 
-    public static void update(){
+    public static void update() {
         currentTime = getTime();
-        delta = (currentTime - lastFrameTime) ;
+        delta = (currentTime - lastFrameTime);
         lastFrameTime = currentTime;
     }
 
-    public static double getDeltaInSec()
-    {
+    public static double getDeltaInSec() {
         return delta / 1000000000f;
     }
 
@@ -28,15 +26,14 @@ public class Time {
     }
 
     public static double getDeltaInUs() {
-         return delta/1000f;
+        return delta / 1000f;
     }
 
     public static double getDeltaInNs() {
         return delta;
     }
 
-    public static long getTime()
-    {
+    public static long getTime() {
         return System.nanoTime();
     }
 

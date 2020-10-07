@@ -10,24 +10,32 @@ import org.dtomics.DGUI.utils.Timer;
  * the animation. The subclasses can use this timer via {@code getTimer} method to update or transit the current
  * state of animation.
  *
- * @see org.dtomics.DGUI.gui.components.D_Gui#startAnimation
  * @author Abdul kareem
+ * @see org.dtomics.DGUI.gui.components.D_Gui#startAnimation
  */
-public abstract class D_GuiAnimation implements Cloneable{
+public abstract class D_GuiAnimation implements Cloneable {
+
+    private final String name;
+    public Timer timer;
+
+    public D_GuiAnimation(String name) {
+        this.name = name;
+        this.timer = new Timer();
+    }
 
     /**
      * this method is implemented by sub classes. It is only executed once at the start of an animation.
      *
-     * @see #start(D_Gui)
      * @param gui the gui on which the animation is applied
+     * @see #start(D_Gui)
      */
     protected abstract void onStart(D_Gui gui);
 
     /**
      * this method is implemented by sub classes. It is only executed once at the end of an animation.
      *
-     * @see #stop(D_Gui)
      * @param gui the gui on which the animation is applied
+     * @see #stop(D_Gui)
      */
     protected abstract void onStop(D_Gui gui);
 
@@ -35,18 +43,11 @@ public abstract class D_GuiAnimation implements Cloneable{
      * this method is implemented by sub classes. This method is executed every frame during entire life time of
      * the animation.
      *
-     * @see #update(D_Gui)
      * @param gui the gui on which the animation is applied
      * @return true when animation is stopped and false if animation is not started or is still running
+     * @see #update(D_Gui)
      */
     protected abstract boolean run(D_Gui gui);
-
-    private final String name;
-    public Timer timer;
-    public D_GuiAnimation(String name) {
-        this.name = name;
-        this.timer = new Timer();
-    }
 
     /**
      * this method starts the animation
@@ -89,13 +90,15 @@ public abstract class D_GuiAnimation implements Cloneable{
         start(gui);
     }
 
-    protected double getTime() { return timer.getTime(); }
+    protected double getTime() {
+        return timer.getTime();
+    }
 
     public boolean equals(Object object) {
-        if(object == null) return false;
-        if(object == this) return true;
-        if(!(object instanceof D_GuiAnimation)) return false;
-        return ((D_GuiAnimation)object).name.equalsIgnoreCase(this.name);
+        if (object == null) return false;
+        if (object == this) return true;
+        if (!(object instanceof D_GuiAnimation)) return false;
+        return ((D_GuiAnimation) object).name.equalsIgnoreCase(this.name);
     }
 
     public D_GuiAnimation clone() {

@@ -15,29 +15,32 @@ import org.dtomics.DGUI.utils.abstractions.Listener;
 import org.dtomics.DGUI.utils.observers.Observable;
 import org.dtomics.DGUI.utils.observers.Observer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
-/**This is an abstract representation of a gui. Every gui in this API extends this class.
+/**
+ * This is an abstract representation of a gui. Every gui in this API extends this class.
  * This class is responsible for managing, assigning, updating  events, animations, texts, and its states.
  *
  * @author Abdul Kareem
- *
  */
 public abstract class D_Gui implements Observer {
 
     private static final D_GuiEventListener ON_PRESS_FOCUS_LISTENER = new D_GuiEventListener(D_GuiMousePressEvent.class) {
         @Override
         public void invokeEvent(D_GuiEvent event) {
-            D_GuiMousePressEvent e = (D_GuiMousePressEvent)event;
-            if(e.isButton(Mouse.MOUSE_BUTTON_LEFT)) {
-                    e.getGui().requestFocus(true);
+            D_GuiMousePressEvent e = (D_GuiMousePressEvent) event;
+            if (e.isButton(Mouse.MOUSE_BUTTON_LEFT)) {
+                e.getGui().requestFocus(true);
             }
         }
     };
-
-    private int level;
     protected Style style;
-
+    private int level;
     private boolean requestedFocus;
     private boolean requestedLooseFocus;
     private boolean focused;
@@ -67,7 +70,7 @@ public abstract class D_Gui implements Observer {
 
         this.style = new Style();
         this.style.addObserver(this);
-        if(!(this instanceof D_Label))
+        if (!(this instanceof D_Label))
             this.addEventListener(ON_PRESS_FOCUS_LISTENER);
     }
 
@@ -80,12 +83,13 @@ public abstract class D_Gui implements Observer {
     public void updateStates(Observable o) {
         runConstraints();
         onStateChange(o);
-        if(icons != null)
-            for(D_Icon icon : icons)
+        if (icons != null)
+            for (D_Icon icon : icons)
                 icon.updateStates(icon.getStyle());
     }
 
     protected abstract void onUpdate();
+
     protected abstract void onStateChange(Observable o);
 
     public D_GuiEventListener addEventListener(Class<? extends D_GuiEvent> d_guiEventClass, Listener listener) {
@@ -98,14 +102,14 @@ public abstract class D_Gui implements Observer {
     }
 
     public D_GuiEventListener addEventListener(D_GuiEventListener listener) {
-        if(listener == null) return null;
-        if(eventListeners == null)
+        if (listener == null) return null;
+        if (eventListeners == null)
             eventListeners = new HashMap<>();
         Class<? extends D_GuiEvent> eventClass = listener.getEventClass();
         ArrayList<D_GuiEventListener> listeners = eventListeners.get(eventClass);
-        if(listeners == null) {
+        if (listeners == null) {
             listeners = new ArrayList<>();
-            eventListeners.put(eventClass,listeners);
+            eventListeners.put(eventClass, listeners);
         }
         listeners.add(listener);
         return listener;
@@ -121,37 +125,37 @@ public abstract class D_Gui implements Observer {
     }
 
     public void stackEvent(D_GuiEvent event) {
-        if(!enabled) return;
-        if(eventListeners == null)
+        if (!enabled) return;
+        if (eventListeners == null)
             return;
         ArrayList<D_GuiEventListener> listeners = eventListeners.get(event.getClass());
-        if(listeners == null) return;
-        for(D_GuiEventListener listener : listeners) {
+        if (listeners == null) return;
+        for (D_GuiEventListener listener : listeners) {
             listener.stackEvents(event);
         }
     }
 
     public void addIcon(D_Icon icon, D_Constraint constraint) {
-        if(icons == null) icons = new ArrayList<>();
+        if (icons == null) icons = new ArrayList<>();
         icons.add(icon);
         icon.addConstraint(constraint);
-        icon.setLevel(this.level  + 1);
+        icon.setLevel(this.level + 1);
         style.notifyObservers();
     }
 
     public void removeIcon(D_Icon icon) {
-        if(icons == null) return;
+        if (icons == null) return;
         icons.remove(icon);
         style.notifyObservers();
     }
 
     public void unstackEvents() {
-        if(eventListeners == null) return;
+        if (eventListeners == null) return;
         Set<Class<?>> eventClassSet = eventListeners.keySet();
-        for(Class<?> eventClass : eventClassSet) {
+        for (Class<?> eventClass : eventClassSet) {
             ArrayList<D_GuiEventListener> listeners = eventListeners.get(eventClass);
-            if(listeners == null) continue;
-            for(D_GuiEventListener listener : listeners) {
+            if (listeners == null) continue;
+            for (D_GuiEventListener listener : listeners) {
                 listener.invokeEvents();
                 listener.unstackEvents();
             }
@@ -159,137 +163,210 @@ public abstract class D_Gui implements Observer {
     }
 
     public void startAnimation(D_GuiAnimation animation) {
-        if(!enabled) return;
-        if(animation == null) return;
-        else if(animations == null) animations = new ArrayList<>();
-        if(animations.contains(animation)) return;
+        if (!enabled) return;
+        if (animation == null) return;
+        else if (animations == null) animations = new ArrayList<>();
+        if (animations.contains(animation)) return;
         D_GuiAnimation clone = animation.clone();
         clone.start(this);
         animations.add(clone);
     }
 
     public void stopAnimation(D_GuiAnimation animation) {
-        if(animation == null) return;
-        else if(animations == null) return;
-        if(!animations.contains(animation)) return;
+        if (animation == null) return;
+        else if (animations == null) return;
+        if (!animations.contains(animation)) return;
         animations.get(animations.indexOf(animation)).stop(this);
         animations.remove(animation);
     }
 
     private void updateAnimations() {
-        if(!enabled) return;
-        if(animations == null) return;
-        for(int i = 0; i < animations.size(); i++)
-            if(animations.get(i).update(this))
+        if (!enabled) return;
+        if (animations == null) return;
+        for (int i = 0; i < animations.size(); i++)
+            if (animations.get(i).update(this))
                 animations.get(i).stop(this);
     }
 
     public void addConstraint(D_Constraint constraint) {
-        if(constraint == null) return;
-        else if(constraints == null) constraints = new ArrayList<>();
+        if (constraint == null) return;
+        else if (constraints == null) constraints = new ArrayList<>();
         constraints.add(constraint);
         constraint.run(this);
         runConstraints();
     }
 
-    public void addConstraints(D_Constraint...constraints) {
-        for(D_Constraint constraint : constraints)
+    public void addConstraints(D_Constraint... constraints) {
+        for (D_Constraint constraint : constraints)
             addConstraint(constraint);
     }
 
     private void runConstraints() {
-        if(constraints == null) return;
-        for(D_Constraint constraint : constraints)
+        if (constraints == null) return;
+        for (D_Constraint constraint : constraints)
             constraint.run(this);
     }
 
-    public void requestFocus(boolean focus) { this.requestedFocus = focus; }
-    public void requestLooseFocus(boolean looseFocus) { this.requestedLooseFocus = looseFocus; }
-    public void focus(boolean focus) { this.focused = focus; }
+    public void requestFocus(boolean focus) {
+        this.requestedFocus = focus;
+    }
 
-    public boolean requestedFocus() { return requestedFocus; }
-    public boolean requestedLooseFocus() { return requestedLooseFocus; }
+    public void requestLooseFocus(boolean looseFocus) {
+        this.requestedLooseFocus = looseFocus;
+    }
 
-    public boolean isFocused() { return focused; }
-    public boolean isEnabled() { return enabled; }
-    public boolean isVisible() { return visible; }
-    public boolean isScrollable() { return scrollable; }
-    public boolean isHoverable() { return hoverable; }
-    public boolean isSelectable() { return selectable; }
-    public boolean isPressed() { return pressed; }
+    public void focus(boolean focus) {
+        this.focused = focus;
+    }
 
-    public boolean isHovered() { return hovered; }
-    public boolean isSelected() { return selected; }
+    public boolean requestedFocus() {
+        return requestedFocus;
+    }
+
+    public boolean requestedLooseFocus() {
+        return requestedLooseFocus;
+    }
+
+    public boolean isFocused() {
+        return focused;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
         this.style.notifyObservers();
     }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
     public void setVisible(boolean visible) {
-        if(!enabled) return;
+        if (!enabled) return;
         this.visible = visible;
-        if(this.quads != null)
-            for(D_GuiQuad quad : quads) quad.setVisible(visible);
-        if(this.icons != null)
-            for(D_Icon icon : icons) icon.setVisible(visible);
-        if(getTextMap() != null){
+        if (this.quads != null)
+            for (D_GuiQuad quad : quads) quad.setVisible(visible);
+        if (this.icons != null)
+            for (D_Icon icon : icons) icon.setVisible(visible);
+        if (getTextMap() != null) {
             Map<Font, List<D_TextBox>> textMap = getTextMap();
             Set<Font> fonts = textMap.keySet();
-            for(Font font : fonts) for(D_TextBox textBox : textMap.get(font)) textBox.setVisible(visible);
+            for (Font font : fonts) for (D_TextBox textBox : textMap.get(font)) textBox.setVisible(visible);
         }
         this.style.notifyObservers();
     }
-    public void setScrollable(boolean scrollable) { this.scrollable = scrollable; }
-    public void setHoverable(boolean hoverable) { this.hoverable = hoverable; }
-    public void setSelectable(boolean selectable) { this.selectable = selectable; }
+
+    public boolean isScrollable() {
+        return scrollable;
+    }
+
+    public void setScrollable(boolean scrollable) {
+        this.scrollable = scrollable;
+    }
+
+    public boolean isHoverable() {
+        return hoverable;
+    }
+
+    public void setHoverable(boolean hoverable) {
+        this.hoverable = hoverable;
+    }
+
+    public boolean isSelectable() {
+        return selectable;
+    }
+
+    public void setSelectable(boolean selectable) {
+        this.selectable = selectable;
+    }
+
+    public boolean isPressed() {
+        return pressed;
+    }
 
     public void setPressed(boolean pressed) {
-        if(!enabled) return;
+        if (!enabled) return;
         this.pressed = pressed;
         this.style.notifyObservers();
     }
+
+    public boolean isHovered() {
+        return hovered;
+    }
+
     public void setHovered(boolean hovered) {
         this.hovered = hovered;
         this.style.notifyObservers();
     }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
     public void setSelected(boolean selected) {
-        if(!enabled) return;
-        if(this.isSelectable())
+        if (!enabled) return;
+        if (this.isSelectable())
             this.selected = selected;
         this.style.notifyObservers();
     }
-    public void setStyle(Style style) { this.style.set(style); }
 
     public int getLevel() {
         return level;
     }
-    public Style getStyle() { return style; }
-    public D_Gui getParent() { return parent; }
-    public ArrayList<D_Icon> getIcons() { return icons; }
-    public ArrayList<D_GuiQuad> getQuads() { return quads; }
-    public Map<Font, List<D_TextBox>> getTextMap() { return D_TextMaster.getTextMap(Window.get(),this); }
+
+    protected void setLevel(int level) {
+        this.level = level;
+        for (int i = 0; quads != null && i < quads.size(); i++)
+            quads.get(i).setLevel(level + 1);
+        for (int i = 0; icons != null && i < icons.size(); i++)
+            icons.get(i).setLevel(level + 1);
+    }
+
+    public Style getStyle() {
+        return style;
+    }
+
+    public void setStyle(Style style) {
+        this.style.set(style);
+    }
+
+    public D_Gui getParent() {
+        return parent;
+    }
+
+    protected void setParent(D_Gui parent) {
+        this.parent = parent;
+    }
+
+    public ArrayList<D_Icon> getIcons() {
+        return icons;
+    }
+
+    public ArrayList<D_GuiQuad> getQuads() {
+        return quads;
+    }
+
+    public Map<Font, List<D_TextBox>> getTextMap() {
+        return D_TextMaster.getTextMap(Window.get(), this);
+    }
 
     public D_Gui getRoot() {
-        if(this.parent != null)
+        if (this.parent != null)
             return parent.getRoot();
         return this;
     }
 
-    protected void setParent(D_Gui parent) { this.parent = parent; }
-    protected  void setLevel(int level) {
-        this.level = level;
-        for(int i = 0; quads != null && i < quads.size(); i++)
-            quads.get(i).setLevel(level + 1);
-        for(int i = 0; icons != null && i < icons.size(); i++)
-            icons.get(i).setLevel(level + 1);
-    }
-    protected  void addQuad(D_GuiQuad quad) {
-        if(quads == null) quads = new ArrayList<>();
+    protected void addQuad(D_GuiQuad quad) {
+        if (quads == null) quads = new ArrayList<>();
         Objects.requireNonNull(quad, "trying to add null Geometry");
         quads.add(quad);
         quad.setLevel(this.level + 1);
         quad.setParent(this);
     }
+
     protected void removeQuad(D_GuiQuad quad) {
         quads.remove(quad);
         quad.setParent(null);

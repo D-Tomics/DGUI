@@ -4,8 +4,8 @@ import org.dtomics.DGUI.IO.Window;
 
 public class GLFWScrollEvent extends GLFWEvent {
 
-    private double xoffset;
-    private double yoffset;
+    private final double xoffset;
+    private final double yoffset;
 
     public GLFWScrollEvent(Window source, double xoffset, double yoffset) {
         super(source);

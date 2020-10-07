@@ -4,8 +4,8 @@ import org.dtomics.DGUI.IO.Window;
 
 public class GLFWFrameBufferSizeEvent extends GLFWEvent {
 
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
 
     public GLFWFrameBufferSizeEvent(Window source, int width, int height) {
         super(source);

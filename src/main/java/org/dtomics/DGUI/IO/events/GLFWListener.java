@@ -2,7 +2,7 @@ package org.dtomics.DGUI.IO.events;
 
 public abstract class GLFWListener {
 
-    private Class<? extends GLFWEvent> eventClass;
+    private final Class<? extends GLFWEvent> eventClass;
 
     public GLFWListener(Class<? extends GLFWEvent> eventClass) {
         this.eventClass = eventClass;

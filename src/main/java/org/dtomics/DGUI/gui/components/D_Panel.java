@@ -3,7 +3,8 @@ package org.dtomics.DGUI.gui.components;
 import org.dtomics.DGUI.IO.Mouse;
 import org.dtomics.DGUI.gui.layouts.Layout;
 
-/**D_Panel represents a generic container can hold components specified by the user
+/**
+ * D_Panel represents a generic container can hold components specified by the user
  *
  * @author Abdul Kareem
  */
@@ -16,9 +17,9 @@ public class D_Panel extends D_Container {
     private float offsetY;
 
     public D_Panel() {
-        this.style.setBounds(0,0,DEFAULT_WIDTH,DEFAULT_HEIGHT);
+        this.style.setBounds(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         this.style.setBorderWidth(1f);
-        this.style.setBgColor(0.1f,0.1f,0.1f);
+        this.style.setBgColor(0.1f, 0.1f, 0.1f);
         this.style.setAlpha(0.8f);
     }
 
@@ -29,16 +30,13 @@ public class D_Panel extends D_Container {
 
     @Override
     public void onUpdate() {
-        if (getParent() == null  && this.isPressed())
-        {
-            if(offsetX == 0) offsetX =  style.getX() - Mouse.getX();
-            if(offsetY == 0) offsetY = style.getY() - Mouse.getY();
+        if (getParent() == null && this.isPressed()) {
+            if (offsetX == 0) offsetX = style.getX() - Mouse.getX();
+            if (offsetY == 0) offsetY = style.getY() - Mouse.getY();
 
-            this.style.setX(Mouse.getX() +  offsetX);
+            this.style.setX(Mouse.getX() + offsetX);
             this.style.setY(Mouse.getY() + offsetY);
-        }
-        else
-        {
+        } else {
             offsetX = 0;
             offsetY = 0;
         }

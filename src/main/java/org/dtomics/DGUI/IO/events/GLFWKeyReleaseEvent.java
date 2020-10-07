@@ -2,11 +2,11 @@ package org.dtomics.DGUI.IO.events;
 
 import org.dtomics.DGUI.IO.Window;
 
-public class GLFWKeyReleaseEvent extends GLFWEvent{
+public class GLFWKeyReleaseEvent extends GLFWEvent {
 
-    private int key;
-    private int scanCode;
-    private int mods;
+    private final int key;
+    private final int scanCode;
+    private final int mods;
 
     public GLFWKeyReleaseEvent(Window source, int key, int scanCode, int mods) {
         super(source);

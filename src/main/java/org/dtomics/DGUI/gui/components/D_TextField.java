@@ -10,11 +10,11 @@ import org.dtomics.DGUI.utils.observers.Observable;
  *
  * @author Abdul Kareem
  */
-public class D_TextField extends D_TextComponent{
+public class D_TextField extends D_TextComponent {
 
     public D_TextField(String text, int cols) {
         super(text, 1, cols);
-        this.addConstraint(new D_TextAlignTop(this.textBox,0,new D_TextAlignLeft(this.textBox,5, new D_TextFill(this.textBox,10,0))));
+        this.addConstraint(new D_TextAlignTop(this.textBox, 0, new D_TextAlignLeft(this.textBox, 5, new D_TextFill(this.textBox, 10, 0))));
     }
 
     @Override

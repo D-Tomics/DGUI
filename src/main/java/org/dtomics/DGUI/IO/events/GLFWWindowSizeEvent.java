@@ -2,10 +2,11 @@ package org.dtomics.DGUI.IO.events;
 
 import org.dtomics.DGUI.IO.Window;
 
-public class GLFWWindowSizeEvent extends GLFWEvent{
+public class GLFWWindowSizeEvent extends GLFWEvent {
 
-    private float prevWidth;
-    private float prevHeight;
+    private final float prevWidth;
+    private final float prevHeight;
+
     public GLFWWindowSizeEvent(Window source, float prevWidth, float prevHeight) {
         super(source);
         this.prevWidth = prevWidth;

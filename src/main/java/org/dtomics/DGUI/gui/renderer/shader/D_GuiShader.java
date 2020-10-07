@@ -11,13 +11,14 @@ import org.dtomics.DGUI.utils.colors.Color;
  *
  * @author Abdul Kareem
  */
-public class D_GuiShader extends ShaderProgram{
+public class D_GuiShader extends ShaderProgram {
 
-    private Window window;
+    private final Window window;
+
     public D_GuiShader(Window window) {
         super("shaders/dGuiShader.glsl");
         super.start();
-        super.loadInt("bgTexture",0);
+        super.loadInt("bgTexture", 0);
         super.stop();
         this.window = window;
     }
@@ -25,10 +26,10 @@ public class D_GuiShader extends ShaderProgram{
 
     public void loadComponent(D_Gui component) {
         loadProperties(component.getStyle());
-        loadMat4("transformationMatrix",Maths.createModeMatrix(component.getStyle(),window));
+        loadMat4("transformationMatrix", Maths.createModeMatrix(component.getStyle(), window));
     }
 
-    private void loadProperties( Style p) {
+    private void loadProperties(Style p) {
         //load fill color
         Color fillColor = p.getBgColor();
         loadVec4f("prop.fillColor", fillColor.r(), fillColor.g(), fillColor.b(), fillColor.a());
@@ -44,7 +45,6 @@ public class D_GuiShader extends ShaderProgram{
         loadFloat("prop.radius", p.getCornerRadius());
         loadVec2f("prop.dimensions", p.getSize());
     }
-
 
 
 }
