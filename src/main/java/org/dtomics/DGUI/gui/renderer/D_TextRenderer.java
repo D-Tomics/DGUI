@@ -32,7 +32,9 @@ public class D_TextRenderer {
         for (Font font : fonts) {
             shader.start();
             font.getFontTexture().bind(0);
-            for (D_TextBox text : textMap.get(font)) {
+            final List<D_TextBox> textBoxes = textMap.get(font);
+            for (int i = 0; i < textBoxes.size(); i++) {
+                D_TextBox text = textBoxes.get(i);
                 if (!text.isVisible()) continue;
                 text.update(window.getLoader());
                 text.getMesh().bind();

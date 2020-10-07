@@ -49,8 +49,10 @@ public abstract class D_GuiEventListener {
      * This method calls the handling function on every events that has been stacked
      */
     public void invokeEvents() {
-        for (D_GuiEvent event : events)
+        for (int i = 0; i < events.size(); i++) {
+            D_GuiEvent event = events.get(i);
             this.invokeEvent(event);
+        }
     }
 
     /**

@@ -2,6 +2,7 @@ package org.dtomics.DGUI.gui.renderer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * This class holds all the layers in the current gui system.
@@ -23,8 +24,12 @@ public class LayerStack implements Iterable<Layer> {
         stackPointer++;
     }
 
-    protected Layer get(int index) {
-        return index < stackPointer ? layers.get(index) : null;
+    protected List<Layer> getLayers() {
+        return layers;
+    }
+
+    protected Layer getLayer(int level) {
+        return level < stackPointer ? layers.get(level) : null;
     }
 
     protected Layer getOverLay(int index) {

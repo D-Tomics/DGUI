@@ -130,7 +130,8 @@ public abstract class D_Gui implements Observer {
             return;
         ArrayList<D_GuiEventListener> listeners = eventListeners.get(event.getClass());
         if (listeners == null) return;
-        for (D_GuiEventListener listener : listeners) {
+        for (int i = 0; i < listeners.size(); i++) {
+            D_GuiEventListener listener = listeners.get(i);
             listener.stackEvents(event);
         }
     }
@@ -155,7 +156,8 @@ public abstract class D_Gui implements Observer {
         for (Class<?> eventClass : eventClassSet) {
             ArrayList<D_GuiEventListener> listeners = eventListeners.get(eventClass);
             if (listeners == null) continue;
-            for (D_GuiEventListener listener : listeners) {
+            for (int i = 0; i < listeners.size(); i++) {
+                D_GuiEventListener listener = listeners.get(i);
                 listener.invokeEvents();
                 listener.unstackEvents();
             }
@@ -203,8 +205,10 @@ public abstract class D_Gui implements Observer {
 
     private void runConstraints() {
         if (constraints == null) return;
-        for (D_Constraint constraint : constraints)
+        for (int i = 0; i < constraints.size(); i++) {
+            D_Constraint constraint = constraints.get(i);
             constraint.run(this);
+        }
     }
 
     public void requestFocus(boolean focus) {
