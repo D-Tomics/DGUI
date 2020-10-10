@@ -35,9 +35,9 @@ public class D_TextBox {
     private final Vector2f offset;
     private final Color textColor = new Color(Color.WHITE);
     private final Color borderColor = new Color(Color.BLACK);
+    private final Window window;
     private float boxWidth;
     private float boxHeight;
-    private final Window window;
     private Font font;
     private String text;
     private TextMesh mesh;

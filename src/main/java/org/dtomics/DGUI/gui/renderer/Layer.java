@@ -1,13 +1,10 @@
 package org.dtomics.DGUI.gui.renderer;
 
 import org.dtomics.DGUI.gui.components.D_Gui;
-import org.dtomics.DGUI.gui.text.D_TextBox;
-import org.dtomics.DGUI.gui.text.font.Font;
+import org.dtomics.DGUI.gui.text.FontTextMap;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 /**
  * This class represents a single layer in a gui system. Its basically a wrapper class for a List of guis and a text map.
@@ -19,21 +16,17 @@ import java.util.Set;
 public class Layer {
 
     private final ArrayList<D_Gui> guis;
-    private final HashMap<Font, List<D_TextBox>> textMap;
+    private final List<FontTextMap> textMap;
 
     protected Layer() {
         this.guis = new ArrayList<>();
-        this.textMap = new HashMap<>();
+        this.textMap = new ArrayList<>();
     }
 
     protected void push(D_Gui gui) {
         guis.add(gui);
         if (gui.getTextMap() != null) {
-            Set<Font> fonts = gui.getTextMap().keySet();
-            for (Font font : fonts) {
-                List<D_TextBox> texts = textMap.computeIfAbsent(font, e -> new ArrayList<>());
-                texts.addAll(gui.getTextMap().get(font));
-            }
+            textMap.addAll(gui.getTextMap());
         }
     }
 
@@ -46,7 +39,7 @@ public class Layer {
         return guis;
     }
 
-    protected HashMap<Font, List<D_TextBox>> getTextMap() {
+    protected List<FontTextMap> getTextMap() {
         return textMap;
     }
 

@@ -10,7 +10,7 @@ import org.dtomics.DGUI.gui.manager.events.D_GuiEventListener;
 import org.dtomics.DGUI.gui.manager.events.D_GuiMousePressEvent;
 import org.dtomics.DGUI.gui.text.D_TextBox;
 import org.dtomics.DGUI.gui.text.D_TextMaster;
-import org.dtomics.DGUI.gui.text.font.Font;
+import org.dtomics.DGUI.gui.text.FontTextMap;
 import org.dtomics.DGUI.utils.abstractions.Listener;
 import org.dtomics.DGUI.utils.observers.Observable;
 import org.dtomics.DGUI.utils.observers.Observer;
@@ -18,9 +18,8 @@ import org.dtomics.DGUI.utils.observers.Observer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * This is an abstract representation of a gui. Every gui in this API extends this class.
@@ -39,6 +38,15 @@ public abstract class D_Gui implements Observer {
             }
         }
     };
+
+    private static final Consumer<? super ArrayList<D_GuiEventListener>> unstackEventConsumer = (listeners) -> {
+        for (int i = 0; i < listeners.size(); i++) {
+            D_GuiEventListener listener = listeners.get(i);
+            listener.invokeEvents();
+            listener.unstackEvents();
+        }
+    };
+
     protected Style style;
     private int level;
     private boolean requestedFocus;
@@ -136,6 +144,12 @@ public abstract class D_Gui implements Observer {
         }
     }
 
+    public void unstackEvents() {
+        if (eventListeners == null) return;
+        eventListeners.values().forEach(unstackEventConsumer);
+    }
+
+
     public void addIcon(D_Icon icon, D_Constraint constraint) {
         if (icons == null) icons = new ArrayList<>();
         icons.add(icon);
@@ -148,20 +162,6 @@ public abstract class D_Gui implements Observer {
         if (icons == null) return;
         icons.remove(icon);
         style.notifyObservers();
-    }
-
-    public void unstackEvents() {
-        if (eventListeners == null) return;
-        Set<Class<?>> eventClassSet = eventListeners.keySet();
-        for (Class<?> eventClass : eventClassSet) {
-            ArrayList<D_GuiEventListener> listeners = eventListeners.get(eventClass);
-            if (listeners == null) continue;
-            for (int i = 0; i < listeners.size(); i++) {
-                D_GuiEventListener listener = listeners.get(i);
-                listener.invokeEvents();
-                listener.unstackEvents();
-            }
-        }
     }
 
     public void startAnimation(D_GuiAnimation animation) {
@@ -256,9 +256,15 @@ public abstract class D_Gui implements Observer {
         if (this.icons != null)
             for (D_Icon icon : icons) icon.setVisible(visible);
         if (getTextMap() != null) {
-            Map<Font, List<D_TextBox>> textMap = getTextMap();
-            Set<Font> fonts = textMap.keySet();
-            for (Font font : fonts) for (D_TextBox textBox : textMap.get(font)) textBox.setVisible(visible);
+            List<FontTextMap> textMap = getTextMap();
+            for (int i = 0; i < textMap.size(); i++) {
+                FontTextMap fontTextMap = textMap.get(i);
+                if (fontTextMap.getTextBoxes() != null) {
+                    for (int j = 0; j < fontTextMap.getTextBoxes().size(); j++) {
+                        fontTextMap.getTextBoxes().get(j).setVisible(visible);
+                    }
+                }
+            }
         }
         this.style.notifyObservers();
     }
@@ -353,7 +359,7 @@ public abstract class D_Gui implements Observer {
         return quads;
     }
 
-    public Map<Font, List<D_TextBox>> getTextMap() {
+    public List<FontTextMap> getTextMap() {
         return D_TextMaster.getTextMap(Window.get(), this);
     }
 
