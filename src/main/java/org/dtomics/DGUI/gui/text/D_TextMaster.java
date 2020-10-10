@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * This class keeps track of all the texts in the application for each window.
@@ -20,35 +20,38 @@ import java.util.Set;
  * @author Abdul Kareem
  */
 public final class D_TextMaster {
+    private static final Consumer<List<FontTextMap>> onSizeChangeConsumer = fontTextMaps -> {
+        for (int i = 0; i < fontTextMaps.size(); i++) {
+            List<D_TextBox> textBoxes = fontTextMaps.get(i).getTextBoxes();
+            if (textBoxes != null)
+                textBoxes.forEach(D_TextBox::requestUpdate);
+        }
+    };
 
-    private static Map<Window, Map<D_Gui, Map<Font, List<D_TextBox>>>> guiTextMap;
+    private static Map<Window, Map<D_Gui, List<FontTextMap>>> windowGuiFontTextListMap;
 
     public static void init(Window window) {
         window.addListener(GLFWWindowSizeEvent.class, D_TextMaster::onSizeChange);
     }
 
-    public static void load(Window window, D_Gui gui, D_TextBox text) {
-        if (guiTextMap == null)
-            guiTextMap = new HashMap<>();
-        Map<D_Gui, Map<Font, List<D_TextBox>>> map = guiTextMap.computeIfAbsent(window, w -> new HashMap<>());
-        Map<Font, List<D_TextBox>> textMap = map.computeIfAbsent(gui, g -> new HashMap<>());
-        List<D_TextBox> texts = textMap.computeIfAbsent(text.getFont(), f -> new ArrayList<>());
-        texts.add(text);
+    public static synchronized void load(Window window, D_Gui gui, D_TextBox text) {
+        if (windowGuiFontTextListMap == null)
+            windowGuiFontTextListMap = new HashMap<>();
+        FontTextMap fontTextMap = getFontTextMap(window, gui, text.getFont());
+        fontTextMap.addText(text);
     }
 
-    public static void remove(Window window, D_Gui gui, D_TextBox text) {
-        if (guiTextMap == null || text == null) return;
-        Map<D_Gui, Map<Font, List<D_TextBox>>> map = guiTextMap.get(window);
-        if (map != null) {
-            Optional.of(map.get(gui))
-                    .map(m -> m.get(text.getFont()))
-                    .ifPresent(l -> l.remove(text));
-        }
+    public static synchronized void remove(Window window, D_Gui gui, D_TextBox text) {
+        if (windowGuiFontTextListMap == null || text == null) return;
+        Optional.of(windowGuiFontTextListMap.get(window))
+                .map(w -> w.get(gui))
+                .map(l -> getFontTextMap(l, text.getFont()))
+                .ifPresent(f -> f.removeText(text));
     }
 
-    public static Map<Font, List<D_TextBox>> getTextMap(Window window, D_Gui gui) {
-        if (guiTextMap != null) {
-            Map<D_Gui, Map<Font, List<D_TextBox>>> map = guiTextMap.get(window);
+    public static List<FontTextMap> getTextMap(Window window, D_Gui gui) {
+        if (windowGuiFontTextListMap != null) {
+            Map<D_Gui, List<FontTextMap>> map = windowGuiFontTextListMap.get(window);
             if (map != null) {
                 return map.get(gui);
             }
@@ -57,32 +60,55 @@ public final class D_TextMaster {
     }
 
     public static void update(Window window, Font oldFont, Font newFont, D_TextBox textBox) {
-        Collection<Map<Font, List<D_TextBox>>> maps = Optional.of(guiTextMap.get(window)).map(Map::values).get();
-        for (Map<Font, List<D_TextBox>> map : maps) {
-            List<D_TextBox> texts = map.get(oldFont);
-            if (texts.contains(textBox)) {
-                texts.remove(textBox);
-                List<D_TextBox> texts2 = map.computeIfAbsent(newFont, m -> new ArrayList<>());
-                texts2.add(textBox);
+        Collection<List<FontTextMap>> fonTextMapsCollection = Optional.of(windowGuiFontTextListMap.get(window)).map(Map::values).get();
+        fonTextMapsCollection.forEach(fontTextMaps -> {
+            FontTextMap oldFontTextMap = null;
+            FontTextMap newFontTextMap = null;
+
+            for (int i = 0; i < fontTextMaps.size(); i++) {
+                if (oldFontTextMap != null && newFontTextMap != null) break;
+                FontTextMap fontTextMap = fontTextMaps.get(i);
+                if (fontTextMap.getFont().equals(oldFont)) oldFontTextMap = fontTextMap;
+                else if (fontTextMap.getFont().equals(newFont)) newFontTextMap = fontTextMap;
             }
-        }
+
+            if (oldFontTextMap == null) return;
+            if (newFontTextMap == null) {
+                newFontTextMap = new FontTextMap(newFont);
+                fontTextMaps.add(newFontTextMap);
+                return;
+            }
+
+            oldFontTextMap.removeText(textBox);
+            newFontTextMap.addText(textBox);
+        });
     }
 
     private static void onSizeChange(D_Event<Window> e) {
         GLFWWindowSizeEvent event = (GLFWWindowSizeEvent) e;
-        if (guiTextMap == null || guiTextMap.get(event.getSource()) == null)
-            return;
-        Collection<Map<Font, List<D_TextBox>>> textMaps = guiTextMap.get(event.getSource()).values();
-        for (Map<Font, List<D_TextBox>> textMap : textMaps) {
-            Set<Font> keys = textMap.keySet();
-            for (Font font : keys) {
-                List<D_TextBox> textBoxes = textMap.get(font);
-                for (D_TextBox textBox : textBoxes) {
-                    textBox.requestUpdate();
-                    textBox.update(event.getSource().getLoader());
-                }
+        if (windowGuiFontTextListMap == null || windowGuiFontTextListMap.get(event.getSource()) == null) return;
+
+        Collection<List<FontTextMap>> fontTextMapsCollection = windowGuiFontTextListMap.get(event.getSource()).values();
+        fontTextMapsCollection.forEach(onSizeChangeConsumer);
+    }
+
+    private static FontTextMap getFontTextMap(Window window, D_Gui gui, Font font) {
+        Map<D_Gui, List<FontTextMap>> guiFontTextListMap = windowGuiFontTextListMap.computeIfAbsent(window, k -> new HashMap<>());
+        List<FontTextMap> fontTextMaps = guiFontTextListMap.computeIfAbsent(gui, g -> new ArrayList<>());
+        FontTextMap fontTextMap = getFontTextMap(fontTextMaps, font);
+        if (fontTextMap == null)
+            fontTextMap = new FontTextMap(font);
+        fontTextMaps.add(fontTextMap);
+        return fontTextMap;
+    }
+
+    private static FontTextMap getFontTextMap(List<FontTextMap> fontTextMaps, Font font) {
+        for (int i = 0; i < fontTextMaps.size(); i++) {
+            if (fontTextMaps.get(i).getFont().equals(font)) {
+                return fontTextMaps.get(i);
             }
         }
+        return null;
     }
 
 }

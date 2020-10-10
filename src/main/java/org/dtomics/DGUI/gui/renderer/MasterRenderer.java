@@ -40,7 +40,8 @@ public class MasterRenderer {
         setUpLayers(window.getGuiList());
         window.makeCurrent();
         initGL();
-        for (Layer layer : layerStack) {
+        for (int i = 0; i < layerStack.getLayers().size(); i++) {
+            Layer layer = layerStack.getLayers().get(i);
             guiRenderer.render(layer.getGuis());
             DTextRenderer.render(layer.getTextMap());
             layer.clear();
@@ -56,7 +57,7 @@ public class MasterRenderer {
         if (guis == null) return;
         for (int i = 0; i < guis.size(); i++) {
             D_Gui gui = guis.get(i);
-            Layer layer = layerStack.get(gui.getLevel());
+            Layer layer = layerStack.getLayer(gui.getLevel());
             if (layer == null) layerStack.push(layer = new Layer());
             layer.push(gui);
             if (gui.getIcons() != null) setUpLayers(gui.getIcons());

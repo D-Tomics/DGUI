@@ -38,7 +38,8 @@ public class D_GuiRenderer {
         shader.start();
         D_Gui focused = null;
         WHITE_TEXTURE.bind(0);
-        for (D_Gui component : components) {
+        for (int i = 0; i < components.size(); i++) {
+            D_Gui component = components.get(i);
             if (component.isFocused()) {
                 focused = component;
                 continue;

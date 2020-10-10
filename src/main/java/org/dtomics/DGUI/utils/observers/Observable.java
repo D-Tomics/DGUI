@@ -17,7 +17,8 @@ public class Observable {
 
     public void notifyObservers() {
         if (observers == null) return;
-        for (Observer observer : observers) {
+        for (int i = 0; i < observers.size(); i++) {
+            Observer observer = observers.get(i);
             if (observer == null) continue;
             observer.updateStates(this);
         }

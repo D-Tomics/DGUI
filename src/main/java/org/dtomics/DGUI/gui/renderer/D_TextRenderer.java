@@ -3,12 +3,11 @@ package org.dtomics.DGUI.gui.renderer;
 import org.dtomics.DGUI.IO.Window;
 import org.dtomics.DGUI.gui.renderer.shader.D_TextShader;
 import org.dtomics.DGUI.gui.text.D_TextBox;
+import org.dtomics.DGUI.gui.text.FontTextMap;
 import org.dtomics.DGUI.gui.text.font.Font;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * The instance of this class renders the texts given to it in order on to the window that owns it.
@@ -26,19 +25,24 @@ public class D_TextRenderer {
         shader = new D_TextShader(window);
     }
 
-    void render(Map<Font, List<D_TextBox>> textMap) {
+    void render(List<FontTextMap> textMap) {
         if (textMap == null) return;
-        Set<Font> fonts = textMap.keySet();
-        for (Font font : fonts) {
+        for (int i = 0; i < textMap.size(); i++) {
+            FontTextMap fontTextMap = textMap.get(i);
+            Font font = fontTextMap.getFont();
             shader.start();
             font.getFontTexture().bind(0);
-            for (D_TextBox text : textMap.get(font)) {
-                if (!text.isVisible()) continue;
-                text.update(window.getLoader());
-                text.getMesh().bind();
-                shader.load(text);
-                GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, text.getMeshData().getVertexCount());
-                text.getMesh().unbind();
+            final List<D_TextBox> textBoxes = fontTextMap.getTextBoxes();
+            if (textBoxes != null) {
+                for (int j = 0; j < textBoxes.size(); j++) {
+                    D_TextBox text = textBoxes.get(j);
+                    if (!text.isVisible()) continue;
+                    text.update(window.getLoader());
+                    text.getMesh().bind();
+                    shader.load(text);
+                    GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, text.getMeshData().getVertexCount());
+                    text.getMesh().unbind();
+                }
             }
             shader.stop();
         }

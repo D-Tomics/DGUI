@@ -27,7 +27,8 @@ public class Flow extends Layout {
         float y = parent.getStyle().getY() - parent.getStyle().getPaddingTop();
 
         currentRow.clear();
-        for (D_Gui child : parent.getChildList()) {
+        for (int i = 0; i < parent.getChildList().size(); i++) {
+            D_Gui child = parent.getChildList().get(i);
             if (x + child.getStyle().getWidth() + child.getStyle().getMarginWidth() + parent.getStyle().getPaddingRight() > parent.getStyle().getX() + parent.getStyle().getWidth()) {
 
                 float rowHeight = getRowHeight(currentRow);
@@ -64,7 +65,8 @@ public class Flow extends Layout {
         float h = getRowHeight(row);
 
         float x = parent.getStyle().getCenterX() + parent.getStyle().getPaddingLeft() - w / 2.0f;
-        for (D_Gui gui : row) {
+        for (int i = 0; i < row.size(); i++) {
+            D_Gui gui = row.get(i);
             gui.getStyle().setPosition(x + gui.getStyle().getMarginLeft(), y - h / 2.0f + gui.getStyle().getHeight() / 2.0f);
             x += gui.getStyle().getWidth() + gui.getStyle().getMarginWidth();
         }
@@ -72,16 +74,20 @@ public class Flow extends Layout {
 
     private float getRowHeight(ArrayList<D_Gui> row) {
         float max = 0;
-        for (D_Gui gui : row)
+        for (int i = 0; i < row.size(); i++) {
+            D_Gui gui = row.get(i);
             if (max < gui.getStyle().getHeight() + gui.getStyle().getMarginHeight())
                 max = gui.getStyle().getHeight() + gui.getStyle().getMarginHeight();
+        }
         return max;
     }
 
     private float getRowWidth(ArrayList<D_Gui> row) {
         float w = 0;
-        for (D_Gui gui : row)
+        for (int i = 0; i < row.size(); i++) {
+            D_Gui gui = row.get(i);
             w += gui.getStyle().getWidth() + gui.getStyle().getMarginWidth();
+        }
         return w;
     }
 

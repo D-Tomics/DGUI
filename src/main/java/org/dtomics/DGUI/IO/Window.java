@@ -137,9 +137,11 @@ public final class Window {
     public Window() {
         this(1, 1, "", false);
     }
+
     public Window(int width, int height, String title, boolean fullScreen) {
         this(width, height, title, fullScreen, true);
     }
+
     public Window(int width, int height, String title, boolean fullScreen, boolean load) {
         this.width = width;
         this.height = height;
@@ -527,8 +529,10 @@ public final class Window {
         if (listenerMap == null) return;
         List<GLFWListener> listeners = listenerMap.get(event.getClass());
         if (listeners == null) return;
-        for (GLFWListener listener : listeners)
+        for (int i = 0; i < listeners.size(); i++) {
+            GLFWListener listener = listeners.get(i);
             listener.invoke(event);
+        }
     }
 
     private void setUpCallbacks() {
