@@ -50,9 +50,10 @@ public class GridLayout extends Layout {
 
         boolean[][] occupied = new boolean[rows][columns];
         childLoop:
-        for (D_Gui child : parent.getChildList()) {
-            GridConstraint constraint = compTable != null ? (GridConstraint) (compTable.get(child)) : null;
-            if (constraint == null) constraint = defaultConstraint;
+        for (int i = 0; i < parent.getChildList().size(); i++) {
+
+            D_Gui child = parent.getChildList().get(i);
+            GridConstraint constraint = getConstraint(child);
             if (constraint != defaultConstraint) {
                 cIndex = constraint.x();
                 rIndex = constraint.y();
@@ -76,9 +77,9 @@ public class GridLayout extends Layout {
             constraint.fill().setComponentSize(cellWidth - parent.getStyle().getPaddingWidth(), cellHeight - parent.getStyle().getPaddingHeight(), child, true);
             constraint.alignment().setComponentPosition(cellX, cellY, cellWidth, cellHeight, child, true);
 
-            for (int j = rIndex; j < rows && j <= rIndex + constraint.h(); j++)
-                for (int i = cIndex; i < columns && i <= cIndex + constraint.w(); i++)
-                    occupied[j][i] = true;
+            for (int row = rIndex; row < rows && row <= rIndex + constraint.h(); row++)
+                for (int col = cIndex; col < columns && col <= cIndex + constraint.w(); col++)
+                    occupied[row][col] = true;
 
             cIndex += constraint.w() + 1;
             if (cIndex >= columns) {
