@@ -62,25 +62,16 @@ public final class D_TextMaster {
     public static void update(Window window, Font oldFont, Font newFont, D_TextBox textBox) {
         Collection<List<FontTextMap>> fonTextMapsCollection = Optional.of(windowGuiFontTextListMap.get(window)).map(Map::values).get();
         fonTextMapsCollection.forEach(fontTextMaps -> {
-            FontTextMap oldFontTextMap = null;
-            FontTextMap newFontTextMap = null;
-
-            for (int i = 0; i < fontTextMaps.size(); i++) {
-                if (oldFontTextMap != null && newFontTextMap != null) break;
-                FontTextMap fontTextMap = fontTextMaps.get(i);
-                if (fontTextMap.getFont().equals(oldFont)) oldFontTextMap = fontTextMap;
-                else if (fontTextMap.getFont().equals(newFont)) newFontTextMap = fontTextMap;
+            FontTextMap oldFontTexMap = getFontTextMap(fontTextMaps, oldFont);
+            if(oldFontTexMap != null) {
+                oldFontTexMap.removeText(textBox);
+                FontTextMap newFontTextMap = getFontTextMap(fontTextMaps, newFont);
+                if(newFontTextMap == null) {
+                    newFontTextMap = new FontTextMap(newFont);
+                    fontTextMaps.add(newFontTextMap);
+                }
+                newFontTextMap.addText(textBox);
             }
-
-            if (oldFontTextMap == null) return;
-            if (newFontTextMap == null) {
-                newFontTextMap = new FontTextMap(newFont);
-                fontTextMaps.add(newFontTextMap);
-                return;
-            }
-
-            oldFontTextMap.removeText(textBox);
-            newFontTextMap.addText(textBox);
         });
     }
 
