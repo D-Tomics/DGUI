@@ -2,18 +2,11 @@ package org.dtomics.DGUI.gui.components;
 
 import org.dtomics.DGUI.IO.Window;
 import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignCenter;
-import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignLeft;
-import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignTop;
 import org.dtomics.DGUI.gui.manager.events.D_GuiResizeEvent;
 import org.dtomics.DGUI.gui.text.D_TextBox;
 import org.dtomics.DGUI.gui.text.meshCreator.TextAlignment;
 import org.dtomics.DGUI.utils.D_Event;
-import org.dtomics.DGUI.utils.colors.Color;
 import org.dtomics.DGUI.utils.observers.Observable;
-import org.dtomics.opengl.opengl.OpenGL;
-import org.dtomics.opengl.opengl.primitives.Rect;
-
-import static org.lwjgl.opengl.GL11.GL_LINE;
 
 /**
  * This class represents a text in a gui system.
