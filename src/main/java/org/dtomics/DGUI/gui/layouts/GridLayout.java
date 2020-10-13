@@ -74,7 +74,7 @@ public class GridLayout extends Layout {
             float cellWidth = getWidthFromTo(cIndex, cIndex + constraint.w());
             float cellHeight = getHeightFromTo(rIndex, rIndex + constraint.h());
 
-            constraint.fill().setComponentSize(cellWidth - parent.getStyle().getPaddingWidth(), cellHeight - parent.getStyle().getPaddingHeight(), child, true);
+            constraint.fill().setComponentSize(cellWidth, cellHeight, child, true);
             constraint.alignment().setComponentPosition(cellX, cellY, cellWidth, cellHeight, child, true);
 
             for (int row = rIndex; row < rows && row <= rIndex + constraint.h(); row++)
@@ -93,8 +93,8 @@ public class GridLayout extends Layout {
 
     private void initCellSizes(D_Container parent) {
         if (init) return;
-        Arrays.fill(cellWidths, parent.getStyle().getWidth() / columns);
-        Arrays.fill(cellHeights, parent.getStyle().getHeight() / rows);
+        Arrays.fill(cellWidths, (parent.getStyle().getWidth() - parent.getStyle().getPaddingWidth()) / columns);
+        Arrays.fill(cellHeights, (parent.getStyle().getHeight() - parent.getStyle().getPaddingHeight()) / rows);
         init = true;
     }
 
@@ -176,8 +176,8 @@ public class GridLayout extends Layout {
 
         }
 
-        setMaxWidth(getWidthUptoCol(lastOccupiedCol + 1));
-        setMaxHeight(getHeightUptoRow(lastOccupiedRow + 1));
+        setMaxWidth(getWidthUptoCol(lastOccupiedCol + 1) + parent.getStyle().getPaddingWidth());
+        setMaxHeight(getHeightUptoRow(lastOccupiedRow + 1) + parent.getStyle().getPaddingHeight());
     }
 
     private float getCellWidth(int col) {
