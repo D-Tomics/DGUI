@@ -1,10 +1,19 @@
 package org.dtomics.DGUI.gui.components;
 
 import org.dtomics.DGUI.IO.Window;
+import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignCenter;
 import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignLeft;
 import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignTop;
+import org.dtomics.DGUI.gui.manager.events.D_GuiResizeEvent;
 import org.dtomics.DGUI.gui.text.D_TextBox;
+import org.dtomics.DGUI.gui.text.meshCreator.TextAlignment;
+import org.dtomics.DGUI.utils.D_Event;
+import org.dtomics.DGUI.utils.colors.Color;
 import org.dtomics.DGUI.utils.observers.Observable;
+import org.dtomics.opengl.opengl.OpenGL;
+import org.dtomics.opengl.opengl.primitives.Rect;
+
+import static org.lwjgl.opengl.GL11.GL_LINE;
 
 /**
  * This class represents a text in a gui system.
@@ -13,6 +22,9 @@ import org.dtomics.DGUI.utils.observers.Observable;
  * @author Abdul Kareem
  */
 public class D_Label extends D_Component {
+
+    private static final int WIDTH = 75;
+    private static final int HEIGHT = 30;
 
     private final D_TextBox text;
 
@@ -27,14 +39,16 @@ public class D_Label extends D_Component {
     public D_Label(float x, float y, String text) {
         this.text = new D_TextBox(text, 50, Window.getMonitorWidth(), Window.getMonitorHeight());
         this.text.setPosition(x, y);
+        this.text.setTextAlignment(TextAlignment.CENTER);
         this.addText(this.text);
 
-        style.setX(x).setY(y);
-        style.setWidth(this.text.getMaxTextWidth());
-        style.setHeight(this.text.getMaxTextHeight());
-        style.setAlpha(0);
-        style.setBorderWidth(0);
-        this.addConstraint(new D_TextAlignLeft(this.text, 0, new D_TextAlignTop(this.text, 0)));
+
+        this.addEventListener(D_GuiResizeEvent.class, this::onSizeChange);
+        style.setBounds(x,y,this.text.getMaxTextWidth(),this.text.getMaxTextHeight())
+             .setAlpha(0)
+             .setBorderWidth(0);
+
+        this.addConstraint(new D_TextAlignCenter(this.text));
     }
 
     public String getText() {
@@ -67,5 +81,11 @@ public class D_Label extends D_Component {
 
     @Override
     public void onStateChange(Observable o) {
+    }
+
+    private void onSizeChange(D_Event<D_Gui> event) {
+        D_GuiResizeEvent e = (D_GuiResizeEvent) event;
+        text.setBoxSize(e.getCurrentWidth(), e.getCurrentHeight());
+        style.notifyObservers();
     }
 }
