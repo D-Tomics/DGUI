@@ -37,7 +37,7 @@ public enum TextAlignment {
             case CENTER:
                 return (-boxHeight + maxHeight) * 0.5f + padding;
         }
-        return 0;
+        return padding;
     }
 
 }

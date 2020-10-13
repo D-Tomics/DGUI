@@ -53,7 +53,7 @@ public final class TextMeshCreator {
 
         float lineSpace = text.getLineSpacing() * vps;
         float maxWidth = 0;
-        float maxHeight = (lines.size() - 1) * lineSpace;
+        float maxHeight = (lines.size() - 1) * lineSpace + text.getFont().getFontFile().getDesiredPadding() * vps;
         for (Line line : lines)
             maxHeight += line.getMaxHeight();
 
