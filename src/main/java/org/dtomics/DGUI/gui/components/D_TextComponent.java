@@ -4,6 +4,7 @@ import org.dtomics.DGUI.IO.Mouse;
 import org.dtomics.DGUI.gui.manager.events.D_GuiCharEvent;
 import org.dtomics.DGUI.gui.manager.events.D_GuiKeyEvent;
 import org.dtomics.DGUI.gui.manager.events.D_GuiMousePressEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiValueChangeEvent;
 import org.dtomics.DGUI.gui.text.D_TextBox;
 import org.dtomics.DGUI.utils.D_Event;
 import org.dtomics.DGUI.utils.colors.Color;
@@ -45,10 +46,11 @@ public abstract class D_TextComponent extends D_Component {
     }
 
     public String getText() {
-        return textBox.toString();
+        return textBox.getText();
     }
 
     public void setText(String text) {
+        this.stackEvent(new D_GuiValueChangeEvent<String>(this, this.textBox.getText(), text));
         this.textBox.setText(text);
         style.notifyObservers();
     }
