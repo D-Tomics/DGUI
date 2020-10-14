@@ -142,6 +142,11 @@ public class D_TextBox {
         requestUpdate();
     }
 
+    public void appendText(String text) {
+        this.text = this.text.concat(text);
+        requestUpdate();
+    }
+
     public void setBoxWidth(float boxWidth) {
         if (this.boxWidth == boxWidth) return;
         this.boxWidth = boxWidth;
