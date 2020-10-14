@@ -54,12 +54,16 @@ public final class TextMeshCreator {
         float lineSpace = text.getLineSpacing() * vps;
         float maxWidth = 0;
         float maxHeight = (lines.size() - 1) * lineSpace + text.getFont().getFontFile().getDesiredPadding() * vps;
-        for (Line line : lines)
-            maxHeight += line.getMaxHeight();
+        float lineHeight = 0;
+        for (Line line : lines) {
+            lineHeight = getLineHeight(lineHeight, line);
+            maxHeight += lineHeight;
+        }
 
         float cursorX = 0;
         float cursorY = align.cursorY(2 * text.getBoxHeight() / text.getFontSize(), maxHeight, text.getFont().getFontFile().getDesiredPadding() * vps);
 
+        lineHeight = 0;
         for (Line line : lines) {
             // here box Width is divided by fontSize because
             // it is in the shader that we multiply fontSize with vertices
@@ -67,13 +71,15 @@ public final class TextMeshCreator {
             //box size in normalized screen space form is 2 * boxSize / WindowWidth;
             cursorX = align.cursorX(2 * text.getBoxWidth() / relativeFontSize, line.getMaxWidth());
 
-            if (line.getMaxWidth() > maxWidth)
+            if (line.getMaxWidth() > maxWidth) {
                 maxWidth = line.getMaxWidth();
+            }
             for (FontChar character : line.getCharacters()) {
                 addCharacterDataToVertexData(vertexData, character, cursorX, cursorY, hps, vps);
                 cursorX += character.getXAdvance() * hps;
             }
-            cursorY -= line.getMaxHeight() + lineSpace;
+            lineHeight = getLineHeight(lineHeight, line);
+            cursorY -= lineHeight + lineSpace;
         }
 
         try {
@@ -146,6 +152,14 @@ public final class TextMeshCreator {
         list.add(y);
         list.add(xTex);
         list.add(yTex);
+    }
+
+    private static float getLineHeight(float prevLineHeight, Line line) {
+        float lineHeight = line.getMaxHeight();
+        if(lineHeight != 0) return lineHeight;
+        lineHeight = prevLineHeight != 0 ? prevLineHeight : LINE_HEIGHT;
+        line.setMaxHeight(lineHeight);
+        return lineHeight;
     }
 
 }

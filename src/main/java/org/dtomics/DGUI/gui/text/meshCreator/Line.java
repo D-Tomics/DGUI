@@ -46,6 +46,10 @@ public class Line {
         return true;
     }
 
+    protected void setMaxHeight(float height) {
+        maxHeight = height;
+    }
+
     public float getMaxHeight() {
         return maxHeight;
     }
