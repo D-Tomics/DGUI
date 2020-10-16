@@ -148,7 +148,7 @@ public abstract class D_OptionPane extends D_Container {
         D_Panel panel = new D_Panel(new GridLayout(3, 2));
         panel.addConstraint(new RelativePosition(inputWindow, 0, 0));
         D_Label label = new D_Label(message);
-        D_TextField input = new D_TextField("", 5);
+        D_TextField input = new D_TextField("", 50);
         D_Button ok = new D_Button("ok");
         D_Button cancel = new D_Button("cancel");
 
