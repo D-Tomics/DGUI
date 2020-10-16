@@ -235,6 +235,12 @@ public final class D_GuiEventManager {
                 gui.stackEvent(new D_GuiMouseReleaseEvent(gui, Mouse.pressedButton(), Mouse.getMods()));
                 gui.stackEvent(new D_GuiMouseButtonEvent(gui, Mouse.pressedButton(), GLFW_RELEASE, Mouse.getMods()));
             }
+
+            if(focusedGui != null) {
+                if(!focusedGui.isPressed() && Mouse.pressed()) {
+                    focusedGui.requestLooseFocus(true);
+                }
+            }
         }
         gui.unstackEvents();
         return topFound;
