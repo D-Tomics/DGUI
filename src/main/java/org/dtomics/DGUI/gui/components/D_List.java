@@ -4,7 +4,10 @@ import org.dtomics.DGUI.IO.Window;
 import org.dtomics.DGUI.gui.manager.constraints.gui_constraints.Fill;
 import org.dtomics.DGUI.gui.manager.events.D_GuiFocusLooseEvent;
 import org.dtomics.DGUI.gui.manager.events.D_GuiKeyEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiMouseEnterEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiMouseExitEvent;
 import org.dtomics.DGUI.gui.manager.events.D_GuiMousePressEvent;
+import org.dtomics.DGUI.gui.manager.events.D_GuiResizeEvent;
 import org.dtomics.DGUI.gui.manager.events.D_GuiScrollEvent;
 import org.dtomics.DGUI.gui.manager.events.D_GuiValueChangeEvent;
 import org.dtomics.DGUI.utils.D_Event;
@@ -28,34 +31,40 @@ import static org.lwjgl.glfw.GLFW.GLFW_REPEAT;
  */
 public class D_List<T> extends D_Component {
 
-    private HashMap<String, T> items;
-    private final D_GuiQuad container;
-    private D_GuiQuad selected;
+    private static final Listener ON_CELL_MOUSE_EXIT = e -> ((D_GuiQuad) e.getSource()).getStyle().setBorderWidth(0);
+    private static final Listener ON_CELL_MOUSE_ENTER = e -> ((D_GuiQuad) e.getSource()).getStyle().setBorderWidth(1);
+    private static final Listener ON_CELL_RESIZE = D_List::onQuadResize;
+
     private final Listener ON_CELL_SELECT = e -> onSelect((D_GuiQuad) e.getSource());
+    private final D_GuiQuad container;
+
     private int windowSize = 5;
     private int windowStart = 1;
     private int windowStop = windowStart + windowSize - 1;
     private int index = 1;
 
+    private D_GuiQuad selected;
+    private HashMap<String, T> items;
+
     public D_List(T... items) {
-        this.setScrollable(true);
         this.style.setBounds(0, 0, 100, 30, false);
+
         this.container = new D_GuiQuad(this.getStyle().getWidth(), this.style.getHeight() * Math.min(items.length, windowSize));
         this.container.setVisible(false);
         this.container.setHoverable(false);
-        this.container.addConstraint(new Fill(this, true, false));
         this.addQuad(container);
+
+        this.setScrollable(true);
         this.setSelectable(true);
         addItem(items);
 
         this.addEventListener(D_GuiKeyEvent.class, this::onKeyPress);
+        this.addEventListener(D_GuiResizeEvent.class, this::onSizeChange);
         this.addEventListener(D_GuiFocusLooseEvent.class, e -> this.setSelected(false));
         this.addEventListener(D_GuiScrollEvent.class, this::onScroll);
     }
 
-    public T getSelectedItem() {
-        return items.get(selected.getText());
-    }
+    public T getSelectedItem() { return items.get(selected.getText()); }
 
     public void setScrollWindowSize(int length) {
         windowSize = length;
@@ -67,20 +76,23 @@ public class D_List<T> extends D_Component {
             addItem(item);
     }
 
-    public D_List<T> addItem(T item) {
-        return this.addItem(item.toString(), item);
-    }
+    public D_List<T> addItem(T item) { return this.addItem(item.toString(), item); }
 
     public D_List<T> addItem(String text, T item) {
         if (items == null) items = new HashMap<>();
         if (items.containsKey(item.toString())) return this;
+
         items.put(text, item);
 
         D_GuiQuad quad = new D_GuiQuad(this.getStyle().getWidth() - 2, this.style.getHeight() - 2, text);
-        quad.addConstraint(new Fill(this, true, true, 2, 2));
-        quad.addEventListener(D_GuiMousePressEvent.class, ON_CELL_SELECT);
         quad.style.setBorderWidth(0);
         quad.setVisible(false);
+
+        quad.addConstraint(new Fill(this, true, true, 2, 2));
+        quad.addEventListener(D_GuiMousePressEvent.class, ON_CELL_SELECT);
+        quad.addEventListener(D_GuiMouseEnterEvent.class, ON_CELL_MOUSE_ENTER);
+        quad.addEventListener(D_GuiMouseExitEvent.class, ON_CELL_MOUSE_EXIT);
+        quad.addEventListener(D_GuiResizeEvent.class, ON_CELL_RESIZE);
         addQuad(quad);
 
         if (selected == null) {
@@ -134,18 +146,7 @@ public class D_List<T> extends D_Component {
     }
 
     @Override
-    protected void onUpdate() {
-        if (getQuads() != null) {
-            for (D_GuiQuad quad : getQuads()) {
-                if (quad == container) continue;
-                if (quad.isHovered()) {
-                    index = 0;
-                    quad.style.setBorderWidth(1);
-                } else if (index == 0)
-                    quad.style.setBorderWidth(0);
-            }
-        }
-    }
+    protected void onUpdate() { }
 
     private void onKeyPress(D_Event event) {
         D_GuiKeyEvent e = (D_GuiKeyEvent) event;
@@ -186,7 +187,7 @@ public class D_List<T> extends D_Component {
         this.stackEvent(new D_GuiValueChangeEvent<>(this, items.get(previous.getText()), items.get(selected.getText())));
     }
 
-    private void onScroll(D_Event event) {
+    private void onScroll(D_Event<D_Gui> event) {
         if (items.size() < windowSize) return;
         D_GuiScrollEvent e = (D_GuiScrollEvent) event;
         updateScrollWindow(-(int) e.getYoffset());
@@ -208,4 +209,20 @@ public class D_List<T> extends D_Component {
         style.notifyObservers();
     }
 
+    private void onSizeChange(D_Event<D_Gui> d_event) {
+        this.container.getStyle().setSize(this.getStyle().getWidth(), this.style.getHeight() * Math.min(items.size(), windowSize));
+    }
+
+    private static void onQuadResize(D_Event<D_Gui> e) {
+        D_GuiResizeEvent event = (D_GuiResizeEvent) e;
+        D_GuiQuad quad = (D_GuiQuad) e.getSource();
+        if(quad.getTextBox() != null) {
+            float fontSize = quad.getTextBox().getFontSize();
+            float prevHeight = event.getPreviousHeight();
+            prevHeight = prevHeight == 0 ? 1 : prevHeight;
+            float fontToHeightRatio = fontSize / prevHeight;
+
+            quad.getTextBox().setFontSize(fontToHeightRatio * event.getCurrentHeight());
+        }
+    }
 }

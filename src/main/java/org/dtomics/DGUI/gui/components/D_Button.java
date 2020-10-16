@@ -20,14 +20,15 @@ public class D_Button extends D_Component {
     private final D_TextBox name;
 
     public D_Button(String name) {
+        style.setBounds(0, 0, WIDTH, HEIGHT);
 
-        this.name = new D_TextBox(name, 75, WIDTH, HEIGHT, TextAlignment.CENTER);
+        this.name = new D_TextBox(name, 70, WIDTH, HEIGHT, TextAlignment.CENTER);
         this.name.setTextColor(Color.BLACK);
         this.addText(this.name);
+
         this.addConstraint(new D_TextAlignCenter(this.name));
         this.addEventListener(D_GuiResizeEvent.class, this::onSizeChange);
 
-        style.setBounds(0, 0, WIDTH, HEIGHT);
     }
 
     @Override
@@ -51,7 +52,14 @@ public class D_Button extends D_Component {
 
     private void onSizeChange(D_Event<D_Gui> event) {
         D_GuiResizeEvent e = (D_GuiResizeEvent) event;
-        this.name.setBoxSize(e.getCurrentWidth(), e.getCurrentHeight());
+        float fontSize = name.getFontSize();
+        float prevHeight = e.getPreviousHeight();
+        prevHeight = prevHeight == 0 ? 1 : prevHeight;
+        float fontToHeightRatio = fontSize / prevHeight;
+
+        this.name.setBoxSize(this.style.getWidth(), this.style.getHeight());
+        this.name.setFontSize(fontToHeightRatio * e.getCurrentHeight());
+
         this.style.notifyObservers();
     }
 
