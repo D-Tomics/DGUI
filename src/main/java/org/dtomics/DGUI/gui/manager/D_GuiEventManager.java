@@ -185,6 +185,10 @@ public final class D_GuiEventManager {
         if (topGui != null) {
             topFound = topGui != gui;
             if (gui.getLevel() >= topGui.getLevel() && !topGui.isPressed()) topFound = false;
+
+            if (Mouse.isMoving() && Mouse.pressed()) {
+                topGui.stackEvent(new D_GuiMouseDragEvent(topGui, Mouse.pressedButton()));
+            }
         }
 
         if (gui.isHoverable() && gui.isVisible() && checkHover(gui)) {
@@ -200,9 +204,6 @@ public final class D_GuiEventManager {
 
                 if (Mouse.isMoving()) {
                     topGui.stackEvent(new D_GuiMouseMoveEvent(topGui, Mouse.getX(), Mouse.getY()));
-                    if (Mouse.pressed()) {
-                        topGui.stackEvent(new D_GuiMouseDragEvent(topGui, Mouse.pressedButton()));
-                    }
                 }
 
                 if (!topGui.isPressed() && Mouse.pressed()) {
