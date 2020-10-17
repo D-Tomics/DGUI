@@ -6,6 +6,9 @@ import org.dtomics.DGUI.gui.manager.Style;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class Maths {
 
     private static final Matrix4f modelMatrix = new Matrix4f();
@@ -55,6 +58,11 @@ public class Maths {
         return ((val - min1) / (max1 - min1)) * (max2 - min2) + min2;
     }
 
+    public static BigDecimal map(BigDecimal val, BigDecimal min1, BigDecimal max1, BigDecimal min2, BigDecimal max2) {
+        int scale = min(val.scale(), min1.scale(), max1.scale(), min2.scale(), max2.scale());
+        return val.subtract(min1).divide(max1.subtract(min1), scale, RoundingMode.FLOOR).multiply(max2.subtract(min2)).add(min2);
+    }
+
     public static int fastFloor(double x) {
         int xi = (int) x;
         return x < xi ? xi - 1 : xi;
@@ -64,4 +72,12 @@ public class Maths {
         return Math.max(min, Math.min(max, val));
     }
 
+    public static int min(int...values) {
+        int min = values[0];
+        for(int i = 0; i < values.length; i++) {
+            if(values[i] < min)
+                min = values[i];
+        }
+        return min;
+    }
 }

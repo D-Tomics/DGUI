@@ -14,14 +14,18 @@ import org.dtomics.DGUI.utils.Maths;
 import org.dtomics.DGUI.utils.colors.Color;
 import org.dtomics.DGUI.utils.observers.Observable;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_CONTROL;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
+import static org.lwjgl.glfw.GLFW.GLFW_MOD_CONTROL;
+import static org.lwjgl.glfw.GLFW.GLFW_MOD_SHIFT;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
+import static org.lwjgl.glfw.GLFW.GLFW_REPEAT;
 
 /**
  * This class lets the user graphically select a value by sliding
@@ -35,26 +39,27 @@ public class D_Slider extends D_Component {
     private static final float SLIDER_HEIGHT = 30.0F;
     private final D_TextBox valueText;
     private final D_GuiQuad bar;
-    private float value = 0;
-    private float minValue;
-    private float maxValue;
-    private float increment = 0.1f;
+    private BigDecimal value;
+    private BigDecimal minValue;
+    private BigDecimal maxValue;
+    private BigDecimal increment = BigDecimal.valueOf(0.1);
     private float xRelativeToValue = 0;
 
     public D_Slider() {
         this(0, 1);
     }
 
-    public D_Slider(float value) {
+    public D_Slider(double value) {
         this(0, 1, value);
     }
 
-    public D_Slider(float minValue, float maxValue) {
+    public D_Slider(double minValue, double maxValue) {
         this.bar = new D_GuiQuad();
         this.bar.setHoverable(false);
         this.addQuad(bar);
-        this.minValue = minValue;
-        this.maxValue = maxValue;
+        this.minValue = BigDecimal.valueOf(minValue);
+        this.maxValue = BigDecimal.valueOf(maxValue);
+        this.value = BigDecimal.valueOf(0);
 
         style.setBounds(0, 0, SLIDER_WIDTH, SLIDER_HEIGHT, false);
 
@@ -73,7 +78,7 @@ public class D_Slider extends D_Component {
         this.addConstraint(new D_TextAlignCenter(this.valueText, new D_TextAlignRight(valueText, 5)));
     }
 
-    public D_Slider(float minValue, float maxValue, float value) {
+    public D_Slider(double minValue, double maxValue, double value) {
         this(minValue, maxValue);
         setValue(value);
     }
@@ -89,44 +94,53 @@ public class D_Slider extends D_Component {
         bar.style.setWidth(xRelativeToValue);
     }
 
-    public float getValue() {
-        return value;
+    public double getValue() {
+        return value.doubleValue();
     }
 
-    public void setValue(float value) {
-        if (value <= minValue)
-            value = minValue;
-        else if (value > maxValue) value = maxValue;
-        float prevVal = this.value;
+    public void setValue(double value) {
+
+        if(value <= minValue.doubleValue()) {
+            value = minValue.doubleValue();
+        } else if(value >= maxValue.doubleValue()) {
+            value = maxValue.doubleValue();
+        }
+        double prevVal = this.value.doubleValue();
         this.stackEvent(new D_GuiValueChangeEvent<>(this, prevVal, value));
-        this.value = value;
+        this.value = BigDecimal.valueOf(value);
         updateBarWidth();
-        this.valueText.setText(String.format("%s", this.value));
+        this.valueText.setText(String.format("%s", this.value.toString()));
         this.style.notifyObservers();
     }
 
-    public float getMinValue() {
-        return minValue;
+    public void setValue(BigDecimal value) {
+        setValue(value.doubleValue());
     }
 
-    public void setMinValue(float minValue) {
-        if (this.value < minValue)
-            this.value = minValue;
-        this.minValue = minValue;
+    public double getMinValue() {
+        return minValue.doubleValue();
     }
 
-    public float getMaxValue() {
-        return maxValue;
+    public void setMinValue(double minValue) {
+        this.minValue = BigDecimal.valueOf(minValue);
+        if (this.value.doubleValue() < minValue) {
+            setValue(minValue);
+        }
     }
 
-    public void setMaxValue(float maxValue) {
-        if (this.value > maxValue)
-            this.value = maxValue;
-        this.maxValue = maxValue;
+    public double getMaxValue() {
+        return maxValue.doubleValue();
     }
 
-    public void setIncrement(float value) {
-        this.increment = value;
+    public void setMaxValue(double maxValue) {
+        this.maxValue = BigDecimal.valueOf(maxValue);
+        if (this.value.doubleValue() > maxValue) {
+            setValue(maxValue);
+        }
+    }
+
+    public void setIncrement(double value) {
+        this.increment = BigDecimal.valueOf(value);
     }
 
     private void onSizeChange(D_Event<D_Gui> event) {
@@ -145,19 +159,19 @@ public class D_Slider extends D_Component {
 
     private void onKeyPress(D_Event<D_Gui> event) {
         D_GuiKeyEvent e = (D_GuiKeyEvent) event;
-        if (e.getAction() == GLFW_PRESS) {
-            float incrementValue = increment;
-            if (e.getKey() == GLFW_KEY_LEFT_SHIFT)
-                incrementValue = 0.01f;
-            else if (e.getKey() == GLFW_KEY_LEFT_CONTROL)
-                incrementValue = 1f;
+        if (e.getAction() == GLFW_PRESS || e.getAction() == GLFW_REPEAT) {
+            BigDecimal incrementValue = increment;
+            if (e.getMods() == GLFW_MOD_SHIFT)
+                incrementValue = increment.divide(BigDecimal.TEN, increment.scale() + 1, RoundingMode.FLOOR);
+            else if (e.getMods() == GLFW_MOD_CONTROL)
+                incrementValue = increment.multiply(BigDecimal.TEN);
 
             switch (e.getKey()) {
                 case GLFW_KEY_LEFT:
-                    setValue(value - incrementValue);
+                    setValue(value.subtract(incrementValue));
                     break;
                 case GLFW_KEY_RIGHT:
-                    setValue(value + incrementValue);
+                    setValue(value.add(incrementValue));
                     break;
                 case GLFW_KEY_UP:
                     setValue(maxValue);
@@ -175,7 +189,7 @@ public class D_Slider extends D_Component {
             return;
         }
 
-        float prevVal = this.value;
+        float prevVal = this.value.floatValue();
         float left = style.getX();
 
         float mouseX = Mouse.getX();
@@ -185,13 +199,27 @@ public class D_Slider extends D_Component {
             mouseX = left + style.getWidth();
 
         xRelativeToValue = (mouseX - left); // range (0 - width)
-        this.setValue(Maths.fastFloor(Maths.map(xRelativeToValue, 0, style.getWidth(), minValue, maxValue) / increment) * increment);
+        this.setValue(
+                        Maths.map(
+                                BigDecimal.valueOf(xRelativeToValue),
+                                BigDecimal.ZERO,
+                                BigDecimal.valueOf(style.getWidth()),
+                                minValue,
+                                maxValue
+                        ).divide(increment,increment.scale(),RoundingMode.FLOOR)
+                        .setScale(0, RoundingMode.FLOOR)
+                        .multiply(increment)
+        );
         style.notifyObservers();
         this.stackEvent(new D_GuiValueChangeEvent<>(this, prevVal, value));
     }
 
     private void updateBarWidth() {
-        xRelativeToValue = ((value - minValue) / (maxValue - minValue)) * style.getWidth();
+        xRelativeToValue = value
+                .subtract(minValue)
+                .divide(maxValue.subtract(minValue), increment.scale(), RoundingMode.FLOOR)
+                .multiply(BigDecimal.valueOf(style.getWidth()))
+                .floatValue();
     }
 
 }
