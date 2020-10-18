@@ -59,8 +59,8 @@ public class Maths {
     }
 
     public static BigDecimal map(BigDecimal val, BigDecimal min1, BigDecimal max1, BigDecimal min2, BigDecimal max2) {
-        int scale = min(val.scale(), min1.scale(), max1.scale(), min2.scale(), max2.scale());
-        return val.subtract(min1).divide(max1.subtract(min1), scale, RoundingMode.FLOOR).multiply(max2.subtract(min2)).add(min2);
+        int scale = max(val.scale(), min1.scale(), max1.scale(), min2.scale(), max2.scale());
+        return val.subtract(min1).divide(max1.subtract(min1), RoundingMode.FLOOR).multiply(max2.subtract(min2)).add(min2);
     }
 
     public static int fastFloor(double x) {
@@ -79,5 +79,14 @@ public class Maths {
                 min = values[i];
         }
         return min;
+    }
+
+    public static int max(int...values) {
+        int max = values[0];
+        for(int i = 1; i < values.length; i++) {
+            if(values[i] > max)
+                max = values[i];
+        }
+        return max;
     }
 }
