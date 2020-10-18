@@ -98,23 +98,25 @@ public class D_Slider extends D_Component {
         return value.doubleValue();
     }
 
-    public void setValue(double value) {
-
-        if(value <= minValue.doubleValue()) {
-            value = minValue.doubleValue();
-        } else if(value >= maxValue.doubleValue()) {
-            value = maxValue.doubleValue();
+    public void setValue(BigDecimal value) {
+        if(value.doubleValue() <= minValue.doubleValue()) {
+            value = BigDecimal.valueOf(minValue.doubleValue());
+        } else if(value.doubleValue() >= maxValue.doubleValue()) {
+            value = BigDecimal.valueOf(maxValue.doubleValue());
         }
         double prevVal = this.value.doubleValue();
-        this.stackEvent(new D_GuiValueChangeEvent<>(this, prevVal, value));
-        this.value = BigDecimal.valueOf(value);
+        this.value = value
+                .divide(increment, 0, RoundingMode.FLOOR)
+                .multiply(increment)
+                .setScale(increment.scale(), RoundingMode.FLOOR);
+        this.stackEvent(new D_GuiValueChangeEvent<>(this, prevVal, this.value.doubleValue()));
         updateBarWidth();
         this.valueText.setText(String.format("%s", this.value.toString()));
         this.style.notifyObservers();
     }
 
-    public void setValue(BigDecimal value) {
-        setValue(value.doubleValue());
+    public void setValue(double value) {
+        setValue(BigDecimal.valueOf(value));
     }
 
     public double getMinValue() {
@@ -189,37 +191,27 @@ public class D_Slider extends D_Component {
             return;
         }
 
-        float prevVal = this.value.floatValue();
         float left = style.getX();
-
         float mouseX = Mouse.getX();
+
         if (mouseX <= left)
             mouseX = left;
         else if (mouseX >= left + style.getWidth())
             mouseX = left + style.getWidth();
 
-        xRelativeToValue = (mouseX - left); // range (0 - width)
         this.setValue(
-                        Maths.map(
-                                BigDecimal.valueOf(xRelativeToValue),
-                                BigDecimal.ZERO,
-                                BigDecimal.valueOf(style.getWidth()),
-                                minValue,
-                                maxValue
-                        ).divide(increment,increment.scale(),RoundingMode.FLOOR)
-                        .setScale(0, RoundingMode.FLOOR)
-                        .multiply(increment)
+                Maths.map(
+                        mouseX - left,
+                        0,
+                        style.getWidth(),
+                        minValue.floatValue(),
+                        maxValue.floatValue()
+                )
         );
-        style.notifyObservers();
-        this.stackEvent(new D_GuiValueChangeEvent<>(this, prevVal, value));
     }
 
     private void updateBarWidth() {
-        xRelativeToValue = value
-                .subtract(minValue)
-                .divide(maxValue.subtract(minValue), increment.scale(), RoundingMode.FLOOR)
-                .multiply(BigDecimal.valueOf(style.getWidth()))
-                .floatValue();
+        xRelativeToValue = ((value.floatValue() - minValue.floatValue()) / (maxValue.floatValue() - minValue.floatValue())) * style.getWidth();
     }
 
 }
