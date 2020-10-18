@@ -99,20 +99,7 @@ public class D_Slider extends D_Component {
     }
 
     public void setValue(BigDecimal value) {
-        if(value.doubleValue() <= minValue.doubleValue()) {
-            value = BigDecimal.valueOf(minValue.doubleValue());
-        } else if(value.doubleValue() >= maxValue.doubleValue()) {
-            value = BigDecimal.valueOf(maxValue.doubleValue());
-        }
-        double prevVal = this.value.doubleValue();
-        this.value = value
-                .divide(increment, 0, RoundingMode.FLOOR)
-                .multiply(increment)
-                .setScale(increment.scale(), RoundingMode.FLOOR);
-        this.stackEvent(new D_GuiValueChangeEvent<>(this, prevVal, this.value.doubleValue()));
-        updateBarWidth();
-        this.valueText.setText(String.format("%s", this.value.toString()));
-        this.style.notifyObservers();
+        setValue(value, increment);
     }
 
     public void setValue(double value) {
@@ -170,10 +157,10 @@ public class D_Slider extends D_Component {
 
             switch (e.getKey()) {
                 case GLFW_KEY_LEFT:
-                    setValue(value.subtract(incrementValue));
+                    setValue(value.subtract(incrementValue), incrementValue);
                     break;
                 case GLFW_KEY_RIGHT:
-                    setValue(value.add(incrementValue));
+                    setValue(value.add(incrementValue), incrementValue);
                     break;
                 case GLFW_KEY_UP:
                     setValue(maxValue);
@@ -212,6 +199,23 @@ public class D_Slider extends D_Component {
 
     private void updateBarWidth() {
         xRelativeToValue = ((value.floatValue() - minValue.floatValue()) / (maxValue.floatValue() - minValue.floatValue())) * style.getWidth();
+    }
+
+    private void setValue(BigDecimal value, BigDecimal increment) {
+        if(value.doubleValue() <= minValue.doubleValue()) {
+            value = BigDecimal.valueOf(minValue.doubleValue());
+        } else if(value.doubleValue() >= maxValue.doubleValue()) {
+            value = BigDecimal.valueOf(maxValue.doubleValue());
+        }
+        double prevVal = this.value.doubleValue();
+        this.value = value
+                .divide(increment, 0, RoundingMode.FLOOR)
+                .multiply(increment)
+                .setScale(increment.scale(), RoundingMode.FLOOR);
+        this.stackEvent(new D_GuiValueChangeEvent<>(this, prevVal, this.value.doubleValue()));
+        updateBarWidth();
+        this.valueText.setText(String.format("%s", this.value.toString()));
+        this.style.notifyObservers();
     }
 
 }
