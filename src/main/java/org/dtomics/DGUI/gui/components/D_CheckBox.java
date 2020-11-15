@@ -1,5 +1,6 @@
 package org.dtomics.DGUI.gui.components;
 
+import org.dtomics.DGUI.IO.Cursors;
 import org.dtomics.DGUI.utils.observers.Observable;
 
 /**
@@ -15,7 +16,7 @@ public class D_CheckBox extends D_Component {
     }
 
     public D_CheckBox(boolean selected) {
-        this.style.setSize(10, 10, false);
+        this.style.setSize(10, 10, false).setCursor(Cursors.HAND.get());
         this.setSelectable(true);
         this.setSelected(selected);
     }
