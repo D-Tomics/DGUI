@@ -74,13 +74,19 @@ public final class Mouse {
     private static final Matrix4f tempMatrix = new Matrix4f();
     private static final Vector4f tempVector = new Vector4f();
 
+    private static float dx, dy;
+
     protected static void init(Window window) {
 
         window.addListener(new GLFWListener(GLFWMouseMoveEvent.class) {
             @Override
             public void invoke(GLFWEvent event) {
-                position.x = (float) ((GLFWMouseMoveEvent) event).getXpos() - event.getSource().getWidth() / 2.0f;
-                position.y = -(float) ((GLFWMouseMoveEvent) event).getYpos() + event.getSource().getHeight() / 2.0f;
+                float x = (float) ((GLFWMouseMoveEvent) event).getXpos() - event.getSource().getWidth() / 2.0f;
+                float y = -(float) ((GLFWMouseMoveEvent) event).getYpos() + event.getSource().getHeight() / 2.0f;
+                dx = x - position.x;
+                dy = y - position.y;
+                position.x = x;
+                position.y = y;
                 isMoving = true;
             }
         });
@@ -263,6 +269,14 @@ public final class Mouse {
         return xScroll;
     }
 
+
+    public static float getDx() {
+        return dx;
+    }
+
+    public static float getDy() {
+        return dy;
+    }
     /**
      * converts 2D mouse pixel coordinates to 3d vectors in a space defined by projection matrix
      *
