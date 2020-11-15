@@ -33,6 +33,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 import static org.lwjgl.glfw.GLFW.glfwSetCursor;
+import static org.lwjgl.glfw.GLFW.glfwSetCursorPos;
 import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
 
 public final class Mouse {
@@ -276,6 +277,11 @@ public final class Mouse {
         ray.set(tempVector.x, tempVector.y, tempVector.z);
         ray.normalize();
         return ray;
+    }
+
+    public static void setPosition(Window window, float x, float y) {
+        position.set(x, y);
+        glfwSetCursorPos(window.getWindowPointer(), nGetX(window), nGetY(window));
     }
 
 }
