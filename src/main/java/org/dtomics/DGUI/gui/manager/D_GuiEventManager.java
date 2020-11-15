@@ -187,7 +187,7 @@ public final class D_GuiEventManager {
             if (gui.getLevel() >= topGui.getLevel() && !topGui.isPressed()) topFound = false;
 
             if (Mouse.isMoving() && Mouse.pressed()) {
-                topGui.stackEvent(new D_GuiMouseDragEvent(topGui, Mouse.pressedButton(),Mouse.getMods()));
+                topGui.stackEvent(new D_GuiMouseDragEvent(topGui, Mouse.pressedButton(), Mouse.getMods(), Mouse.getDx(), Mouse.getDy()));
             }
         }
 
