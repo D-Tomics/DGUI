@@ -55,6 +55,7 @@ public final class Mouse {
     private static final Vector2f position = new Vector2f(0);
     private static final Delay repeatDelay = new Delay(200);
 
+    private static boolean enabled = true;
     private static int yScroll;
     private static int xScroll;
     private static int mods;
@@ -155,10 +156,14 @@ public final class Mouse {
     }
 
     public static void disableCursor(Window window) {
+        if (!enabled) return;
+        enabled = false;
         glfwSetInputMode(window.getWindowPointer(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
 
     public static void enableCursor(Window window) {
+        if (enabled) return;
+        enabled = true;
         glfwSetInputMode(window.getWindowPointer(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 
