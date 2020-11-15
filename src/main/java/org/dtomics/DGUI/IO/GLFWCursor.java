@@ -1,62 +1,36 @@
 package org.dtomics.DGUI.IO;
 
-import static org.lwjgl.glfw.GLFW.GLFW_ARROW_CURSOR;
-import static org.lwjgl.glfw.GLFW.GLFW_CROSSHAIR_CURSOR;
-import static org.lwjgl.glfw.GLFW.GLFW_HAND_CURSOR;
-import static org.lwjgl.glfw.GLFW.GLFW_HRESIZE_CURSOR;
-import static org.lwjgl.glfw.GLFW.GLFW_IBEAM_CURSOR;
-import static org.lwjgl.glfw.GLFW.GLFW_VRESIZE_CURSOR;
-import static org.lwjgl.glfw.GLFW.glfwCreateStandardCursor;
+import org.lwjgl.glfw.GLFWImage;
+
+import static org.lwjgl.glfw.GLFW.glfwCreateCursor;
+import static org.lwjgl.glfw.GLFW.glfwDestroyCursor;
 import static org.lwjgl.glfw.GLFW.glfwSetCursor;
 
 public class GLFWCursor {
 
-    private static final int[] cursors = new int[]{
-            GLFW_ARROW_CURSOR,
-            GLFW_HAND_CURSOR,
-            GLFW_CROSSHAIR_CURSOR,
-            GLFW_IBEAM_CURSOR,
-            GLFW_HRESIZE_CURSOR,
-            GLFW_VRESIZE_CURSOR
-    };
-    private static final standardCursors previous = standardCursors.ARROW;
-    private static standardCursors current = standardCursors.ARROW;
-    private static boolean changed;
+    private static GLFWCursor current;
 
-    public static void setCursor(Window window, standardCursors cursor) {
-        if (cursor == current) return;
-        changed = true;
-        current = cursor;
-        set(window);
+    private long cursor = -1;
+    public GLFWCursor(long cursor) {
+        this.cursor = cursor;
     }
 
-    public static standardCursors getCursor() {
-        return current;
+    public GLFWCursor(GLFWImage image, int xOff, int yOff) {
+        this.cursor = glfwCreateCursor(image, xOff, yOff);
     }
 
-    private static void set(Window window) {
-        glfwSetCursor(window.getWindowPointer(), current.get());
+    public long get() {
+        return cursor;
     }
 
-    public static void reset(Window window) {
-        if (previous == current) return;
-        current = previous;
-        set(window);
+    public void destroy() {
+        glfwDestroyCursor(cursor);
     }
 
-    public enum standardCursors {
-        ARROW,
-        HAND,
-        CROSS_HAIR,
-        I_BEAM,
-        H_RESIZE,
-        V_RESIZE;
-        private long ptr = -1;
-
-        protected long get() {
-            if (ptr == -1) ptr = glfwCreateStandardCursor(cursors[this.ordinal()]);
-            return ptr;
-        }
+    public void set(Window window) {
+        if (this == current) return;
+        current = this;
+        glfwSetCursor(window.getWindowPointer(), this.get());
     }
 
 }

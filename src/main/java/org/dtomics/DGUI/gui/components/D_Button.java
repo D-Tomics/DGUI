@@ -1,5 +1,6 @@
 package org.dtomics.DGUI.gui.components;
 
+import org.dtomics.DGUI.IO.Cursors;
 import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignCenter;
 import org.dtomics.DGUI.gui.manager.events.D_GuiResizeEvent;
 import org.dtomics.DGUI.gui.text.D_TextBox;
@@ -20,7 +21,7 @@ public class D_Button extends D_Component {
     private final D_TextBox name;
 
     public D_Button(String name) {
-        style.setBounds(0, 0, WIDTH, HEIGHT);
+        style.setBounds(0, 0, WIDTH, HEIGHT).setCursor(Cursors.HAND.get());
 
         this.name = new D_TextBox(name, 70, WIDTH, HEIGHT, TextAlignment.CENTER);
         this.name.setTextColor(Color.BLACK);

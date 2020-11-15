@@ -1,5 +1,6 @@
 package org.dtomics.DGUI.gui.components;
 
+import org.dtomics.DGUI.IO.Cursors;
 import org.dtomics.DGUI.IO.Window;
 import org.dtomics.DGUI.gui.manager.constraints.gui_constraints.Fill;
 import org.dtomics.DGUI.gui.manager.events.D_GuiFocusLooseEvent;
@@ -47,7 +48,7 @@ public class D_List<T> extends D_Component {
     private HashMap<String, T> items;
 
     public D_List(T... items) {
-        this.style.setBounds(0, 0, 100, 30, false);
+        this.style.setBounds(0, 0, 100, 30, false).setCursor(Cursors.HAND.get());
 
         this.container = new D_GuiQuad(this.getStyle().getWidth(), this.style.getHeight() * Math.min(items.length, windowSize));
         this.container.setVisible(false);
@@ -85,7 +86,7 @@ public class D_List<T> extends D_Component {
         items.put(text, item);
 
         D_GuiQuad quad = new D_GuiQuad(this.getStyle().getWidth() - 2, this.style.getHeight() - 2, text);
-        quad.style.setBorderWidth(0);
+        quad.style.setBorderWidth(0).setCursor(Cursors.HAND.get());
         quad.setVisible(false);
 
         quad.addConstraint(new Fill(this, true, true, 2, 2));

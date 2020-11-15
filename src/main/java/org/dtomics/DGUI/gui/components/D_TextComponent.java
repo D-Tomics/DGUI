@@ -1,5 +1,6 @@
 package org.dtomics.DGUI.gui.components;
 
+import org.dtomics.DGUI.IO.Cursors;
 import org.dtomics.DGUI.IO.Mouse;
 import org.dtomics.DGUI.gui.manager.events.D_GuiCharEvent;
 import org.dtomics.DGUI.gui.manager.events.D_GuiKeyEvent;
@@ -43,6 +44,7 @@ public abstract class D_TextComponent extends D_Component {
         this.style.setSize(width, height);
         this.style.setBgColor(Color.WHITE);
         this.style.setBorderColor(Color.BLACK);
+        this.style.setCursor(Cursors.I_BEAM.get());
 
         this.textBox.setBoxHeight(this.style.getHeight());
 

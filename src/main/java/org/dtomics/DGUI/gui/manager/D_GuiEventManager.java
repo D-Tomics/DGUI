@@ -1,6 +1,6 @@
 package org.dtomics.DGUI.gui.manager;
 
-import org.dtomics.DGUI.IO.GLFWCursor;
+import org.dtomics.DGUI.IO.Cursors;
 import org.dtomics.DGUI.IO.Mouse;
 import org.dtomics.DGUI.IO.Window;
 import org.dtomics.DGUI.IO.events.GLFWCharEvent;
@@ -9,16 +9,10 @@ import org.dtomics.DGUI.IO.events.GLFWKeyEvent;
 import org.dtomics.DGUI.IO.events.GLFWListener;
 import org.dtomics.DGUI.IO.events.GLFWScrollEvent;
 import org.dtomics.DGUI.IO.events.GLFWWindowFocusLooseEvent;
-import org.dtomics.DGUI.gui.components.D_Button;
-import org.dtomics.DGUI.gui.components.D_CheckBox;
 import org.dtomics.DGUI.gui.components.D_Container;
 import org.dtomics.DGUI.gui.components.D_Gui;
 import org.dtomics.DGUI.gui.components.D_GuiQuad;
 import org.dtomics.DGUI.gui.components.D_Icon;
-import org.dtomics.DGUI.gui.components.D_Label;
-import org.dtomics.DGUI.gui.components.D_List;
-import org.dtomics.DGUI.gui.components.D_Slider;
-import org.dtomics.DGUI.gui.components.D_TextComponent;
 import org.dtomics.DGUI.gui.manager.events.D_GuiCharEvent;
 import org.dtomics.DGUI.gui.manager.events.D_GuiDeSelectedEvent;
 import org.dtomics.DGUI.gui.manager.events.D_GuiFocusGainEvent;
@@ -248,18 +242,11 @@ public final class D_GuiEventManager {
     }
 
     private void updateCursor() {
-        if (
-                topGui instanceof D_Button ||
-                        topGui instanceof D_CheckBox ||
-                        topGui instanceof D_List<?> ||
-                        topGui instanceof D_Slider
-        ) GLFWCursor.setCursor(window, GLFWCursor.standardCursors.HAND);
-        else if (
-                topGui instanceof D_Label ||
-                        topGui instanceof D_TextComponent
-        ) GLFWCursor.setCursor(window, GLFWCursor.standardCursors.I_BEAM);
-        else
-            GLFWCursor.setCursor(window, GLFWCursor.standardCursors.ARROW);
+        if(topGui != null) {
+            topGui.getStyle().getCursor().set(window);
+        } else {
+            Cursors.ARROW.get().set(window);
+        }
     }
 
 }

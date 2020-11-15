@@ -1,6 +1,10 @@
 package org.dtomics.DGUI.gui.manager;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
+import org.dtomics.DGUI.IO.Cursors;
+import org.dtomics.DGUI.IO.GLFWCursor;
 import org.dtomics.DGUI.gui.components.D_Gui;
 import org.dtomics.DGUI.gui.manager.events.D_GuiResizeEvent;
 import org.dtomics.DGUI.gui.renderer.Texture;
@@ -31,6 +35,10 @@ public class Style extends Observable {
     private float borderWidth;
     private final float[] padding = new float[4];
     private final float[] margin = new float[]{10, 10, 10, 10};
+
+    @Getter
+    @Setter
+    private GLFWCursor cursor = Cursors.ARROW.get();
 
     public Style() {
         this.bgColor = new Color();

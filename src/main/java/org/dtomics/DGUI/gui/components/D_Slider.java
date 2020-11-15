@@ -1,5 +1,6 @@
 package org.dtomics.DGUI.gui.components;
 
+import org.dtomics.DGUI.IO.Cursors;
 import org.dtomics.DGUI.IO.Mouse;
 import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignCenter;
 import org.dtomics.DGUI.gui.manager.constraints.guiTextConstraints.D_TextAlignRight;
@@ -61,7 +62,7 @@ public class D_Slider extends D_Component {
         this.maxValue = BigDecimal.valueOf(maxValue);
         this.value = BigDecimal.valueOf(0);
 
-        style.setBounds(0, 0, SLIDER_WIDTH, SLIDER_HEIGHT, false);
+        style.setBounds(0, 0, SLIDER_WIDTH, SLIDER_HEIGHT, false).setCursor(Cursors.HAND.get());
 
         bar.style.setBounds(style.getX(), style.getY(), 0, SLIDER_HEIGHT);
         bar.style.setBgColor(0x667788);
